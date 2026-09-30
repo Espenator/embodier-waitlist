@@ -459,6 +459,7 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
   ev.preventDefault();
   var name = document.getElementById('f-name').value.trim();
   var email = document.getElementById('f-email').value.trim();
+  var tierVal = document.getElementById('f-tier').value;
   var btn = document.getElementById('submit-btn');
   if (!name || email.indexOf('@') < 0) { alert(t('f_need')); return; }
   if (!INTAKE_WEBHOOK_URL) {
@@ -473,7 +474,8 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
     body: JSON.stringify({
       name:name, email:email,
       phone:document.getElementById('f-phone').value.trim(),
-      tier:document.getElementById('f-tier').value,
+      tier:tierVal,
+      lane: tierVal === 'tier-50k' ? 'capital' : 'token',
       ref:INCOMING_REF, lang:LANG, source:'waitlist-page'
     })
   }).then(function(r){ return r.json(); })

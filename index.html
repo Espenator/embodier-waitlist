@@ -64,6 +64,15 @@
   .gal img{width:100%;height:260px;object-fit:cover;display:block}
   .gal figcaption{position:absolute;bottom:0;left:0;right:0;padding:26px 16px 12px;font-size:13px;color:#fff;background:linear-gradient(180deg,transparent,rgba(0,0,0,.78))}
   @media(max-width:640px){.gal{grid-template-columns:1fr}}
+  /* trust strip */
+  .trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:28px 0;margin-top:8px}
+  .trust h2{margin:0 0 16px;font-size:clamp(20px,3vw,28px);letter-spacing:-.01em}
+  .trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .trust-item{display:flex;gap:12px;align-items:flex-start}
+  .trust-item svg{flex:0 0 auto;width:22px;height:22px;stroke:var(--gold);fill:none;stroke-width:2;margin-top:2px}
+  .trust-item strong{display:block;font-size:14px;color:#fff;margin-bottom:4px}
+  .trust-item p{margin:0;font-size:13px;color:var(--mut)}
+  @media(max-width:640px){.trust-grid{grid-template-columns:1fr}}
   /* form */
   .formcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:30px;max-width:640px}
   .field{margin-bottom:14px}
@@ -135,6 +144,14 @@
 </div>
 
 <div class="wrap">
+<section class="trust" aria-labelledby="trustTitle">
+  <h2 id="trustTitle" data-i18n="trustTitle">Propiedad real, estructurada para la confianza</h2>
+  <div class="trust-grid">
+    <div class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><div><strong data-i18n="trust1t">Un SPV nuevo por cada adquisición</strong><p data-i18n="trust1d">Tus intereses nunca se mezclan con los de otra propiedad.</p></div></div>
+    <div class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"/></svg><div><strong data-i18n="trust2t">Custodia independiente</strong><p data-i18n="trust2d">Tu depósito queda en custodia de un tercero verificable hasta el cierre.</p></div></div>
+    <div class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16"/></svg><div><strong data-i18n="trust3t">Sin retornos prometidos</strong><p data-i18n="trust3d">Nunca exageramos la liquidez ni garantizamos resultados.</p></div></div>
+  </div>
+</section>
 <section id="como">
   <h2 data-i18n="how_h2">Cómo funciona</h2>
   <p class="sub" data-i18n="how_sub">Cinco pasos, sin compromiso. La lista de espera no es una compra.</p>
@@ -322,6 +339,10 @@ es:{
   counter_upd:"conteo en vivo desde nuestra base de datos",
   counter_upd_ok:"actualizado",
   hero_cta:"Reservar mi lugar", hero_cta2:"Ver niveles",
+  trustTitle:"Propiedad real, estructurada para la confianza",
+  trust1t:"Un SPV nuevo por cada adquisición", trust1d:"Tus intereses nunca se mezclan con los de otra propiedad.",
+  trust2t:"Custodia independiente", trust2d:"Tu depósito queda en custodia de un tercero verificable hasta el cierre.",
+  trust3t:"Sin retornos prometidos", trust3d:"Nunca exageramos la liquidez ni garantizamos resultados.",
   how_h2:"Cómo funciona", how_sub:"Cinco pasos, sin compromiso. La lista de espera no es una compra.",
   s1t:"Crea tu cuenta", s1p:"Regístrate con tu correo. Sin compromiso, sin pago.",
   s2t:"Verifica tu identidad", s2p:"Proceso guiado de KYC con Sumsub. Toma unos minutos.",
@@ -384,6 +405,10 @@ en:{
   counter_upd:"live count from our database",
   counter_upd_ok:"updated",
   hero_cta:"Hold my spot", hero_cta2:"See tiers",
+  trustTitle:"Real ownership, structured for trust",
+  trust1t:"A new SPV for every acquisition", trust1d:"Your interests never mingle with another property's.",
+  trust2t:"Independent custody", trust2d:"Your deposit sits with a verifiable third-party custodian until closing.",
+  trust3t:"Honest about risk", trust3d:"We never overstate liquidity or guarantee outcomes.",
   how_h2:"How it works", how_sub:"Five steps, zero commitment. The waitlist is not a purchase.",
   s1t:"Create your account", s1p:"Sign up with your email. No commitment, no payment.",
   s2t:"Verify your identity", s2p:"Guided KYC with Sumsub. Takes a few minutes.",

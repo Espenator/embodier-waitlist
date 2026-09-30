@@ -1,11 +1,11 @@
 {
   "count": 0,
   "capital_route_count": 0,
-  "updated_at": "2026-09-30T19:58:19.775125+00:00",
+  "updated_at": "2026-09-30T20:31:50.799214+00:00",
   "source": {
     "sheet": "Token Buyer Prospects",
     "sheet_id": "1ft2aTXGkg-PXvLRm_9gfMyetbMe5EcDwNnC77NXGRyU",
     "cell": "Waitlist!B1",
-    "formula": "=COUNTA(C3:C) over the Email column (rows 3+, headers in row 2)"
+    "formula": "=COUNTIFS('Token Buyers'!N2:N,\"Opted in\",'Token Buyers'!AR2:AR,\"\") \u2014 validated opt-in only (Consent status = Opted in, no Opt-out date)"
   }
 }

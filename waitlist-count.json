@@ -1,0 +1,11 @@
+{
+  "count": 0,
+  "capital_route_count": 0,
+  "updated_at": "2026-09-30T18:13:19.240840+00:00",
+  "source": {
+    "sheet": "Token Buyer Prospects",
+    "sheet_id": "1ft2aTXGkg-PXvLRm_9gfMyetbMe5EcDwNnC77NXGRyU",
+    "cell": "Waitlist!B1",
+    "formula": "=COUNTA(C3:C) over the Email column (rows 3+, headers in row 2)"
+  }
+}

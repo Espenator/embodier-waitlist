@@ -71,6 +71,18 @@
   .field input,.field select{width:100%;padding:13px 14px;border-radius:9px;border:1px solid var(--line);background:#0c0e12;color:#fff;font-size:15px}
   .field input:focus,.field select:focus{outline:2px solid var(--gold);border-color:var(--gold)}
   .fine{font-size:12px;color:#6b7280;margin-top:12px}
+  /* deposit payment fallbacks: Apple Pay first; card only when no wallet; wire on request */
+  .payfallback{display:none;text-align:left;margin-top:6px}
+  .payfallback.show{display:block}
+  .payfallback .cardbox{background:#0c0e12;border:1px solid var(--line);border-radius:10px;padding:14px;margin:10px 0}
+  .payfallback input[type=email]{width:100%;padding:12px 14px;border-radius:9px;border:1px solid var(--line);background:#0c0e12;color:#fff;font-size:15px;margin-bottom:10px;box-sizing:border-box}
+  .paybtn{width:100%;padding:14px;border-radius:10px;border:0;background:var(--gold);color:#141414;font-weight:bold;font-size:16px;cursor:pointer}
+  .paybtn:disabled{opacity:.55;cursor:default}
+  .wiretoggle{font-size:13px;color:var(--mut);margin-top:12px;text-align:center}
+  .wiretoggle a{color:var(--gold);cursor:pointer;text-decoration:underline}
+  .wirepanel{display:none;font-size:13px;color:var(--mut);margin-top:10px;background:#0c0e12;border:1px dashed var(--line);border-radius:10px;padding:12px 14px;text-align:left}
+  .wirepanel.show{display:block}
+  .wirepanel a{color:#fff}
   .success{display:none;background:#0e1a12;border:1px solid #2f7a4d;border-radius:16px;padding:28px;max-width:640px}
   .success.show{display:block}
   .reflink{display:flex;gap:8px;margin:14px 0}
@@ -184,6 +196,20 @@
       <div class="price">$100 <span class="per">USD</span></div>
       <p class="per" data-i18n="dep_per">reembolsable · se acredita a tu compra</p>
       <div id="applepay-mount" style="min-height:48px"></div>
+      <div class="payfallback" id="card-fallback">
+        <p class="per" style="margin:0 0 4px" data-i18n="dep_card_sub">Apple Pay no está disponible en este dispositivo — paga con tarjeta, es el mismo depósito reembolsable de $100.</p>
+        <div class="cardbox">
+          <input type="email" id="card-email" data-i18n-ph="dep_card_email" placeholder="Correo para tu comprobante" autocomplete="email">
+          <div id="card-element"></div>
+        </div>
+        <button class="paybtn" id="card-pay" data-i18n="dep_card_pay">Pagar $100</button>
+      </div>
+      <p class="wiretoggle"><a id="wire-toggle" data-i18n="dep_wire_toggle">¿Prefieres transferencia bancaria?</a></p>
+      <div class="wirepanel" id="wire-panel">
+        <span data-i18n="dep_wire_p">Para reservas de Equity Plus ($5K+) y Ruta Capital ($50K+) aceptamos transferencia bancaria — escríbenos y te enviamos las instrucciones.</span><br><br>
+        <a id="wire-mail" href="mailto:espen@embodier.ai?subject=Wire%20instructions%20%E2%80%94%20Embodier%20reservation" data-i18n="dep_wire_cta">Pedir instrucciones por correo</a>
+        &nbsp;·&nbsp; <a href="sms:+12397775813">SMS +1 239-777-5813</a>
+      </div>
       <p class="fine" id="applepay-note" data-i18n="dep_fine">Pago seguro vía Stripe. Sin compromiso de compra.</p>
     </div>
   </div>
@@ -282,7 +308,7 @@
 <script>
 /* ============ CONFIG — wiring (set at deploy) ============ */
 var INTAKE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyJbi-f7EvUrpoBTV3tctMCf4g06U_7v8mwTfiLKAQQD0puWcI33ErGEahlPjqSp3O_nQ/exec";   // live intake webhook (Apps Script, verified working 2026-09-30)   // <-- set to the deployed waitlist-intake web app URL (Apps Script or Cloud Function). Empty = form shows the manual fallback.
-/* Apple Pay deposit: the webhook mints the $100 PaymentIntent (Code.gs v2); the page only ever shows the wallet button — no card form. */
+/* Apple Pay deposit: the webhook mints the $100 PaymentIntent (Code.gs v2); Apple Pay is the primary UI — Stripe card form appears ONLY on devices with no wallet, bank wire instructions on request. */
 /* ========================================================== */
 
 var STR = {
@@ -317,6 +343,13 @@ es:{
   dep_iphone:"Abre esta página en tu iPhone para reservar con Apple Pay en un toque.",
   dep_err:"El pago no se completó — inténtalo de nuevo.",
   dep_ok:"¡Reserva confirmada! $100 acreditados a tu lugar en la fila. Te enviamos el comprobante por correo.",
+  dep_card_sub:"Apple Pay no está disponible en este dispositivo — paga con tarjeta, es el mismo depósito reembolsable de $100.",
+  dep_card_email:"Correo para tu comprobante",
+  dep_card_pay:"Pagar $100",
+  dep_card_needmail:"Escribe tu correo para enviarte el comprobante.",
+  dep_wire_toggle:"¿Prefieres transferencia bancaria?",
+  dep_wire_p:"Para reservas de Equity Plus ($5K+) y Ruta Capital ($50K+) aceptamos transferencia bancaria — escríbenos y te enviamos las instrucciones.",
+  dep_wire_cta:"Pedir instrucciones por correo",
   win_h2:"Ventanas de asignación", win_p1:"Las ventanas de asignación se abren por adquisición — no hay una fecha única global. Cuando se abre la ventana de un proyecto, avisamos en el orden de la lista: tu posición es tu turno.",
   w1t:"La lista es tu turno", w1p:"Quien llegó antes, elige antes. El orden de registro define la prioridad de acceso.",
   w2t:"Por proyecto", w2p:"Cada resort adquirido abre su propia ventana. Puedes esperar al proyecto que más te guste.",
@@ -369,6 +402,13 @@ en:{
   dep_iphone:"Open this page on your iPhone to reserve with Apple Pay in one tap.",
   dep_err:"The payment didn't go through — please try again.",
   dep_ok:"Reservation confirmed! $100 credited toward your place in line. Receipt sent by email.",
+  dep_card_sub:"Apple Pay isn't available on this device — pay by card, same $100 refundable deposit.",
+  dep_card_email:"Email for your receipt",
+  dep_card_pay:"Pay $100",
+  dep_card_needmail:"Enter your email so we can send your receipt.",
+  dep_wire_toggle:"Prefer a bank wire?",
+  dep_wire_p:"For Equity Plus ($5K+) and Capital Route ($50K+) reservations we accept bank wires — write to us and we'll send the instructions.",
+  dep_wire_cta:"Request wire instructions by email",
   win_h2:"Allocation windows", win_p1:"Allocation windows open per acquisition — there is no single global date. When a project's window opens, we notify in waitlist order: your position is your turn.",
   w1t:"The list is your turn", w1p:"First come, first served. Registration order sets access priority.",
   w2t:"Per project", w2p:"Each acquired resort opens its own window. You can wait for the project you love most.",
@@ -401,9 +441,13 @@ function setLang(l){
     var k = el.getAttribute('data-i18n');
     if (STR[LANG][k] !== undefined) el.textContent = STR[LANG][k];
   });
+  document.querySelectorAll('[data-i18n-ph]').forEach(function(el){
+    var k = el.getAttribute('data-i18n-ph');
+    if (STR[LANG][k] !== undefined) el.setAttribute('placeholder', STR[LANG][k]);
+  });
   document.getElementById('f-lang').value = LANG;
   try { localStorage.setItem('wl-lang', LANG); } catch(e){}
-  wireApplePay(); wireFallbackMail();
+  wireApplePay(); wireFallbackMail(); wireToggleInit();
 }
 function t(k){ return STR[LANG][k] || k; }
 
@@ -435,7 +479,7 @@ function loadCount(){
     .catch(function(){ /* stays "—": never show a fake number */ });
 }
 
-/* ---- Apple Pay deposit (Stripe Payment Request Button — wallet only, never a card form) ---- */
+/* ---- Apple Pay deposit (Stripe Payment Request Button — wallet-first; card fallback only when no wallet on device) ---- */
 function wireApplePay(){
   var mount = document.getElementById('applepay-mount');
   var note = document.getElementById('applepay-note');
@@ -455,7 +499,7 @@ function wireApplePay(){
         requestPayerName: true, requestPayerEmail: true
       });
       pr.canMakePayment().then(function(res){
-        if (!res) { fail(t('dep_iphone')); return; }  // no wallet on this device — Apple Pay only, by rule
+        if (!res) { showCardFallback(stripe); return; }  // no wallet on this device → Stripe card fallback (Apple Pay stays the only UI where it can render)
         var btn = stripe.elements().create("paymentRequestButton", {
           paymentRequest: pr,
           style: { paymentRequestButton: { type: "default", theme: "dark", height: "48px" } }
@@ -485,9 +529,62 @@ function wireApplePay(){
 
 function depositPaid(){
   var mount = document.getElementById('applepay-mount');
+  var fb = document.getElementById('card-fallback');
   var note = document.getElementById('applepay-note');
   if (mount) mount.innerHTML = "";
+  if (fb) fb.classList.remove('show');
   if (note) note.textContent = t('dep_ok');
+}
+
+/* ---- Stripe card fallback: only ever shown when this device cannot do Apple Pay ---- */
+var cardWired = false;
+function showCardFallback(stripe){
+  var mount = document.getElementById('applepay-mount');
+  var fb = document.getElementById('card-fallback');
+  var note = document.getElementById('applepay-note');
+  if (mount) mount.innerHTML = "";
+  if (!fb || !window.Stripe) { if (note) note.textContent = t('dep_soon'); return; }
+  fb.classList.add('show');
+  if (cardWired) return;
+  cardWired = true;
+  var card = stripe.elements().create('card', {
+    style: { base: { color: '#fff', fontSize: '16px', '::placeholder': { color: '#6b7280' } },
+             invalid: { color: '#e5484d' } }
+  });
+  card.mount('#card-element');
+  document.getElementById('card-pay').addEventListener('click', function(){
+    var btn = this;
+    var email = (document.getElementById('card-email').value || '').trim();
+    if (email.indexOf('@') < 0) { if (note) note.textContent = t('dep_card_needmail'); return; }
+    btn.disabled = true;
+    fetch(INTAKE_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },  // no CORS preflight; Apps Script can't answer OPTIONS
+      body: JSON.stringify({ action: 'create_deposit_intent', email: email, name: '' })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(pi){
+      if (!pi || !pi.client_secret) { btn.disabled = false; if (note) note.textContent = t('dep_err'); return; }
+      stripe.confirmCardPayment(pi.client_secret, { payment_method: { card: card, billing_details: { email: email } } })
+        .then(function(cr){
+          btn.disabled = false;
+          if (cr.error) { if (note) note.textContent = t('dep_err'); }
+          else { depositPaid(); }
+        });
+    })
+    .catch(function(){ btn.disabled = false; if (note) note.textContent = t('dep_err'); });
+  });
+}
+
+/* ---- bank wire option: instructions by email/SMS only — no account numbers on the page ---- */
+function wireToggleInit(){
+  var wt = document.getElementById('wire-toggle');
+  if (wt && !wt.dataset.wired) {
+    wt.dataset.wired = '1';
+    wt.addEventListener('click', function(){
+      document.getElementById('wire-panel').classList.toggle('show');
+    });
+  }
 }
 
 /* ---- form ---- */

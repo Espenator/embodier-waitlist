@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script src="https://js.stripe.com/v3/"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lista de espera — Programa de tokens | Embodier</title>
@@ -182,8 +183,8 @@
     <div style="text-align:center">
       <div class="price">$100 <span class="per">USD</span></div>
       <p class="per" data-i18n="dep_per">reembolsable · se acredita a tu compra</p>
-      <a class="cta" id="stripe-btn" href="#" data-i18n="dep_btn">Reservar mi lugar — $100</a>
-      <p class="fine" id="stripe-note" data-i18n="dep_fine">Pago seguro vía Stripe. Sin compromiso de compra.</p>
+      <div id="applepay-mount" style="min-height:48px"></div>
+      <p class="fine" id="applepay-note" data-i18n="dep_fine">Pago seguro vía Stripe. Sin compromiso de compra.</p>
     </div>
   </div>
 </section>
@@ -281,7 +282,7 @@
 <script>
 /* ============ CONFIG — wiring (set at deploy) ============ */
 var INTAKE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyJbi-f7EvUrpoBTV3tctMCf4g06U_7v8mwTfiLKAQQD0puWcI33ErGEahlPjqSp3O_nQ/exec";   // live intake webhook (Apps Script, verified working 2026-09-30)   // <-- set to the deployed waitlist-intake web app URL (Apps Script or Cloud Function). Empty = form shows the manual fallback.
-var STRIPE_DEPOSIT_URL = "";   // <-- BLOCKED: needs Espen's $100 Stripe payment link. Empty = button shows "coming soon" note.
+/* Apple Pay deposit: the webhook mints the $100 PaymentIntent (Code.gs v2); the page only ever shows the wallet button — no card form. */
 /* ========================================================== */
 
 var STR = {
@@ -313,6 +314,9 @@ es:{
   dep_per:"reembolsable · se acredita a tu compra", dep_btn:"Reservar mi lugar — $100",
   dep_fine:"Pago seguro vía Stripe. Sin compromiso de compra.",
   dep_soon:"El enlace de pago se está configurando — tu lugar en la lista ya quedó guardado. Te avisaremos.",
+  dep_iphone:"Abre esta página en tu iPhone para reservar con Apple Pay en un toque.",
+  dep_err:"El pago no se completó — inténtalo de nuevo.",
+  dep_ok:"¡Reserva confirmada! $100 acreditados a tu lugar en la fila. Te enviamos el comprobante por correo.",
   win_h2:"Ventanas de asignación", win_p1:"Las ventanas de asignación se abren por adquisición — no hay una fecha única global. Cuando se abre la ventana de un proyecto, avisamos en el orden de la lista: tu posición es tu turno.",
   w1t:"La lista es tu turno", w1p:"Quien llegó antes, elige antes. El orden de registro define la prioridad de acceso.",
   w2t:"Por proyecto", w2p:"Cada resort adquirido abre su propia ventana. Puedes esperar al proyecto que más te guste.",
@@ -362,6 +366,9 @@ en:{
   dep_per:"refundable · credited toward your purchase", dep_btn:"Hold my spot — $100",
   dep_fine:"Secure payment via Stripe. No purchase commitment.",
   dep_soon:"The payment link is being set up — your place in line is already saved. We'll notify you.",
+  dep_iphone:"Open this page on your iPhone to reserve with Apple Pay in one tap.",
+  dep_err:"The payment didn't go through — please try again.",
+  dep_ok:"Reservation confirmed! $100 credited toward your place in line. Receipt sent by email.",
   win_h2:"Allocation windows", win_p1:"Allocation windows open per acquisition — there is no single global date. When a project's window opens, we notify in waitlist order: your position is your turn.",
   w1t:"The list is your turn", w1p:"First come, first served. Registration order sets access priority.",
   w2t:"Per project", w2p:"Each acquired resort opens its own window. You can wait for the project you love most.",
@@ -396,7 +403,7 @@ function setLang(l){
   });
   document.getElementById('f-lang').value = LANG;
   try { localStorage.setItem('wl-lang', LANG); } catch(e){}
-  wireStripe(); wireFallbackMail();
+  wireApplePay(); wireFallbackMail();
 }
 function t(k){ return STR[LANG][k] || k; }
 
@@ -428,19 +435,59 @@ function loadCount(){
     .catch(function(){ /* stays "—": never show a fake number */ });
 }
 
-/* ---- Stripe deposit button (wired only when the link exists) ---- */
-function wireStripe(){
-  var btn = document.getElementById('stripe-btn');
-  var note = document.getElementById('stripe-note');
-  if (STRIPE_DEPOSIT_URL) {
-    btn.href = STRIPE_DEPOSIT_URL;
-    btn.onclick = null;
-    note.textContent = t('dep_fine');
-  } else {
-    btn.href = "#reserva";
-    btn.onclick = function(ev){ ev.preventDefault(); alert(t('dep_soon')); return false; };
-    note.textContent = t('dep_soon');
-  }
+/* ---- Apple Pay deposit (Stripe Payment Request Button — wallet only, never a card form) ---- */
+function wireApplePay(){
+  var mount = document.getElementById('applepay-mount');
+  var note = document.getElementById('applepay-note');
+  if (!mount) return;
+  function fail(msg){ mount.innerHTML = ""; if (note) note.textContent = msg; }
+  if (!window.Stripe) { fail(t('dep_soon')); return; }
+  // publishable key is served by the webhook (public by design) — plain GET, no CORS preflight
+  fetch(INTAKE_WEBHOOK_URL + "?action=stripe_pk")
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var pk = d && d.publishable_key;
+      if (!pk) { fail(t('dep_soon')); return; }
+      var stripe = Stripe(pk);
+      var pr = stripe.paymentRequest({
+        country: "US", currency: "usd",
+        total: { label: "Embodier — reserva $100", amount: 10000 },
+        requestPayerName: true, requestPayerEmail: true
+      });
+      pr.canMakePayment().then(function(res){
+        if (!res) { fail(t('dep_iphone')); return; }  // no wallet on this device — Apple Pay only, by rule
+        var btn = stripe.elements().create("paymentRequestButton", {
+          paymentRequest: pr,
+          style: { paymentRequestButton: { type: "default", theme: "dark", height: "48px" } }
+        });
+        btn.mount("#applepay-mount");
+        pr.on("paymentmethod", function(ev){
+          fetch(INTAKE_WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },  // no CORS preflight; Apps Script can't answer OPTIONS
+            body: JSON.stringify({ action: "create_deposit_intent", email: ev.payerEmail || "", name: ev.payerName || "" })
+          })
+          .then(function(r){ return r.json(); })
+          .then(function(pi){
+            if (!pi || !pi.client_secret) { ev.complete("fail"); fail(t('dep_err')); return; }
+            stripe.confirmCardPayment(pi.client_secret, { payment_method: ev.paymentMethod.id }, { handleActions: false })
+              .then(function(cr){
+                if (cr.error) { ev.complete("fail"); fail(t('dep_err')); }
+                else { ev.complete("success"); depositPaid(); }
+              });
+          })
+          .catch(function(){ ev.complete("fail"); fail(t('dep_err')); });
+        });
+      });
+    })
+    .catch(function(){ fail(t('dep_soon')); });
+}
+
+function depositPaid(){
+  var mount = document.getElementById('applepay-mount');
+  var note = document.getElementById('applepay-note');
+  if (mount) mount.innerHTML = "";
+  if (note) note.textContent = t('dep_ok');
 }
 
 /* ---- form ---- */

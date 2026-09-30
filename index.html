@@ -470,7 +470,7 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
   }
   btn.disabled = true; btn.textContent = t('f_sending');
   fetch(INTAKE_WEBHOOK_URL, {
-    method:'POST', headers:{'Content-Type':'application/json'},
+    method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, // text/plain = no CORS preflight; Apps Script cannot answer OPTIONS
     body: JSON.stringify({
       name:name, email:email,
       phone:document.getElementById('f-phone').value.trim(),

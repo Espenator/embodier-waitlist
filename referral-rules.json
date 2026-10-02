@@ -1,0 +1,18 @@
+{
+  "updated_at": "2026-10-02T21:12:59+00:00",
+  "source": "Capital Partners sheet 'Referral Rules' tab (live)",
+  "lanes": {
+    "capital": {
+      "tier": "Capital Partner",
+      "bump": 3,
+      "max_bump": 15,
+      "qualification": "Referred completes qualification (KYC + jurisdiction check) and meets the $50K capital track minimum"
+    },
+    "token": {
+      "tier": "Token Waitlist",
+      "bump": 5,
+      "max_bump": 25,
+      "qualification": "Referred joins the whitelist and places the refundable $100 reservation deposit"
+    }
+  }
+}

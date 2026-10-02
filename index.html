@@ -73,6 +73,22 @@
   .reflink input{flex:1;padding:12px;border-radius:8px;border:1px solid var(--line);background:#0c0e12;color:var(--gold);font-size:14px}
   .sharebtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
   .sharebtns a,.sharebtns button{border:1px solid var(--line);background:#0c0e12;color:#fff;text-decoration:none;font-size:13px;padding:10px 16px;border-radius:8px;cursor:pointer}
+  /* position badge + share-to-boost (referral motivation layer, 2026-10-02) */
+  .pos-badge{display:none;background:linear-gradient(135deg,#1a1409,#0d0f14);border:1px solid var(--gold);border-radius:14px;padding:18px 22px;margin:0 0 18px;text-align:center}
+  .pos-badge .n{font-size:38px;font-weight:bold;color:var(--gold);line-height:1.1;font-variant-numeric:tabular-nums}
+  .pos-badge .s{font-size:12.5px;color:var(--mut);margin-top:6px}
+  .boost{background:#0c0e12;border:1px dashed var(--gold);border-radius:14px;padding:20px;margin:18px 0}
+  .boost h3{margin:0 0 8px;color:#fff;font-size:17px}
+  .boost h3 .zap{color:var(--gold)}
+  .boost p{margin:0 0 8px;font-size:14px;color:#d0d0d0}
+  .boost .q{font-size:12.5px;color:var(--mut)}
+  /* leaderboard */
+  .lb-list{display:grid;gap:10px;max-width:640px}
+  .lb-row{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+  .lb-rank{font-size:22px;font-weight:bold;color:var(--gold);min-width:36px;text-align:center;font-variant-numeric:tabular-nums}
+  .lb-name{flex:1;font-size:15px;color:#fff;font-weight:bold}
+  .lb-count{font-size:13px;color:var(--mut);white-space:nowrap}
+  .lb-empty{background:var(--panel);border:1px dashed var(--line);border-radius:12px;padding:22px;max-width:640px;font-size:14px;color:var(--mut);text-align:center}
   .fallback{display:none;background:#1a1409;border:1px solid var(--gold);border-radius:16px;padding:28px;max-width:640px}
   .fallback.show{display:block}
   /* disclaimer */
@@ -85,7 +101,6 @@
   .contact a:hover{color:var(--gold)}
   footer{padding:26px 0 40px;text-align:center;color:#6b7280;font-size:12px}
   footer .end{color:var(--gold);letter-spacing:2px;margin-top:8px;font-size:13px}
-</style>
 </style>
 </head>
 <body>
@@ -160,6 +175,13 @@
   </div>
 </section>
 
+<section id="referidos">
+  <h2 data-i18n="lb_h2">Los que más comparten</h2>
+  <p class="sub" data-i18n="lb_sub">Cada referido calificado sube a quien lo invitó. Así se ve la fila moviéndose.</p>
+  <div class="lb-list" id="lb-list" role="status" aria-live="polite"></div>
+  <p class="note" data-i18n="lb_note">Solo cuentan los referidos calificados. Los nombres se muestran abreviados por privacidad.</p>
+</section>
+
 <section id="unete">
   <h2 data-i18n="form_h2">Quiero entrar</h2>
   <p class="sub" data-i18n="form_sub">Sin pago. Sin compromiso. Solo tu lugar en la fila.</p>
@@ -202,6 +224,10 @@
   <div class="success" id="success-card">
     <h2 style="margin-top:0" data-i18n="ok_h2">¡Listo! Estás en la fila.</h2>
     <p class="sub" data-i18n="ok_p">Ahora adelanta tu posición: cada persona que se una con tu enlace te sube en la prioridad.</p>
+    <div class="pos-badge" id="pos-badge" role="status" aria-live="polite">
+      <div class="n" id="pos-num">—</div>
+      <div class="s" data-i18n="ok_pos_sub">Según el conteo en vivo de la lista — tu posición final se confirma al validar tu registro.</div>
+    </div>
     <div id="wa-confirm"></div>
     <label style="font-size:13px;color:var(--mut)" data-i18n="ok_link">Tu enlace de referido</label>
     <div class="reflink">
@@ -209,6 +235,12 @@
       <button class="cta" style="margin:0;padding:12px 20px" onclick="copyRef()" data-i18n="ok_copy">Copiar</button>
     </div>
     <div class="sharebtns" id="share-btns"></div>
+    <div class="boost" id="boost-panel" style="display:none">
+      <h3><span class="zap">⚡</span> <span data-i18n="boost_h">Adelanta tu lugar</span></h3>
+      <p id="boost-p"></p>
+      <p class="q" data-i18n="boost_q">Solo cuentan los invitados que confirman su lugar en la lista.</p>
+      <p class="q" data-i18n="boost_reward">Las introducciones calificadas también suman créditos de beneficios.</p>
+    </div>
   </div>
   <div class="fallback" id="fallback-card">
     <h2 style="margin-top:0" data-i18n="fb_h2">Casi listo — un paso manual</h2>
@@ -284,6 +316,18 @@ es:{
   ok_link:"Tu enlace de referido", ok_copy:"Copiar", ok_copied:"¡Copiado!",
   share_mail:"Compartir por correo", share_sms:"Compartir por SMS", share_wa:"Compartir por WhatsApp",
   share_text:"Únete a la lista de espera de Embodier — sé dueño de un pedazo del paraíso:",
+  ok_pos:"Eres el #{n} en la fila",
+  ok_pos_sub:"Según el conteo en vivo de la lista — tu posición final se confirma al validar tu registro.",
+  boost_h:"Adelanta tu lugar",
+  boost_p:"Cada amigo que se una con tu enlace te sube {bump} lugares en la prioridad — hasta {max} en total.",
+  boost_p_gen:"Cada amigo que se una con tu enlace te sube en la prioridad.",
+  boost_q:"Solo cuentan los invitados que confirman su lugar en la lista.",
+  boost_reward:"Las introducciones calificadas también suman créditos de beneficios.",
+  lb_h2:"Los que más comparten",
+  lb_sub:"Cada referido calificado sube a quien lo invitó. Así se ve la fila moviéndose.",
+  lb_empty:"Aún no hay referidos calificados — comparte tu enlace y sé el primero en aparecer aquí.",
+  lb_refs:"referidos",
+  lb_note:"Solo cuentan los referidos calificados. Los nombres se muestran abreviados por privacidad.",
   fb_h2:"Casi listo — un paso manual", fb_p:"El registro en línea se está conectando. Escríbenos con tu nombre y preferencia y te anotamos manualmente en la lista hoy mismo.",
   fb_btn:"Anotarme por correo",
   disc_t:"Aviso importante.",
@@ -325,6 +369,18 @@ en:{
   ok_link:"Your referral link", ok_copy:"Copy", ok_copied:"Copied!",
   share_mail:"Share by email", share_sms:"Share by SMS", share_wa:"Share on WhatsApp",
   share_text:"Join the Embodier waitlist — own a piece of paradise:",
+  ok_pos:"You're #{n} in line",
+  ok_pos_sub:"Based on the live waitlist count — your final position is confirmed when your signup is validated.",
+  boost_h:"Move up the line",
+  boost_p:"Every friend who joins with your link moves you up {bump} spots in priority — up to {max} total.",
+  boost_p_gen:"Every friend who joins with your link moves you up in priority.",
+  boost_q:"Only guests who confirm their spot on the list count.",
+  boost_reward:"Qualified introductions also earn benefit credits.",
+  lb_h2:"Top sharers",
+  lb_sub:"Every qualified referral moves the inviter up. This is the line moving.",
+  lb_empty:"No qualified referrals yet — share your link and be the first to appear here.",
+  lb_refs:"referrals",
+  lb_note:"Only qualified referrals count. Names are abbreviated for privacy.",
   fb_h2:"Almost — one manual step", fb_p:"Online registration is being connected. Email us your name and preference and we'll add you to the list manually today.",
   fb_btn:"Add me by email",
   disc_t:"Important notice.",
@@ -345,6 +401,9 @@ function setLang(l){
   document.getElementById('f-lang').value = LANG;
   try { localStorage.setItem('wl-lang', LANG); } catch(e){}
   wireFallbackMail();
+  /* re-render dynamic referral copy on language change */
+  if (document.getElementById('success-card') && document.getElementById('success-card').classList.contains('show')) { renderBoost(); showPosition(); }
+  renderLeaderboard();
 }
 function t(k){ return STR[LANG][k] || k; }
 
@@ -389,6 +448,73 @@ function loadCount(){
       } catch(e){ upd.textContent = t('counter_upd'); }
     })
     .catch(function(){ /* stays "—": never show a fake number */ });
+}
+
+/* ---- referral feeds: bump tiers + leaderboard — data-driven, never hardcoded ----
+   referral-rules.json       <- synced from the Referral Rules tab by referral-feed-sync.py
+   referral-leaderboard.json <- synced from the Referrals tab (qualified/allocated only,
+   names pre-anonymized "First L." by the sync script). If either feed fails to load,
+   the page falls back to honest generic copy — it never invents numbers or names. */
+var REF_RULES = null, LAST_LANE = 'token', LAST_LEADERS = [];
+function loadReferralRules(){
+  fetch('referral-rules.json', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+    .then(function(d){
+      REF_RULES = (d && d.lanes) ? d : null;
+      if (document.getElementById('success-card').classList.contains('show')) renderBoost();
+    })
+    .catch(function(){ REF_RULES = null; });
+}
+/* share-to-boost panel: lane-aware, numbers straight from the sheet-backed feed */
+function renderBoost(){
+  var panel = document.getElementById('boost-panel');
+  if (!panel) return;
+  var rules = (REF_RULES && REF_RULES.lanes) ? REF_RULES.lanes[LAST_LANE] : null;
+  var p = document.getElementById('boost-p');
+  if (rules && rules.bump && rules.max_bump) {
+    p.textContent = t('boost_p').replace('{bump}', rules.bump).replace('{max}', rules.max_bump);
+  } else {
+    p.textContent = t('boost_p_gen'); /* feed unavailable: honest generic copy, no invented numbers */
+  }
+  panel.style.display = 'block';
+}
+/* position badge: sheet-backed live count, honestly labeled (webhook returns no position) */
+function showPosition(){
+  fetch('waitlist-count.json', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+    .then(function(d){
+      var n = parseInt(d.count, 10);
+      if (isNaN(n)) return;
+      document.getElementById('pos-num').textContent =
+        t('ok_pos').replace('{n}', n.toLocaleString(LANG === 'es' ? 'es-ES' : 'en-US'));
+      document.getElementById('pos-badge').style.display = 'block';
+    })
+    .catch(function(){ /* badge stays hidden: never show a fake position */ });
+}
+function loadLeaderboard(){
+  fetch('referral-leaderboard.json', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+    .then(function(d){ LAST_LEADERS = (d && d.leaders) || []; renderLeaderboard(); })
+    .catch(function(){ LAST_LEADERS = []; renderLeaderboard(); });
+}
+function renderLeaderboard(){
+  var box = document.getElementById('lb-list');
+  if (!box) return;
+  box.innerHTML = '';
+  if (!LAST_LEADERS.length) {
+    var pe = document.createElement('p');
+    pe.className = 'lb-empty'; pe.textContent = t('lb_empty');
+    box.appendChild(pe); return;
+  }
+  LAST_LEADERS.slice(0, 10).forEach(function(L, i){
+    var row = document.createElement('div'); row.className = 'lb-row';
+    var rk = document.createElement('div'); rk.className = 'lb-rank'; rk.textContent = String(i + 1);
+    var nm = document.createElement('div'); nm.className = 'lb-name'; nm.textContent = String(L.name || '—');
+    var ct = document.createElement('div'); ct.className = 'lb-count';
+    ct.textContent = String(L.referrals || 0) + ' ' + t('lb_refs');
+    row.appendChild(rk); row.appendChild(nm); row.appendChild(ct);
+    box.appendChild(row);
+  });
 }
 
 /* ---- form ---- */
@@ -481,6 +607,9 @@ function pageUrl(){ return location.href.split('?')[0].split('#')[0]; }
 function showSuccess(refCode, tier, name){
   document.getElementById('form-card').style.display = 'none';
   document.getElementById('success-card').classList.add('show');
+  LAST_LANE = (tier === 'tier-50k') ? 'capital' : 'token';
+  renderBoost();   /* lane-aware share-to-boost, numbers from the sheet-backed feed */
+  showPosition();  /* position badge from the live sheet-backed count, honestly labeled */
   var link = pageUrl() + '?ref=' + encodeURIComponent(refCode || '');
   document.getElementById('ref-link').value = link;
   /* WhatsApp confirm (token lane only — never WhatsApp for capital) */
@@ -524,7 +653,10 @@ function copyRef(){
 /* ---- init ---- */
 setLang(LANG);
 loadCount();
+loadReferralRules();
+loadLeaderboard();
 setInterval(loadCount, 5 * 60 * 1000); // refresh the live count every 5 min
+setInterval(loadLeaderboard, 5 * 60 * 1000); // refresh the leaderboard alongside
 </script>
 </body>
 </html>

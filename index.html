@@ -374,6 +374,7 @@ es:{
   dep_per:"reembolsable · se acredita a tu compra", dep_btn:"Reservar mi lugar — $100",
   dep_fine:"Pago seguro vía Stripe. Sin compromiso de compra.",
   dep_soon:"El enlace de pago se está configurando — tu lugar en la lista ya quedó guardado. Te avisaremos.",
+  dep_later:"El depósito de $100 totalmente reembolsable entra en juego cuando te ofrecemos proyectos y decides pujar — se acredita a tu compra. Por ahora, tu lugar en la lista ya quedó guardado. Te avisaremos.",
   dep_iphone:"Abre esta página en tu iPhone para reservar con Apple Pay en un toque.",
   dep_err:"El pago no se completó — inténtalo de nuevo.",
   dep_ok:"¡Reserva confirmada! Tu depósito de $100 totalmente reembolsable quedó acreditado a tu lugar en la fila.",
@@ -442,6 +443,7 @@ en:{
   dep_per:"refundable · credited toward your purchase", dep_btn:"Hold my spot — $100",
   dep_fine:"Secure payment via Stripe. No purchase commitment.",
   dep_soon:"The payment link is being set up — your place in line is already saved. We'll notify you.",
+  dep_later:"The $100 fully refundable deposit comes into play when we offer you projects and you decide to bid — credited toward your purchase. For now, your place in line is saved. We'll notify you.",
   dep_iphone:"Open this page on your iPhone to reserve with Apple Pay in one tap.",
   dep_err:"The payment didn't go through — please try again.",
   dep_ok:"Reservation confirmed! Your fully refundable $100 deposit is credited toward your place in line.",
@@ -480,6 +482,8 @@ en:{
 }};
 
 var LANG = 'es';
+/* Espen 2026-10-01: the $100 deposit is NOT collected at signup — it comes into play only when we offer prospects projects and they bid. Machinery stays built and ready; flip to true when bidding opens. */
+var DEPOSITS_LIVE = false;
 function setLang(l){
   LANG = (l === 'en') ? 'en' : 'es';
   document.documentElement.lang = LANG;
@@ -495,6 +499,7 @@ function setLang(l){
   });
   document.getElementById('f-lang').value = LANG;
   try { localStorage.setItem('wl-lang', LANG); } catch(e){}
+  gateDeposits();
   wireApplePay(); wireFallbackMail(); wireToggleInit();
 }
 function t(k){ return STR[LANG][k] || k; }
@@ -527,8 +532,24 @@ function loadCount(){
     .catch(function(){ /* stays "—": never show a fake number */ });
 }
 
+/* ---- Deposit gate (Espen 2026-10-01): the $100 is only collected when prospects bid on offered projects, never at signup. When closed, the payment UI is hidden and the section explains when deposits open. Flip DEPOSITS_LIVE to true when bidding opens. ---- */
+function gateDeposits(){
+  if (DEPOSITS_LIVE) return;
+  ['applepay-mount','card-fallback','wire-panel'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  var wt = document.getElementById('wire-toggle');
+  if (wt && wt.parentElement) wt.parentElement.style.display = 'none';
+  var sub = document.querySelector('#reserva [data-i18n="dep_p"]');
+  if (sub) sub.textContent = t('dep_later');
+  var note = document.getElementById('applepay-note');
+  if (note) note.textContent = t('dep_soon');
+}
+
 /* ---- Apple Pay deposit (Stripe Payment Request Button — wallet-first; card fallback only when no wallet on device) ---- */
 function wireApplePay(){
+  if (!DEPOSITS_LIVE) return;   // deposits gated until project bidding opens
   var mount = document.getElementById('applepay-mount');
   var note = document.getElementById('applepay-note');
   if (!mount) return;

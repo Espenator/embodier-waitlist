@@ -514,6 +514,21 @@ try {
 } catch(e){}
 document.getElementById('f-ref').value = INCOMING_REF;
 
+/* ---- attribution capture (?utm_* & emb_id=) — Creative Engine ----
+   Every inbound link carries the utm.py set; the page forwards it in the
+   intake POST so the sheet row is stamped with creative/channel origin.
+   Ad-platform click IDs (gclid/fbclid/ttclid/li_fat_id) are captured too —
+   they let the platforms attribute conversions back to the exact ad click
+   so delivery optimizes toward converters, not clickers. */
+var INCOMING_ATTRIB = {};
+try {
+  ['utm_source','utm_medium','utm_campaign','utm_content','emb_id',
+   'gclid','fbclid','ttclid','li_fat_id'].forEach(function(k){
+    var mm = location.search.match(new RegExp('[?&]' + k + '=([^&#]{1,120})'));
+    if (mm) INCOMING_ATTRIB[k] = decodeURIComponent(mm[1].replace(/\+/g, ' '));
+  });
+} catch(e){}
+
 /* ---- live counter (no hardcoded numbers — reads waitlist-count.json) ---- */
 function loadCount(){
   fetch('waitlist-count.json', {cache:'no-store'})
@@ -717,7 +732,16 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
       phone:document.getElementById('f-phone').value.trim(),
       tier:tierVal, channel_pref:CHAN,
       lane: tierVal === 'tier-50k' ? 'capital' : 'token',
-      ref:INCOMING_REF, lang:LANG, source:'waitlist-page'
+      ref:INCOMING_REF, lang:LANG, source:'waitlist-page',
+      utm_source:INCOMING_ATTRIB.utm_source||'',
+      utm_medium:INCOMING_ATTRIB.utm_medium||'',
+      utm_campaign:INCOMING_ATTRIB.utm_campaign||'',
+      utm_content:INCOMING_ATTRIB.utm_content||'',
+      emb_id:INCOMING_ATTRIB.emb_id||'',
+      gclid:INCOMING_ATTRIB.gclid||'',
+      fbclid:INCOMING_ATTRIB.fbclid||'',
+      ttclid:INCOMING_ATTRIB.ttclid||'',
+      li_fat_id:INCOMING_ATTRIB.li_fat_id||''
     })
   }).then(function(r){ return r.json(); })
     .then(function(d){

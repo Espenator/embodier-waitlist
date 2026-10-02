@@ -5,18 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lista de espera — Acceso privado | Embodier</title>
 <meta name="description" content="Lista de espera de Embodier: únete por WhatsApp o SMS. Sé dueño de un pedazo del paraíso. Solo lista de espera — sin venta en vivo.">
-<!-- Google tag (gtag.js) — GA4 + Google Ads, plus optional Google tags -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-72FSDSLHE1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-72FSDSLHE1');
-  gtag('config', 'AW-17700749864');
-  gtag('config', 'GT-K48C3BSF');
-  gtag('config', 'GT-NGBBV5S9');
-</script>
-<!-- Alice/Espen: paste the exact conversion label from Google Ads → Goals → Sign-up into the success-path send_to as AW-17700749864/LABEL when available. No label is in this repo, so conversion fires to AW-17700749864 with none invented. -->
 <style>
   :root{ --bg:#0a0a0a; --panel:#111318; --gold:#c9a24b; --ink:#e8e8e8; --mut:#9aa0ae; --line:#2a3350; }
   *{box-sizing:border-box}
@@ -289,7 +277,7 @@
 
 <script>
 /* ============ CONFIG — wiring (set at deploy) ============ */
-var INTAKE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyJbi-f7EvUrpoBTV3tctMCf4g06U_7v8mwTfiLKAQQD0puWcI33ErGEahlPjqSp3O_nQ/exec";   // live intake webhook (Apps Script, verified working 2026-09-30)   // <-- set to the deployed waitlist-intake web app URL (Apps Script or Cloud Function). Empty = form shows the manual fallback.
+var INTAKE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbz7IHFgdjmSFoqhqbBxzvZCy6SiEtjBYBwPbuKMyCErbXzr_s139W8A3xJFHC_KUSkKWg/exec";   // live intake webhook (waitlist-intake.gs v1, deployed 2026-10-02)
 /* ========================================================== */
 
 var STR = {
@@ -605,7 +593,6 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
   }).then(function(r){ return r.json(); })
     .then(function(d){
       if (!d || d.error) throw 0;
-      fireWaitlistLead();
       showSuccess(d.ref_code, document.getElementById('f-tier').value, name);
     })
     .catch(function(){
@@ -617,18 +604,6 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
 });
 
 function pageUrl(){ return location.href.split('?')[0].split('#')[0]; }
-/* GA4 generate_lead + Google Ads conversion. Success path only — never the fallback card. */
-function fireWaitlistLead(){
-  if (typeof gtag !== 'function') return;
-  var lead = {};
-  ['emb_id','utm_source','utm_medium','utm_campaign','utm_content'].forEach(function(k){
-    if (INCOMING_ATTRIB[k]) lead[k] = INCOMING_ATTRIB[k];
-  });
-  if (LANG) lead.lang = LANG;
-  if (CHAN) lead.channel_pref = CHAN;
-  gtag('event', 'generate_lead', lead);
-  gtag('event', 'conversion', { send_to: 'AW-17700749864' });
-}
 function showSuccess(refCode, tier, name){
   document.getElementById('form-card').style.display = 'none';
   document.getElementById('success-card').classList.add('show');

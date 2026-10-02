@@ -80,6 +80,9 @@
   .field input,.field select{width:100%;padding:13px 14px;border-radius:9px;border:1px solid var(--line);background:#0c0e12;color:#fff;font-size:15px}
   .field input:focus,.field select:focus{outline:2px solid var(--gold);border-color:var(--gold)}
   .fine{font-size:12px;color:#6b7280;margin-top:12px}
+  .chanpills{display:flex;gap:8px;margin-top:10px}
+  .chanpill{flex:1;padding:12px;border-radius:10px;border:1px solid var(--line);background:#0c0e12;color:#fff;font-size:14px;cursor:pointer}
+  .chanpill.active{border-color:var(--gold);background:#1a1409;font-weight:bold}
   /* deposit payment fallbacks: Apple Pay first; card only when no wallet; wire on request */
   .payfallback{display:none;text-align:left;margin-top:6px}
   .payfallback.show{display:block}
@@ -267,6 +270,13 @@
         <p class="fine" data-i18n="f_consent" style="margin-top:6px">Al dar tu número, aceptas recibir mensajes ocasionales de Embodier.ai por SMS/WhatsApp sobre la lista de espera, tu solicitud y el lanzamiento (máx. ~3/semana). Pueden aplicar tarifas de mensajes y datos. Responde STOP para salirte, HELP para ayuda.</p>
       </div>
       <div class="field">
+        <label data-i18n="f_channel">Canal preferido</label>
+        <div class="chanpills" id="chan-pills">
+          <button type="button" class="chanpill active" data-chan="whatsapp">💬 <span data-i18n="ch_wa">WhatsApp</span></button>
+          <button type="button" class="chanpill" data-chan="sms">📱 <span data-i18n="ch_sms">SMS</span></button>
+        </div>
+      </div>
+      <div class="field">
         <label for="f-tier" data-i18n="f_tier">Nivel de interés</label>
         <select id="f-tier" name="tier" required>
           <option value="tier-500" data-i18n="opt500">Owner's Circle — $500 a $4,999</option>
@@ -283,6 +293,7 @@
   <div class="success" id="success-card">
     <h2 style="margin-top:0" data-i18n="ok_h2">¡Listo! Estás en la fila.</h2>
     <p class="sub" data-i18n="ok_p">Te enviamos un correo de confirmación. Ahora adelanta tu posición: cada persona que se una con tu enlace te sube en la prioridad.</p>
+    <div id="wa-confirm"></div>
     <label style="font-size:13px;color:var(--mut)" data-i18n="ok_link">Tu enlace de referido</label>
     <div class="reflink">
       <input id="ref-link" readonly value="">
@@ -311,6 +322,7 @@
     <div class="row">
       <a href="https://www.embodier.ai">🌐 www.embodier.ai</a>
       <a href="sms:+12397775813">📱 <span data-i18n="c_sms">SMS</span> +1 239-777-5813</a>
+      <a href="https://wa.me/12397775813">💬 <span data-i18n="c_wa">WhatsApp</span> +1 239-777-5813</a>
       <a href="mailto:espen@embodier.ai">✉️ espen@embodier.ai</a>
     </div>
   </div>
@@ -380,6 +392,7 @@ es:{
   cap1:"Valle Sagrado, Perú — donde empieza la primera ola", cap2:"Costa caribeña — el modelo: boutique, frente al mar, bien operado",
   form_h2:"Únete a la lista de espera", form_sub:"Sin pago. Sin compromiso. Solo tu lugar en la fila.",
   f_name:"Nombre", f_email:"Correo electrónico", f_phone:"Teléfono (opcional)", f_tier:"Nivel de interés",
+  f_channel:"Canal preferido", ch_wa:"WhatsApp", ch_sms:"SMS",
   opt500:"Owner's Circle — $500 a $4,999", opt5k:"Equity Plus — $5,000 o más", opt50k:"Ruta Capital — $50,000 o más (SPV)",
   f_submit:"Reservar mi lugar", f_fine:"Solo usaremos tus datos para la lista de espera. Responde «stop» cuando quieras salirte.",
   f_consent:"Al dar tu número, aceptas recibir mensajes ocasionales de Embodier.ai por SMS/WhatsApp sobre la lista de espera, tu solicitud y el lanzamiento (máx. ~3/semana). Pueden aplicar tarifas de mensajes y datos. Responde STOP para salirte, HELP para ayuda. Ver Privacidad y Términos.",
@@ -387,6 +400,7 @@ es:{
   f_terms:"Términos",
   f_sending:"Enviando…", f_need:"Completa nombre y un correo válido.",
   ok_h2:"¡Listo! Estás en la fila.", ok_p:"Te enviamos un correo de confirmación. Ahora adelanta tu posición: cada persona que se una con tu enlace te sube en la prioridad.",
+  ok_wap:"Un toque más: confirma tu lugar por WhatsApp y te avisamos de cada novedad.", ok_wabtn:"Confirmar por WhatsApp",
   ok_link:"Tu enlace de referido", ok_copy:"Copiar", ok_copied:"¡Copiado!",
   share_mail:"Compartir por correo", share_sms:"Compartir por SMS", share_wa:"Compartir por WhatsApp",
   share_text:"Únete a la lista de espera de Embodier — propiedad tokenizada en resorts boutique de LATAM:",
@@ -394,7 +408,7 @@ es:{
   fb_btn:"Anotarme por correo",
   disc_t:"Aviso importante.",
   disc_p:"Esto es una lista de espera y compromisos suaves solamente — no es una venta de tokens en vivo ni un contrato de inversión. No prometemos rendimientos. La venta pública de tokens y el exchange se activan con la licencia DASP de El Salvador. Aplican verificación de identidad (KYC/AML) y elegibilidad por jurisdicción en cada paso. Si tu jurisdicción no es elegible, te lo diremos de frente.",
-  c_sms:"SMS", f_rights:"Todos los derechos reservados."
+  c_sms:"SMS", c_wa:"WhatsApp", f_rights:"Todos los derechos reservados."
 },
 en:{
   brand_sub:"Tokenized resort ownership",
@@ -446,6 +460,7 @@ en:{
   cap1:"Sacred Valley, Peru — where the first wave begins", cap2:"Caribbean coast — the model: boutique, beachfront, well run",
   form_h2:"Join the waitlist", form_sub:"No payment. No commitment. Just your place in line.",
   f_name:"Name", f_email:"Email", f_phone:"Phone (optional)", f_tier:"Tier of interest",
+  f_channel:"Preferred channel", ch_wa:"WhatsApp", ch_sms:"SMS",
   opt500:"Owner's Circle — $500 to $4,999", opt5k:"Equity Plus — $5,000 or more", opt50k:"Capital Route — $50,000 or more (SPV)",
   f_submit:"Hold my spot", f_fine:"We'll only use your data for the waitlist. Reply “stop” anytime to leave.",
   f_consent:"By providing your number, you agree to receive occasional SMS/WhatsApp messages from Embodier.ai about the waitlist, your application, and launch updates (max ~3/week). Msg & data rates may apply. Reply STOP to cancel, HELP for help. See Privacy and Terms.",
@@ -453,6 +468,7 @@ en:{
   f_terms:"Terms",
   f_sending:"Sending…", f_need:"Please complete your name and a valid email.",
   ok_h2:"You're in line!", ok_p:"We sent you a confirmation email. Now move up: everyone who joins with your link bumps your priority.",
+  ok_wap:"One more tap: confirm your spot on WhatsApp and we'll keep you posted.", ok_wabtn:"Confirm on WhatsApp",
   ok_link:"Your referral link", ok_copy:"Copy", ok_copied:"Copied!",
   share_mail:"Share by email", share_sms:"Share by SMS", share_wa:"Share on WhatsApp",
   share_text:"Join the Embodier waitlist — tokenized ownership in boutique LATAM resorts:",
@@ -460,7 +476,7 @@ en:{
   fb_btn:"Add me by email",
   disc_t:"Important notice.",
   disc_p:"This is a waitlist and soft commitments only — not a live token sale or an investment contract. We promise no returns. The public token sale and the exchange activate with the El Salvador DASP license. Identity verification (KYC/AML) and jurisdiction eligibility apply at every step. If your jurisdiction isn't eligible, we'll tell you straight.",
-  c_sms:"SMS", f_rights:"All rights reserved."
+  c_sms:"SMS", c_wa:"WhatsApp", f_rights:"All rights reserved."
 }};
 
 var LANG = 'es';
@@ -620,6 +636,15 @@ function wireToggleInit(){
 }
 
 /* ---- form ---- */
+/* preferred channel pills (WhatsApp default — SMS rail pending Twilio A2P) */
+var CHAN = 'whatsapp';
+document.getElementById('chan-pills').addEventListener('click', function(ev){
+  var b = ev.target.closest ? ev.target.closest('.chanpill') : null;
+  if (!b) return;
+  CHAN = b.getAttribute('data-chan');
+  var ps = this.querySelectorAll('.chanpill');
+  for (var i = 0; i < ps.length; i++) ps[i].classList.toggle('active', ps[i] === b);
+});
 function wireFallbackMail(){
   var a = document.getElementById('fallback-mail');
   var name = document.getElementById('f-name').value || '';
@@ -650,14 +675,14 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
     body: JSON.stringify({
       name:name, email:email,
       phone:document.getElementById('f-phone').value.trim(),
-      tier:tierVal,
+      tier:tierVal, channel:CHAN,
       lane: tierVal === 'tier-50k' ? 'capital' : 'token',
       ref:INCOMING_REF, lang:LANG, source:'waitlist-page'
     })
   }).then(function(r){ return r.json(); })
     .then(function(d){
       if (!d || d.error) throw 0;
-      showSuccess(d.ref_code, document.getElementById('f-tier').value);
+      showSuccess(d.ref_code, document.getElementById('f-tier').value, name);
     })
     .catch(function(){
       document.getElementById('form-card').style.display = 'none';
@@ -668,11 +693,27 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
 });
 
 function pageUrl(){ return location.href.split('?')[0].split('#')[0]; }
-function showSuccess(refCode, tier){
+function showSuccess(refCode, tier, name){
   document.getElementById('form-card').style.display = 'none';
   document.getElementById('success-card').classList.add('show');
   var link = pageUrl() + '?ref=' + encodeURIComponent(refCode || '');
   document.getElementById('ref-link').value = link;
+  /* WhatsApp confirm (token lane only — never WhatsApp for capital) */
+  var wc = document.getElementById('wa-confirm');
+  wc.innerHTML = '';
+  if (tier !== 'tier-50k') {
+    var tierLbl = document.getElementById('f-tier').selectedOptions[0].text || tier;
+    var msg = LANG === 'es'
+      ? 'Hola, soy ' + name + '. Me uní a la lista de espera de Embodier (código ' + (refCode || '') + ', ' + tierLbl + ').'
+      : "Hi, I'm " + name + '. I joined the Embodier waitlist (code ' + (refCode || '') + ', ' + tierLbl + ').';
+    var p = document.createElement('p');
+    p.className = 'sub'; p.style.margin = '16px 0 10px'; p.setAttribute('data-i18n', 'ok_wap'); p.textContent = t('ok_wap');
+    var a = document.createElement('a');
+    a.className = 'cta'; a.style.display = 'inline-block'; a.style.textDecoration = 'none'; a.style.marginBottom = '6px';
+    a.href = 'https://wa.me/12397775813?text=' + encodeURIComponent(msg);
+    a.target = '_blank'; a.rel = 'noopener'; a.textContent = '💬 ' + t('ok_wabtn');
+    wc.appendChild(p); wc.appendChild(a);
+  }
   var box = document.getElementById('share-btns');
   box.innerHTML = '';
   var txt = encodeURIComponent(t('share_text') + ' ' + link);

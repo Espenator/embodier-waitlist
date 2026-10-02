@@ -640,10 +640,29 @@ function wireToggleInit(){
 var CHAN = 'whatsapp';
 document.getElementById('chan-pills').addEventListener('click', function(ev){
   var b = ev.target.closest ? ev.target.closest('.chanpill') : null;
-  if (!b) return;
+  if (!b || b.disabled) return;
   CHAN = b.getAttribute('data-chan');
   var ps = this.querySelectorAll('.chanpill');
   for (var i = 0; i < ps.length; i++) ps[i].classList.toggle('active', ps[i] === b);
+});
+/* capital lane: never WhatsApp (standing rule) — force SMS when Ruta Capital is picked */
+var CHAN_BEFORE_CAP = null;
+document.getElementById('f-tier').addEventListener('change', function(){
+  var wa = document.querySelector('#chan-pills [data-chan="whatsapp"]');
+  var sms = document.querySelector('#chan-pills [data-chan="sms"]');
+  if (this.value === 'tier-50k') {
+    if (CHAN_BEFORE_CAP === null) CHAN_BEFORE_CAP = CHAN;
+    CHAN = 'sms';
+    wa.classList.remove('active'); wa.disabled = true; wa.style.opacity = '.4'; wa.style.cursor = 'not-allowed';
+    sms.classList.add('active');
+  } else {
+    wa.disabled = false; wa.style.opacity = ''; wa.style.cursor = '';
+    var restore = CHAN_BEFORE_CAP || 'whatsapp';
+    CHAN_BEFORE_CAP = null;
+    CHAN = restore;
+    wa.classList.toggle('active', restore === 'whatsapp');
+    sms.classList.toggle('active', restore === 'sms');
+  }
 });
 function wireFallbackMail(){
   var a = document.getElementById('fallback-mail');

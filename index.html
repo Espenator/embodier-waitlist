@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<script src="https://js.stripe.com/v3/"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lista de espera — Programa de tokens | Embodier</title>
-<meta name="description" content="Únete a la lista de espera del programa de tokens de Embodier. Propiedad tokenizada en resorts boutique de LATAM. Compromisos suaves solamente.">
+<title>Lista de espera — Acceso privado | Embodier</title>
+<meta name="description" content="Lista de espera de Embodier: únete por WhatsApp o SMS. Sé dueño de un pedazo del paraíso. Solo lista de espera — sin venta en vivo.">
 <style>
   :root{ --bg:#0a0a0a; --panel:#111318; --gold:#c9a24b; --ink:#e8e8e8; --mut:#9aa0ae; --line:#2a3350; }
   *{box-sizing:border-box}
@@ -52,27 +51,12 @@
   .tier p{font-size:14px;color:#d0d0d0;margin:0 0 10px}
   .tier ul{margin:0;padding-left:18px;font-size:13px;color:var(--mut)}
   .note{font-size:12.5px;color:var(--mut);margin-top:18px;max-width:760px}
-  /* deposit band */
-  .deposit{background:linear-gradient(135deg,#141821,#0d0f14);border:1px solid var(--gold);border-radius:16px;padding:30px;display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:center}
-  .deposit h2{margin-top:0}
-  .deposit .price{font-size:40px;color:var(--gold);font-weight:bold;line-height:1}
-  .deposit .per{font-size:13px;color:var(--mut)}
-  @media(max-width:760px){.deposit{grid-template-columns:1fr}}
   /* gallery */
   .gal{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .gal figure{margin:0;position:relative;border-radius:12px;overflow:hidden}
   .gal img{width:100%;height:260px;object-fit:cover;display:block}
   .gal figcaption{position:absolute;bottom:0;left:0;right:0;padding:26px 16px 12px;font-size:13px;color:#fff;background:linear-gradient(180deg,transparent,rgba(0,0,0,.78))}
   @media(max-width:640px){.gal{grid-template-columns:1fr}}
-  /* trust strip */
-  .trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:28px 0;margin-top:8px}
-  .trust h2{margin:0 0 16px;font-size:clamp(20px,3vw,28px);letter-spacing:-.01em}
-  .trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-  .trust-item{display:flex;gap:12px;align-items:flex-start}
-  .trust-item svg{flex:0 0 auto;width:22px;height:22px;stroke:var(--gold);fill:none;stroke-width:2;margin-top:2px}
-  .trust-item strong{display:block;font-size:14px;color:#fff;margin-bottom:4px}
-  .trust-item p{margin:0;font-size:13px;color:var(--mut)}
-  @media(max-width:640px){.trust-grid{grid-template-columns:1fr}}
   /* form */
   .formcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:30px;max-width:640px}
   .field{margin-bottom:14px}
@@ -83,18 +67,6 @@
   .chanpills{display:flex;gap:8px;margin-top:10px}
   .chanpill{flex:1;padding:12px;border-radius:10px;border:1px solid var(--line);background:#0c0e12;color:#fff;font-size:14px;cursor:pointer}
   .chanpill.active{border-color:var(--gold);background:#1a1409;font-weight:bold}
-  /* deposit payment fallbacks: Apple Pay first; card only when no wallet; wire on request */
-  .payfallback{display:none;text-align:left;margin-top:6px}
-  .payfallback.show{display:block}
-  .payfallback .cardbox{background:#0c0e12;border:1px solid var(--line);border-radius:10px;padding:14px;margin:10px 0}
-  .payfallback input[type=email]{width:100%;padding:12px 14px;border-radius:9px;border:1px solid var(--line);background:#0c0e12;color:#fff;font-size:15px;margin-bottom:10px;box-sizing:border-box}
-  .paybtn{width:100%;padding:14px;border-radius:10px;border:0;background:var(--gold);color:#141414;font-weight:bold;font-size:16px;cursor:pointer}
-  .paybtn:disabled{opacity:.55;cursor:default}
-  .wiretoggle{font-size:13px;color:var(--mut);margin-top:12px;text-align:center}
-  .wiretoggle a{color:var(--gold);cursor:pointer;text-decoration:underline}
-  .wirepanel{display:none;font-size:13px;color:var(--mut);margin-top:10px;background:#0c0e12;border:1px dashed var(--line);border-radius:10px;padding:12px 14px;text-align:left}
-  .wirepanel.show{display:block}
-  .wirepanel a{color:#fff}
   .success{display:none;background:#0e1a12;border:1px solid #2f7a4d;border-radius:16px;padding:28px;max-width:640px}
   .success.show{display:block}
   .reflink{display:flex;gap:8px;margin:14px 0}
@@ -114,12 +86,12 @@
   footer{padding:26px 0 40px;text-align:center;color:#6b7280;font-size:12px}
   footer .end{color:var(--gold);letter-spacing:2px;margin-top:8px;font-size:13px}
 </style>
+</style>
 </head>
 <body>
-
 <header class="brandbar">
   <div class="wrap">
-    <a class="brand" href="https://www.embodier.ai">EMBODIER<small data-i18n="brand_sub">Tokenized resort ownership</small></a>
+    <a class="brand" href="https://www.embodier.ai">EMBODIER<small data-i18n="brand_sub">Propiedad en resorts</small></a>
     <nav class="langtoggle" aria-label="Language / Idioma">
       <button id="btn-es" class="active" onclick="setLang('es')">ES</button>
       <button id="btn-en" onclick="setLang('en')">EN</button>
@@ -127,132 +99,69 @@
   </div>
 </header>
 
-<!-- Photography: Pexels-licensed (free commercial use). Canonical verified copies kept at waitlist/assets/ in the workspace; CDN refs used because the repo commit path is text-only. -->
+
+<!-- Photography: Pexels-licensed (free commercial use). -->
 <div class="hero">
   <img class="bg" src="https://images.pexels.com/photos/27704280/pexels-photo-27704280.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Machu Picchu, Perú — fotografía real">
   <div class="shade"></div>
   <div class="wrap">
-    <p class="eyebrow" data-i18n="hero_eyebrow">Programa de tokens de Embodier — Lista de espera</p>
-    <h1 data-i18n="hero_h1">Sé dueño de un pedazo del paraíso — antes que el resto.</h1>
-    <p class="lede" data-i18n="hero_lede">Compramos resorts boutique en LATAM. Tú te quedas con la hamaca. La venta pública aún no abre — primero, la lista de espera. Únete al whitelist y reserva tu lugar.</p>
+    <p class="eyebrow" data-i18n="hero_eyebrow">Embodier — Lista de espera</p>
+    <h1 data-i18n="hero_h1">Sé dueño de un pedazo del paraíso.</h1>
+    <p class="lede" data-i18n="hero_lede">Resorts boutique en LATAM. Únete por WhatsApp o SMS y te avisamos cuando haya una invitación. Por ahora, solo lista de espera.</p>
     <div class="counter" role="status" aria-live="polite">
       <div class="num" id="wl-count">—</div>
       <div class="lbl" data-i18n="counter_lbl">personas en la lista de espera</div>
       <div class="upd" id="wl-updated" data-i18n="counter_upd">conteo en vivo desde nuestra base de datos</div>
     </div>
     <br>
-    <a class="cta" href="#unete" data-i18n="hero_cta">Reservar mi lugar</a>
-    <a class="cta ghost" href="#niveles" data-i18n="hero_cta2">Ver niveles</a>
+    <a class="cta" href="#unete" data-i18n="hero_cta">Quiero entrar</a>
+    <a class="cta ghost" href="#niveles" data-i18n="hero_cta2">Ver accesos</a>
   </div>
 </div>
 
 <div class="wrap">
-<section class="trust" aria-labelledby="trustTitle">
-  <h2 id="trustTitle" data-i18n="trustTitle">Propiedad real, estructurada para la confianza</h2>
-  <div class="trust-grid">
-    <div class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><div><strong data-i18n="trust1t">Un SPV nuevo por cada adquisición</strong><p data-i18n="trust1d">Tus intereses nunca se mezclan con los de otra propiedad.</p></div></div>
-    <div class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"/></svg><div><strong data-i18n="trust2t">Custodia independiente</strong><p data-i18n="trust2d">Tu depósito queda en custodia de un tercero verificable hasta el cierre.</p></div></div>
-    <div class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16"/></svg><div><strong data-i18n="trust3t">Sin retornos prometidos</strong><p data-i18n="trust3d">Nunca exageramos la liquidez ni garantizamos resultados.</p></div></div>
-  </div>
-</section>
 <section id="como">
   <h2 data-i18n="how_h2">Cómo funciona</h2>
-  <p class="sub" data-i18n="how_sub">Cinco pasos, sin compromiso. La lista de espera no es una compra.</p>
+  <p class="sub" data-i18n="how_sub">Cuatro pasos. La lista de espera no es una compra.</p>
   <div class="steps">
-    <div class="step"><div class="n">01</div><h3 data-i18n="s1t">Crea tu cuenta</h3><p data-i18n="s1p">Regístrate con tu correo. Sin compromiso, sin pago.</p></div>
-    <div class="step"><div class="n">02</div><h3 data-i18n="s2t">Verifica tu identidad</h3><p data-i18n="s2p">Proceso guiado de KYC con Sumsub. Toma unos minutos.</p></div>
-    <div class="step"><div class="n">03</div><h3 data-i18n="s3t">Confirmamos tu jurisdicción</h3><p data-i18n="s3p">Revisamos que tu país sea elegible. Algunas jurisdicciones están excluidas por regulación.</p></div>
-    <div class="step"><div class="n">04</div><h3 data-i18n="s4t">Pago</h3><p data-i18n="s4p">Cuando se abra tu asignación: tarjeta vía Stripe o cripto (BTC, ETH, SOL, USDC) vía Coinbase Commerce.</p></div>
-    <div class="step"><div class="n">05</div><h3 data-i18n="s5t">Custodia y emisión</h3><p data-i18n="s5p">Tus fondos van a custodia verificable hasta el cierre. Al cierre, tus tokens: propiedad real, a tu nombre.</p></div>
+    <div class="step"><div class="n">01</div><h3 data-i18n="s1t">Únete</h3><p data-i18n="s1p">Entra a la lista con tu teléfono, por WhatsApp o SMS.</p></div>
+    <div class="step"><div class="n">02</div><h3 data-i18n="s2t">Confirma en tu teléfono</h3><p data-i18n="s2p">Te escribimos para confirmar tu lugar.</p></div>
+    <div class="step"><div class="n">03</div><h3 data-i18n="s3t">Preferencia y región</h3><p data-i18n="s3p">Opcional: cuéntanos qué acceso y qué región te interesan.</p></div>
+    <div class="step"><div class="n">04</div><h3 data-i18n="s4t">Invitación</h3><p data-i18n="s4p">Te invitamos cuando haya disponibilidad. DASP en proceso; el exchange no está activo.</p></div>
   </div>
 </section>
 
 <section id="niveles">
-  <h2 data-i18n="tiers_h2">Niveles de acceso anticipado</h2>
-  <p class="sub" data-i18n="tiers_sub">Tres niveles, una sola fila. Tu nivel define tu prioridad — nunca un rendimiento prometido.</p>
+  <h2 data-i18n="tiers_h2">Acceso privado</h2>
+  <p class="sub" data-i18n="tiers_sub">Tres rutas. Tu preferencia es solo indicativa.</p>
   <div class="tiers">
     <div class="tier">
-      <h3 data-i18n="t1t">Ruta Capital</h3>
-      <p class="amt">$50,000+</p>
-      <p data-i18n="t1p">Para quienes quieren entrar al SPV de cada adquisición. Te contactamos directo con el paquete del proyecto cuando se abre una ventana.</p>
-      <ul>
-        <li data-i18n="t1l1">Un SPV nuevo por cada adquisición</li>
-        <li data-i18n="t1l2">Contacto directo del fundador (llamada/SMS y correo)</li>
-        <li data-i18n="t1l3">Sin compromiso hasta que decidas entrar</li>
-      </ul>
+      <h3>Class P Preferred</h3>
+      <p data-i18n="t1p">Ruta preferente de acceso privado. Preferencia indicativa; sin compromiso.</p>
     </div>
     <div class="tier hot">
-      <span class="tag" data-i18n="t2tag">MÁS ELEGIDO</span>
-      <h3>Equity Plus</h3>
-      <p class="amt">$5,000+</p>
-      <p data-i18n="t2p">Participación tokenizada desde $1 por token. A partir de 5,000 tokens participas en dividendos periódicos del resort.</p>
-      <ul>
-        <li data-i18n="t2l1">Tokens de $1 — propiedad real fraccionada</li>
-        <li data-i18n="t2l2">Dividendos periódicos desde 5,000 tokens</li>
-        <li data-i18n="t2l3">Economía de NAV/salida incluida</li>
-      </ul>
+      <h3>Class C Equity Plus</h3>
+      <p data-i18n="t2p">Ruta de participación Class C. Preferencia indicativa; sin compromiso.</p>
     </div>
     <div class="tier">
-      <h3>Owner's Circle</h3>
-      <p class="amt">$500 – $4,999</p>
-      <p data-i18n="t3p">Participación tokenizada desde $1 por token, mínimo $500. Conservas la economía de NAV/salida, sin dividendos periódicos en efectivo.</p>
-      <ul>
-        <li data-i18n="t3l1">Entrada desde $500 (500 tokens)</li>
-        <li data-i18n="t3l2">Beneficios del club de propietarios</li>
-        <li data-i18n="t3l3">Ideal para empezar y subir de nivel</li>
-      </ul>
+      <h3>Class C Owner's Circle</h3>
+      <p data-i18n="t3p">Ruta de entrada Class C para propietarios. Preferencia indicativa; sin compromiso.</p>
     </div>
   </div>
-  <p class="note" data-i18n="tiers_note">Ningún nivel promete rendimientos. Los tokens representan propiedad real en resorts reales, con la economía real de un hotel boutique: ingresos operativos, ocupación, temporadas. Toda inversión tiene riesgo.</p>
+  <p class="note" data-i18n="tiers_note">Cada ruta empieza con WhatsApp o SMS, no con un checkout. Elegir una preferencia no reserva ni compra nada.</p>
 </section>
 
-<section id="reserva">
-  <div class="deposit">
-    <div>
-      <h2 data-i18n="dep_h2">Asegura tu prioridad — $100 reembolsables</h2>
-      <p class="sub" style="margin-bottom:0" data-i18n="dep_p">Deja tu reserva en Stripe y adelanta tu lugar en la fila. Se acredita al 100% a tu compra mínima de $500 en la oferta. Si cambias de idea, te la devolvemos — sin preguntas. No es una inversión ni genera rendimientos.</p>
-    </div>
-    <div style="text-align:center">
-      <div class="price">$100 <span class="per">USD</span></div>
-      <p class="per" data-i18n="dep_per">reembolsable · se acredita a tu compra</p>
-      <div id="applepay-mount" style="min-height:48px"></div>
-      <div class="payfallback" id="card-fallback">
-        <p class="per" style="margin:0 0 4px" data-i18n="dep_card_sub">Apple Pay no está disponible en este dispositivo — paga con tarjeta, es el mismo depósito reembolsable de $100.</p>
-        <div class="cardbox">
-          <input type="email" id="card-email" data-i18n-ph="dep_card_email" placeholder="Correo para tu comprobante" autocomplete="email">
-          <div id="card-element"></div>
-        </div>
-        <button class="paybtn" id="card-pay" data-i18n="dep_card_pay">Pagar $100</button>
-      </div>
-      <p class="wiretoggle"><a id="wire-toggle" data-i18n="dep_wire_toggle">¿Prefieres transferencia bancaria?</a></p>
-      <div class="wirepanel" id="wire-panel">
-        <span data-i18n="dep_wire_p">Para reservas de Equity Plus ($5K+) y Ruta Capital ($50K+) aceptamos transferencia bancaria — escríbenos y te enviamos las instrucciones.</span><br><br>
-        <a id="wire-mail" href="mailto:espen@embodier.ai?subject=Wire%20instructions%20%E2%80%94%20Embodier%20reservation" data-i18n="dep_wire_cta">Pedir instrucciones por correo</a>
-        &nbsp;·&nbsp; <a href="sms:+12397775813">SMS +1 239-777-5813</a>
-      </div>
-      <p class="fine" id="applepay-note" data-i18n="dep_fine">Pago seguro vía Stripe. Sin compromiso de compra.</p>
-    </div>
-  </div>
-</section>
-
-<section id="ventanas">
-  <h2 data-i18n="win_h2">Ventanas de asignación</h2>
-  <p class="sub" data-i18n="win_p1">Las ventanas de asignación se abren por adquisición — no hay una fecha única global. Cuando se abre la ventana de un proyecto, avisamos en el orden de la lista: tu posición es tu turno.</p>
-  <div class="steps">
-    <div class="step"><div class="n">A</div><h3 data-i18n="w1t">La lista es tu turno</h3><p data-i18n="w1p">Quien llegó antes, elige antes. El orden de registro define la prioridad de acceso.</p></div>
-    <div class="step"><div class="n">B</div><h3 data-i18n="w2t">Por proyecto</h3><p data-i18n="w2p">Cada resort adquirido abre su propia ventana. Puedes esperar al proyecto que más te guste.</p></div>
-    <div class="step"><div class="n">C</div><h3 data-i18n="w3t">Sin garantías</h3><p data-i18n="w3p">La lista no garantiza asignación: depende de disponibilidad, tu elegibilidad (KYC/AML) y tu jurisdicción.</p></div>
-  </div>
-  <h2 style="margin-top:44px" data-i18n="terr_h2">Los territorios</h2>
+<section id="territorios">
+  <h2 data-i18n="terr_h2">Los territorios</h2>
   <p class="sub" data-i18n="terr_sub">Primera ola: Perú (Cusco / Valle Sagrado), México (Tulum / costa), Costa Rica (Guanacaste), Argentina (Mendoza / Patagonia).</p>
   <div class="gal">
     <figure><img src="https://images.pexels.com/photos/16849260/pexels-photo-16849260.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Valle Sagrado, Perú — fotografía real"><figcaption data-i18n="cap1">Valle Sagrado, Perú — donde empieza la primera ola</figcaption></figure>
-    <figure><img src="https://images.pexels.com/photos/33836959/pexels-photo-33836959.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Resort de playa en el Caribe — fotografía real"><figcaption data-i18n="cap2">Costa caribeña — el modelo: boutique, frente al mar, bien operado</figcaption></figure>
+    <figure><img src="https://images.pexels.com/photos/33836959/pexels-photo-33836959.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Resort de playa en el Caribe — fotografía real"><figcaption data-i18n="cap2">Costa caribeña — boutique, frente al mar, bien operado</figcaption></figure>
   </div>
 </section>
 
 <section id="unete">
-  <h2 data-i18n="form_h2">Únete a la lista de espera</h2>
+  <h2 data-i18n="form_h2">Quiero entrar</h2>
   <p class="sub" data-i18n="form_sub">Sin pago. Sin compromiso. Solo tu lugar en la fila.</p>
   <div class="formcard" id="form-card">
     <form id="wl-form" novalidate>
@@ -265,9 +174,9 @@
         <input id="f-email" name="email" type="email" autocomplete="email" required>
       </div>
       <div class="field">
-        <label for="f-phone" data-i18n="f_phone">Teléfono (opcional)</label>
-        <input id="f-phone" name="phone" type="tel" autocomplete="tel">
-        <p class="fine" data-i18n="f_consent" style="margin-top:6px">Al ingresar tu número de teléfono y tocar Reservar mi lugar, aceptas recibir mensajes SMS de Embodier.ai sobre tu estado en la lista de espera, novedades del programa y oportunidades de asignación. La frecuencia varía (normalmente 2–4 al mes). Pueden aplicar tarifas de mensajes y datos. Responde STOP para salirte en cualquier momento; responde HELP para ayuda. El consentimiento no es condición de compra. Ver Privacidad y Términos.</p>
+        <label for="f-phone" data-i18n="f_phone">Teléfono</label>
+        <input id="f-phone" name="phone" type="tel" autocomplete="tel" required>
+        <p class="fine" data-i18n="f_consent" style="margin-top:6px"></p>
       </div>
       <div class="field">
         <label data-i18n="f_channel">Canal preferido</label>
@@ -277,22 +186,22 @@
         </div>
       </div>
       <div class="field">
-        <label for="f-tier" data-i18n="f_tier">Nivel de interés</label>
+        <label for="f-tier" data-i18n="f_tier">Preferencia indicativa</label>
         <select id="f-tier" name="tier" required>
-          <option value="tier-500" data-i18n="opt500">Owner's Circle — $500 a $4,999</option>
-          <option value="tier-5k" data-i18n="opt5k">Equity Plus — $5,000 o más</option>
-          <option value="tier-50k" data-i18n="opt50k">Ruta Capital — $50,000 o más (SPV)</option>
+          <option value="tier-500" data-i18n="opt500">Owner's Circle</option>
+          <option value="tier-5k" data-i18n="opt5k">Equity Plus</option>
+          <option value="tier-50k" data-i18n="opt50k">Class P Preferred</option>
         </select>
       </div>
       <input type="hidden" id="f-ref" name="ref" value="">
       <input type="hidden" id="f-lang" name="lang" value="es">
-      <button class="cta" type="submit" id="submit-btn" data-i18n="f_submit">Reservar mi lugar</button>
+      <button class="cta" type="submit" id="submit-btn" data-i18n="f_submit">Quiero entrar</button>
       <p class="fine" data-i18n="f_fine">Solo usaremos tus datos para la lista de espera. Responde «stop» cuando quieras salirte.</p>
     </form>
   </div>
   <div class="success" id="success-card">
     <h2 style="margin-top:0" data-i18n="ok_h2">¡Listo! Estás en la fila.</h2>
-    <p class="sub" data-i18n="ok_p">Te enviamos un correo de confirmación. Ahora adelanta tu posición: cada persona que se una con tu enlace te sube en la prioridad.</p>
+    <p class="sub" data-i18n="ok_p">Ahora adelanta tu posición: cada persona que se una con tu enlace te sube en la prioridad.</p>
     <div id="wa-confirm"></div>
     <label style="font-size:13px;color:var(--mut)" data-i18n="ok_link">Tu enlace de referido</label>
     <div class="reflink">
@@ -311,7 +220,7 @@
 <section>
   <div class="disclaimer">
     <strong data-i18n="disc_t">Aviso importante.</strong>
-    <span data-i18n="disc_p">Esto es una lista de espera y compromisos suaves solamente — no es una venta de tokens en vivo ni un contrato de inversión. No prometemos rendimientos. La venta pública de tokens y el exchange se activan con la licencia DASP de El Salvador. Aplican verificación de identidad (KYC/AML) y elegibilidad por jurisdicción en cada paso. Si tu jurisdicción no es elegible, te lo diremos de frente.</span>
+    <span data-i18n="disc_p">Esto es solo una lista de espera — no hay venta en vivo ni contrato de inversión. No prometemos rendimientos. La licencia DASP está en proceso; el exchange no está activo.</span>
   </div>
 </section>
 </div>
@@ -331,159 +240,99 @@
 <footer>
   <div class="wrap">
     <div>© 2026 Embodier.ai — <span data-i18n="f_rights">Todos los derechos reservados.</span> &nbsp;·&nbsp; <a href="privacy.html" data-i18n="f_privacy" style="color:#9ca3af">Política de Privacidad</a> &nbsp;·&nbsp; <a href="terms.html" data-i18n="f_terms" style="color:#9ca3af">Términos</a></div>
-    <div class="end">Stay. Own. Return.</div>
   </div>
 </footer>
 
 <script>
 /* ============ CONFIG — wiring (set at deploy) ============ */
 var INTAKE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyJbi-f7EvUrpoBTV3tctMCf4g06U_7v8mwTfiLKAQQD0puWcI33ErGEahlPjqSp3O_nQ/exec";   // live intake webhook (Apps Script, verified working 2026-09-30)   // <-- set to the deployed waitlist-intake web app URL (Apps Script or Cloud Function). Empty = form shows the manual fallback.
-/* Apple Pay deposit: the webhook mints the $100 PaymentIntent (Code.gs v2); Apple Pay is the primary UI — Stripe card form appears ONLY on devices with no wallet, bank wire instructions on request. */
 /* ========================================================== */
 
 var STR = {
 es:{
-  brand_sub:"Propiedad tokenizada en resorts",
-  hero_eyebrow:"Programa de tokens de Embodier — Lista de espera",
-  hero_h1:"Sé dueño de un pedazo del paraíso — antes que el resto.",
-  hero_lede:"Compramos resorts boutique en LATAM. Tú te quedas con la hamaca. La venta pública aún no abre — primero, la lista de espera. Únete al whitelist y reserva tu lugar.",
+  brand_sub:"Propiedad en resorts",
+  hero_eyebrow:"Embodier — Lista de espera",
+  hero_h1:"Sé dueño de un pedazo del paraíso.",
+  hero_lede:"Resorts boutique en LATAM. Únete por WhatsApp o SMS y te avisamos cuando haya una invitación. Por ahora, solo lista de espera.",
   counter_lbl:"personas en la lista de espera",
   counter_upd:"conteo en vivo desde nuestra base de datos",
   counter_upd_ok:"actualizado",
-  hero_cta:"Reservar mi lugar", hero_cta2:"Ver niveles",
-  trustTitle:"Propiedad real, estructurada para la confianza",
-  trust1t:"Un SPV nuevo por cada adquisición", trust1d:"Tus intereses nunca se mezclan con los de otra propiedad.",
-  trust2t:"Custodia independiente", trust2d:"Tu depósito queda en custodia de un tercero verificable hasta el cierre.",
-  trust3t:"Sin retornos prometidos", trust3d:"Nunca exageramos la liquidez ni garantizamos resultados.",
-  how_h2:"Cómo funciona", how_sub:"Cinco pasos, sin compromiso. La lista de espera no es una compra.",
-  s1t:"Crea tu cuenta", s1p:"Regístrate con tu correo. Sin compromiso, sin pago.",
-  s2t:"Verifica tu identidad", s2p:"Proceso guiado de KYC con Sumsub. Toma unos minutos.",
-  s3t:"Confirmamos tu jurisdicción", s3p:"Revisamos que tu país sea elegible. Algunas jurisdicciones están excluidas por regulación.",
-  s4t:"Pago", s4p:"Cuando se abra tu asignación: tarjeta vía Stripe o cripto (BTC, ETH, SOL, USDC) vía Coinbase Commerce.",
-  s5t:"Custodia y emisión", s5p:"Tus fondos van a custodia verificable hasta el cierre. Al cierre, tus tokens: propiedad real, a tu nombre.",
-  tiers_h2:"Niveles de acceso anticipado", tiers_sub:"Tres niveles, una sola fila. Tu nivel define tu prioridad — nunca un rendimiento prometido.",
-  t1t:"Ruta Capital", t1p:"Para quienes quieren entrar al SPV de cada adquisición. Te contactamos directo con el paquete del proyecto cuando se abre una ventana.",
-  t1l1:"Un SPV nuevo por cada adquisición", t1l2:"Contacto directo del fundador (llamada/SMS y correo)", t1l3:"Sin compromiso hasta que decidas entrar",
-  t2tag:"MÁS ELEGIDO", t2p:"Participación tokenizada desde $1 por token. A partir de 5,000 tokens participas en dividendos periódicos del resort.",
-  t2l1:"Tokens de $1 — propiedad real fraccionada", t2l2:"Dividendos periódicos desde 5,000 tokens", t2l3:"Economía de NAV/salida incluida",
-  t3p:"Participación tokenizada desde $1 por token, mínimo $500. Conservas la economía de NAV/salida, sin dividendos periódicos en efectivo.",
-  t3l1:"Entrada desde $500 (500 tokens)", t3l2:"Beneficios del club de propietarios", t3l3:"Ideal para empezar y subir de nivel",
-  tiers_note:"Ningún nivel promete rendimientos. Los tokens representan propiedad real en resorts reales, con la economía real de un hotel boutique: ingresos operativos, ocupación, temporadas. Toda inversión tiene riesgo.",
-  dep_h2:"Asegura tu prioridad — $100 reembolsables",
-  dep_p:"Deja tu reserva en Stripe y adelanta tu lugar en la fila. Se acredita al 100% a tu compra mínima de $500 en la oferta. Si cambias de idea, te la devolvemos — sin preguntas. No es una inversión ni genera rendimientos.",
-  dep_per:"reembolsable · se acredita a tu compra", dep_btn:"Reservar mi lugar — $100",
-  dep_fine:"Pago seguro vía Stripe. Sin compromiso de compra.",
-  dep_soon:"El enlace de pago se está configurando — tu lugar en la lista ya quedó guardado. Te avisaremos.",
-  dep_later:"El depósito de $100 totalmente reembolsable entra en juego cuando te ofrecemos proyectos y decides pujar — se acredita a tu compra. Por ahora, tu lugar en la lista ya quedó guardado. Te avisaremos.",
-  dep_iphone:"Abre esta página en tu iPhone para reservar con Apple Pay en un toque.",
-  dep_err:"El pago no se completó — inténtalo de nuevo.",
-  dep_ok:"¡Reserva confirmada! Tu depósito de $100 totalmente reembolsable quedó acreditado a tu lugar en la fila.",
-  dep_card_sub:"Apple Pay no está disponible en este dispositivo — paga con tarjeta, es el mismo depósito reembolsable de $100.",
-  dep_card_email:"Correo para tu comprobante",
-  dep_card_pay:"Pagar $100",
-  dep_card_needmail:"Escribe tu correo para enviarte el comprobante.",
-  dep_wire_toggle:"¿Prefieres transferencia bancaria?",
-  dep_wire_p:"Para reservas de Equity Plus ($5K+) y Ruta Capital ($50K+) aceptamos transferencia bancaria — escríbenos y te enviamos las instrucciones.",
-  dep_wire_cta:"Pedir instrucciones por correo",
-  win_h2:"Ventanas de asignación", win_p1:"Las ventanas de asignación se abren por adquisición — no hay una fecha única global. Cuando se abre la ventana de un proyecto, avisamos en el orden de la lista: tu posición es tu turno.",
-  w1t:"La lista es tu turno", w1p:"Quien llegó antes, elige antes. El orden de registro define la prioridad de acceso.",
-  w2t:"Por proyecto", w2p:"Cada resort adquirido abre su propia ventana. Puedes esperar al proyecto que más te guste.",
-  w3t:"Sin garantías", w3p:"La lista no garantiza asignación: depende de disponibilidad, tu elegibilidad (KYC/AML) y tu jurisdicción.",
+  hero_cta:"Quiero entrar", hero_cta2:"Ver accesos",
+  how_h2:"Cómo funciona", how_sub:"Cuatro pasos. La lista de espera no es una compra.",
+  s1t:"Únete", s1p:"Entra a la lista con tu teléfono, por WhatsApp o SMS.",
+  s2t:"Confirma en tu teléfono", s2p:"Te escribimos para confirmar tu lugar.",
+  s3t:"Preferencia y región", s3p:"Opcional: cuéntanos qué acceso y qué región te interesan.",
+  s4t:"Invitación", s4p:"Te invitamos cuando haya disponibilidad. DASP en proceso; el exchange no está activo.",
+  tiers_h2:"Acceso privado", tiers_sub:"Tres rutas. Tu preferencia es solo indicativa.",
+  t1p:"Ruta preferente de acceso privado. Preferencia indicativa; sin compromiso.",
+  t2p:"Ruta de participación Class C. Preferencia indicativa; sin compromiso.",
+  t3p:"Ruta de entrada Class C para propietarios. Preferencia indicativa; sin compromiso.",
+  tiers_note:"Cada ruta empieza con WhatsApp o SMS, no con un checkout. Elegir una preferencia no reserva ni compra nada.",
   terr_h2:"Los territorios", terr_sub:"Primera ola: Perú (Cusco / Valle Sagrado), México (Tulum / costa), Costa Rica (Guanacaste), Argentina (Mendoza / Patagonia).",
-  cap1:"Valle Sagrado, Perú — donde empieza la primera ola", cap2:"Costa caribeña — el modelo: boutique, frente al mar, bien operado",
-  form_h2:"Únete a la lista de espera", form_sub:"Sin pago. Sin compromiso. Solo tu lugar en la fila.",
-  f_name:"Nombre", f_email:"Correo electrónico", f_phone:"Teléfono (opcional)", f_tier:"Nivel de interés",
+  cap1:"Valle Sagrado, Perú — donde empieza la primera ola", cap2:"Costa caribeña — boutique, frente al mar, bien operado",
+  form_h2:"Quiero entrar", form_sub:"Sin pago. Sin compromiso. Solo tu lugar en la fila.",
+  f_name:"Nombre", f_email:"Correo electrónico", f_phone:"Teléfono", f_tier:"Preferencia indicativa",
   f_channel:"Canal preferido", ch_wa:"WhatsApp", ch_sms:"SMS",
-  opt500:"Owner's Circle — $500 a $4,999", opt5k:"Equity Plus — $5,000 o más", opt50k:"Ruta Capital — $50,000 o más (SPV)",
-  f_submit:"Reservar mi lugar", f_fine:"Solo usaremos tus datos para la lista de espera. Responde «stop» cuando quieras salirte.",
-  f_consent:"Al ingresar tu número de teléfono y tocar Reservar mi lugar, aceptas recibir mensajes SMS de Embodier.ai sobre tu estado en la lista de espera, novedades del programa y oportunidades de asignación. La frecuencia varía (normalmente 2–4 al mes). Pueden aplicar tarifas de mensajes y datos. Responde STOP para salirte en cualquier momento; responde HELP para ayuda. El consentimiento no es condición de compra. Ver Privacidad y Términos.",
+  opt500:"Owner's Circle", opt5k:"Equity Plus", opt50k:"Class P Preferred",
+  f_submit:"Quiero entrar", f_fine:"Solo usaremos tus datos para la lista de espera. Responde «stop» cuando quieras salirte.",
+  f_consent:"Al ingresar tu número de teléfono y tocar Quiero entrar, aceptas recibir mensajes de WhatsApp o SMS de Embodier.ai sobre tu estado en la lista de espera, novedades e invitaciones. La frecuencia varía (normalmente 2–4 al mes). Pueden aplicar tarifas de mensajes y datos. Responde STOP para salirte en cualquier momento; responde HELP para ayuda. El consentimiento no es condición de compra. Ver Privacidad y Términos.",
   f_privacy:"Política de Privacidad",
   f_terms:"Términos",
-  f_sending:"Enviando…", f_need:"Completa nombre y un correo válido.",
+  f_sending:"Enviando…", f_need:"Completa nombre, un correo válido y tu teléfono.",
   ok_h2:"¡Listo! Estás en la fila.", ok_p:"Tu lugar quedó guardado. Ahora adelanta tu posición: cada persona que se una con tu enlace te sube en la prioridad.",
   ok_wap:"Un toque más: confirma tu lugar por WhatsApp y te avisamos de cada novedad.", ok_wabtn:"Confirmar por WhatsApp",
   ok_link:"Tu enlace de referido", ok_copy:"Copiar", ok_copied:"¡Copiado!",
   share_mail:"Compartir por correo", share_sms:"Compartir por SMS", share_wa:"Compartir por WhatsApp",
-  share_text:"Únete a la lista de espera de Embodier — propiedad tokenizada en resorts boutique de LATAM:",
-  fb_h2:"Casi listo — un paso manual", fb_p:"El registro en línea se está conectando. Escríbenos con tu nombre y nivel y te anotamos manualmente en la lista hoy mismo.",
+  share_text:"Únete a la lista de espera de Embodier — sé dueño de un pedazo del paraíso:",
+  fb_h2:"Casi listo — un paso manual", fb_p:"El registro en línea se está conectando. Escríbenos con tu nombre y preferencia y te anotamos manualmente en la lista hoy mismo.",
   fb_btn:"Anotarme por correo",
   disc_t:"Aviso importante.",
-  disc_p:"Esto es una lista de espera y compromisos suaves solamente — no es una venta de tokens en vivo ni un contrato de inversión. No prometemos rendimientos. La venta pública de tokens y el exchange se activan con la licencia DASP de El Salvador. Aplican verificación de identidad (KYC/AML) y elegibilidad por jurisdicción en cada paso. Si tu jurisdicción no es elegible, te lo diremos de frente.",
+  disc_p:"Esto es solo una lista de espera — no hay venta en vivo ni contrato de inversión. No prometemos rendimientos. La licencia DASP está en proceso; el exchange no está activo.",
   c_sms:"SMS", c_wa:"WhatsApp", f_rights:"Todos los derechos reservados."
 },
 en:{
-  brand_sub:"Tokenized resort ownership",
-  hero_eyebrow:"Embodier Token Program — Waitlist",
-  hero_h1:"Own a piece of paradise — before everyone else.",
-  hero_lede:"We buy boutique resorts across LATAM. You get the hammock. The public sale isn't open yet — first, the waitlist. Join the whitelist and hold your spot.",
+  brand_sub:"Resort ownership",
+  hero_eyebrow:"Embodier — Waitlist",
+  hero_h1:"Own a piece of paradise.",
+  hero_lede:"Boutique resorts across LATAM. Join by WhatsApp or SMS and we'll tell you when an invitation is available. For now, waitlist only.",
   counter_lbl:"people on the waitlist",
   counter_upd:"live count from our database",
   counter_upd_ok:"updated",
-  hero_cta:"Hold my spot", hero_cta2:"See tiers",
-  trustTitle:"Real ownership, structured for trust",
-  trust1t:"A new SPV for every acquisition", trust1d:"Your interests never mingle with another property's.",
-  trust2t:"Independent custody", trust2d:"Your deposit sits with a verifiable third-party custodian until closing.",
-  trust3t:"Honest about risk", trust3d:"We never overstate liquidity or guarantee outcomes.",
-  how_h2:"How it works", how_sub:"Five steps, zero commitment. The waitlist is not a purchase.",
-  s1t:"Create your account", s1p:"Sign up with your email. No commitment, no payment.",
-  s2t:"Verify your identity", s2p:"Guided KYC with Sumsub. Takes a few minutes.",
-  s3t:"We confirm your jurisdiction", s3p:"We check that your country is eligible. Some jurisdictions are excluded by regulation.",
-  s4t:"Payment", s4p:"When your allocation opens: card via Stripe or crypto (BTC, ETH, SOL, USDC) via Coinbase Commerce.",
-  s5t:"Escrow and issuance", s5p:"Your funds sit in verifiable escrow until closing. At closing, your tokens: real ownership, in your name.",
-  tiers_h2:"Early-access tiers", tiers_sub:"Three tiers, one line. Your tier sets your priority — never a promised return.",
-  t1t:"Capital Route", t1p:"For those who want into each acquisition's SPV. We reach out directly with the project package when a window opens.",
-  t1l1:"A new SPV per acquisition", t1l2:"Direct founder contact (call/SMS and email)", t1l3:"No commitment until you decide to enter",
-  t2tag:"MOST CHOSEN", t2p:"Tokenized ownership from $1 per token. From 5,000 tokens you join the resort's periodic dividends.",
-  t2l1:"$1 tokens — real fractional ownership", t2l2:"Periodic dividends from 5,000 tokens", t2l3:"NAV/exit economics included",
-  t3p:"Tokenized ownership from $1 per token, $500 minimum. You keep NAV/exit economics, without periodic cash dividends.",
-  t3l1:"Entry from $500 (500 tokens)", t3l2:"Owner's club benefits", t3l3:"Perfect to start and level up",
-  tiers_note:"No tier promises returns. Tokens represent real ownership in real resorts, with the real economics of a boutique hotel: operating income, occupancy, seasons. Every investment carries risk.",
-  dep_h2:"Lock in your priority — $100 refundable",
-  dep_p:"Leave your Stripe reservation and move up the line. It's credited in full toward your $500 minimum purchase at the offering. Change your mind and we refund it — no questions asked. Not an investment, bears no returns.",
-  dep_per:"refundable · credited toward your purchase", dep_btn:"Hold my spot — $100",
-  dep_fine:"Secure payment via Stripe. No purchase commitment.",
-  dep_soon:"The payment link is being set up — your place in line is already saved. We'll notify you.",
-  dep_later:"The $100 fully refundable deposit comes into play when we offer you projects and you decide to bid — credited toward your purchase. For now, your place in line is saved. We'll notify you.",
-  dep_iphone:"Open this page on your iPhone to reserve with Apple Pay in one tap.",
-  dep_err:"The payment didn't go through — please try again.",
-  dep_ok:"Reservation confirmed! Your fully refundable $100 deposit is credited toward your place in line.",
-  dep_card_sub:"Apple Pay isn't available on this device — pay by card, same $100 refundable deposit.",
-  dep_card_email:"Email for your receipt",
-  dep_card_pay:"Pay $100",
-  dep_card_needmail:"Enter your email so we can send your receipt.",
-  dep_wire_toggle:"Prefer a bank wire?",
-  dep_wire_p:"For Equity Plus ($5K+) and Capital Route ($50K+) reservations we accept bank wires — write to us and we'll send the instructions.",
-  dep_wire_cta:"Request wire instructions by email",
-  win_h2:"Allocation windows", win_p1:"Allocation windows open per acquisition — there is no single global date. When a project's window opens, we notify in waitlist order: your position is your turn.",
-  w1t:"The list is your turn", w1p:"First come, first served. Registration order sets access priority.",
-  w2t:"Per project", w2p:"Each acquired resort opens its own window. You can wait for the project you love most.",
-  w3t:"No guarantees", w3p:"The list doesn't guarantee allocation: it depends on availability, your eligibility (KYC/AML) and your jurisdiction.",
+  hero_cta:"I want in", hero_cta2:"See access",
+  how_h2:"How it works", how_sub:"Four steps. The waitlist is not a purchase.",
+  s1t:"Join", s1p:"Get on the list with your phone, via WhatsApp or SMS.",
+  s2t:"Confirm on your phone", s2p:"We message you to confirm your spot.",
+  s3t:"Preference and region", s3p:"Optional: tell us which access and which region interest you.",
+  s4t:"Invitation", s4p:"We invite you when availability opens. DASP in process; the exchange is not active.",
+  tiers_h2:"Private access", tiers_sub:"Three paths. Your preference is indicative only.",
+  t1p:"Preferred private-access path. Indicative preference only; no commitment.",
+  t2p:"Class C participation path. Indicative preference only; no commitment.",
+  t3p:"Class C owners' entry path. Indicative preference only; no commitment.",
+  tiers_note:"Each path starts with WhatsApp or SMS, not a checkout. Choosing a preference does not reserve or buy anything.",
   terr_h2:"The territories", terr_sub:"First wave: Peru (Cusco / Sacred Valley), Mexico (Tulum / coast), Costa Rica (Guanacaste), Argentina (Mendoza / Patagonia).",
-  cap1:"Sacred Valley, Peru — where the first wave begins", cap2:"Caribbean coast — the model: boutique, beachfront, well run",
-  form_h2:"Join the waitlist", form_sub:"No payment. No commitment. Just your place in line.",
-  f_name:"Name", f_email:"Email", f_phone:"Phone (optional)", f_tier:"Tier of interest",
+  cap1:"Sacred Valley, Peru — where the first wave begins", cap2:"Caribbean coast — boutique, beachfront, well run",
+  form_h2:"I want in", form_sub:"No payment. No commitment. Just your place in line.",
+  f_name:"Name", f_email:"Email", f_phone:"Phone", f_tier:"Indicative preference",
   f_channel:"Preferred channel", ch_wa:"WhatsApp", ch_sms:"SMS",
-  opt500:"Owner's Circle — $500 to $4,999", opt5k:"Equity Plus — $5,000 or more", opt50k:"Capital Route — $50,000 or more (SPV)",
-  f_submit:"Hold my spot", f_fine:"We'll only use your data for the waitlist. Reply “stop” anytime to leave.",
-  f_consent:"By entering your phone number and tapping Hold my spot, you agree to receive SMS messages from Embodier.ai about your waitlist status, program updates, and allocation opportunities. Message frequency varies (typically 2–4 per month). Message and data rates may apply. Reply STOP to opt out at any time; reply HELP for help. Consent is not a condition of purchase. See Privacy and Terms.",
+  opt500:"Owner's Circle", opt5k:"Equity Plus", opt50k:"Class P Preferred",
+  f_submit:"I want in", f_fine:"We'll only use your data for the waitlist. Reply “stop” anytime to leave.",
+  f_consent:"By entering your phone number and tapping I want in, you agree to receive WhatsApp or SMS messages from Embodier.ai about your waitlist status, updates, and invitations. Message frequency varies (typically 2–4 per month). Message and data rates may apply. Reply STOP to opt out at any time; reply HELP for help. Consent is not a condition of purchase. See Privacy and Terms.",
   f_privacy:"Privacy Policy",
   f_terms:"Terms",
-  f_sending:"Sending…", f_need:"Please complete your name and a valid email.",
+  f_sending:"Sending…", f_need:"Please complete your name, a valid email and your phone.",
   ok_h2:"You're in line!", ok_p:"Your spot is saved. Now move up: everyone who joins with your link bumps your priority.",
   ok_wap:"One more tap: confirm your spot on WhatsApp and we'll keep you posted.", ok_wabtn:"Confirm on WhatsApp",
   ok_link:"Your referral link", ok_copy:"Copy", ok_copied:"Copied!",
   share_mail:"Share by email", share_sms:"Share by SMS", share_wa:"Share on WhatsApp",
-  share_text:"Join the Embodier waitlist — tokenized ownership in boutique LATAM resorts:",
-  fb_h2:"Almost — one manual step", fb_p:"Online registration is being connected. Email us your name and tier and we'll add you to the list manually today.",
+  share_text:"Join the Embodier waitlist — own a piece of paradise:",
+  fb_h2:"Almost — one manual step", fb_p:"Online registration is being connected. Email us your name and preference and we'll add you to the list manually today.",
   fb_btn:"Add me by email",
   disc_t:"Important notice.",
-  disc_p:"This is a waitlist and soft commitments only — not a live token sale or an investment contract. We promise no returns. The public token sale and the exchange activate with the El Salvador DASP license. Identity verification (KYC/AML) and jurisdiction eligibility apply at every step. If your jurisdiction isn't eligible, we'll tell you straight.",
+  disc_p:"This is a waitlist only — no live sale and no investment contract. We promise no returns. The DASP license is in process; the exchange is not active.",
   c_sms:"SMS", c_wa:"WhatsApp", f_rights:"All rights reserved."
 }};
 
 var LANG = 'es';
-/* Espen 2026-10-01: the $100 deposit is NOT collected at signup — it comes into play only when we offer prospects projects and they bid. Machinery stays built and ready; flip to true when bidding opens. */
-var DEPOSITS_LIVE = false;
 function setLang(l){
   LANG = (l === 'en') ? 'en' : 'es';
   document.documentElement.lang = LANG;
@@ -493,14 +342,9 @@ function setLang(l){
     var k = el.getAttribute('data-i18n');
     if (STR[LANG][k] !== undefined) el.textContent = STR[LANG][k];
   });
-  document.querySelectorAll('[data-i18n-ph]').forEach(function(el){
-    var k = el.getAttribute('data-i18n-ph');
-    if (STR[LANG][k] !== undefined) el.setAttribute('placeholder', STR[LANG][k]);
-  });
   document.getElementById('f-lang').value = LANG;
   try { localStorage.setItem('wl-lang', LANG); } catch(e){}
-  gateDeposits();
-  wireApplePay(); wireFallbackMail(); wireToggleInit();
+  wireFallbackMail();
 }
 function t(k){ return STR[LANG][k] || k; }
 
@@ -547,130 +391,6 @@ function loadCount(){
     .catch(function(){ /* stays "—": never show a fake number */ });
 }
 
-/* ---- Deposit gate (Espen 2026-10-01): the $100 is only collected when prospects bid on offered projects, never at signup. When closed, the payment UI is hidden and the section explains when deposits open. Flip DEPOSITS_LIVE to true when bidding opens. ---- */
-function gateDeposits(){
-  if (DEPOSITS_LIVE) return;
-  ['applepay-mount','card-fallback','wire-panel'].forEach(function(id){
-    var el = document.getElementById(id);
-    if (el) el.style.display = 'none';
-  });
-  var wt = document.getElementById('wire-toggle');
-  if (wt && wt.parentElement) wt.parentElement.style.display = 'none';
-  var sub = document.querySelector('#reserva [data-i18n="dep_p"]');
-  if (sub) sub.textContent = t('dep_later');
-  var note = document.getElementById('applepay-note');
-  if (note) note.textContent = t('dep_soon');
-}
-
-/* ---- Apple Pay deposit (Stripe Payment Request Button — wallet-first; card fallback only when no wallet on device) ---- */
-function wireApplePay(){
-  if (!DEPOSITS_LIVE) return;   // deposits gated until project bidding opens
-  var mount = document.getElementById('applepay-mount');
-  var note = document.getElementById('applepay-note');
-  if (!mount) return;
-  function fail(msg){ mount.innerHTML = ""; if (note) note.textContent = msg; }
-  if (!window.Stripe) { fail(t('dep_soon')); return; }
-  // publishable key is served by the webhook (public by design) — plain GET, no CORS preflight
-  fetch(INTAKE_WEBHOOK_URL + "?action=stripe_pk")
-    .then(function(r){ return r.json(); })
-    .then(function(d){
-      var pk = d && d.publishable_key;
-      if (!pk) { fail(t('dep_soon')); return; }
-      var stripe = Stripe(pk);
-      var pr = stripe.paymentRequest({
-        country: "US", currency: "usd",
-        total: { label: "Embodier — reserva $100", amount: 10000 },
-        requestPayerName: true, requestPayerEmail: true
-      });
-      pr.canMakePayment().then(function(res){
-        if (!res) { showCardFallback(stripe); return; }  // no wallet on this device → Stripe card fallback (Apple Pay stays the only UI where it can render)
-        var btn = stripe.elements().create("paymentRequestButton", {
-          paymentRequest: pr,
-          style: { paymentRequestButton: { type: "default", theme: "dark", height: "48px" } }
-        });
-        btn.mount("#applepay-mount");
-        pr.on("paymentmethod", function(ev){
-          fetch(INTAKE_WEBHOOK_URL, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },  // no CORS preflight; Apps Script can't answer OPTIONS
-            body: JSON.stringify({ action: "create_deposit_intent", email: ev.payerEmail || "", name: ev.payerName || "" })
-          })
-          .then(function(r){ return r.json(); })
-          .then(function(pi){
-            if (!pi || !pi.client_secret) { ev.complete("fail"); fail(t('dep_err')); return; }
-            stripe.confirmCardPayment(pi.client_secret, { payment_method: ev.paymentMethod.id }, { handleActions: false })
-              .then(function(cr){
-                if (cr.error) { ev.complete("fail"); fail(t('dep_err')); }
-                else { ev.complete("success"); depositPaid(); }
-              });
-          })
-          .catch(function(){ ev.complete("fail"); fail(t('dep_err')); });
-        });
-      });
-    })
-    .catch(function(){ fail(t('dep_soon')); });
-}
-
-function depositPaid(){
-  var mount = document.getElementById('applepay-mount');
-  var fb = document.getElementById('card-fallback');
-  var note = document.getElementById('applepay-note');
-  if (mount) mount.innerHTML = "";
-  if (fb) fb.classList.remove('show');
-  if (note) note.textContent = t('dep_ok');
-}
-
-/* ---- Stripe card fallback: only ever shown when this device cannot do Apple Pay ---- */
-var cardWired = false;
-function showCardFallback(stripe){
-  var mount = document.getElementById('applepay-mount');
-  var fb = document.getElementById('card-fallback');
-  var note = document.getElementById('applepay-note');
-  if (mount) mount.innerHTML = "";
-  if (!fb || !window.Stripe) { if (note) note.textContent = t('dep_soon'); return; }
-  fb.classList.add('show');
-  if (cardWired) return;
-  cardWired = true;
-  var card = stripe.elements().create('card', {
-    style: { base: { color: '#fff', fontSize: '16px', '::placeholder': { color: '#6b7280' } },
-             invalid: { color: '#e5484d' } }
-  });
-  card.mount('#card-element');
-  document.getElementById('card-pay').addEventListener('click', function(){
-    var btn = this;
-    var email = (document.getElementById('card-email').value || '').trim();
-    if (email.indexOf('@') < 0) { if (note) note.textContent = t('dep_card_needmail'); return; }
-    btn.disabled = true;
-    fetch(INTAKE_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },  // no CORS preflight; Apps Script can't answer OPTIONS
-      body: JSON.stringify({ action: 'create_deposit_intent', email: email, name: '' })
-    })
-    .then(function(r){ return r.json(); })
-    .then(function(pi){
-      if (!pi || !pi.client_secret) { btn.disabled = false; if (note) note.textContent = t('dep_err'); return; }
-      stripe.confirmCardPayment(pi.client_secret, { payment_method: { card: card, billing_details: { email: email } } })
-        .then(function(cr){
-          btn.disabled = false;
-          if (cr.error) { if (note) note.textContent = t('dep_err'); }
-          else { depositPaid(); }
-        });
-    })
-    .catch(function(){ btn.disabled = false; if (note) note.textContent = t('dep_err'); });
-  });
-}
-
-/* ---- bank wire option: instructions by email/SMS only — no account numbers on the page ---- */
-function wireToggleInit(){
-  var wt = document.getElementById('wire-toggle');
-  if (wt && !wt.dataset.wired) {
-    wt.dataset.wired = '1';
-    wt.addEventListener('click', function(){
-      document.getElementById('wire-panel').classList.toggle('show');
-    });
-  }
-}
-
 /* ---- form ---- */
 /* preferred channel pills (WhatsApp default — SMS rail pending Twilio A2P) */
 var CHAN = 'whatsapp';
@@ -681,7 +401,7 @@ document.getElementById('chan-pills').addEventListener('click', function(ev){
   var ps = this.querySelectorAll('.chanpill');
   for (var i = 0; i < ps.length; i++) ps[i].classList.toggle('active', ps[i] === b);
 });
-/* capital lane: never WhatsApp (standing rule) — force SMS when Ruta Capital is picked */
+/* capital lane: never WhatsApp (standing rule) — force SMS when Class P Preferred (tier-50k) is picked */
 var CHAN_BEFORE_CAP = null;
 document.getElementById('f-tier').addEventListener('change', function(){
   var wa = document.querySelector('#chan-pills [data-chan="whatsapp"]');
@@ -706,8 +426,8 @@ function wireFallbackMail(){
   var tier = document.getElementById('f-tier').selectedOptions[0].text || '';
   var subj = encodeURIComponent(LANG === 'es' ? 'Anotarme en la lista de espera' : 'Add me to the waitlist');
   var body = encodeURIComponent((LANG === 'es'
-    ? 'Hola Espen, anótame en la lista de espera.\nNombre: ' + name + '\nNivel: ' + tier + (INCOMING_REF ? '\nReferido por: ' + INCOMING_REF : '')
-    : 'Hi Espen, please add me to the waitlist.\nName: ' + name + '\nTier: ' + tier + (INCOMING_REF ? '\nReferred by: ' + INCOMING_REF : '')));
+    ? 'Hola Espen, anótame en la lista de espera.\nNombre: ' + name + '\nPreferencia: ' + tier + (INCOMING_REF ? '\nReferido por: ' + INCOMING_REF : '')
+    : 'Hi Espen, please add me to the waitlist.\nName: ' + name + '\nPreference: ' + tier + (INCOMING_REF ? '\nReferred by: ' + INCOMING_REF : '')));
   a.href = 'mailto:espen@embodier.ai?subject=' + subj + '&body=' + body;
 }
 
@@ -715,9 +435,10 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
   ev.preventDefault();
   var name = document.getElementById('f-name').value.trim();
   var email = document.getElementById('f-email').value.trim();
+  var phone = document.getElementById('f-phone').value.trim();
   var tierVal = document.getElementById('f-tier').value;
   var btn = document.getElementById('submit-btn');
-  if (!name || email.indexOf('@') < 0) { alert(t('f_need')); return; }
+  if (!name || email.indexOf('@') < 0 || !phone) { alert(t('f_need')); return; }
   if (!INTAKE_WEBHOOK_URL) {
     document.getElementById('form-card').style.display = 'none';
     document.getElementById('fallback-card').classList.add('show');
@@ -729,7 +450,7 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
     method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, // text/plain = no CORS preflight; Apps Script cannot answer OPTIONS
     body: JSON.stringify({
       name:name, email:email,
-      phone:document.getElementById('f-phone').value.trim(),
+      phone:phone,
       tier:tierVal, channel_pref:CHAN,
       lane: tierVal === 'tier-50k' ? 'capital' : 'token',
       ref:INCOMING_REF, lang:LANG, source:'waitlist-page',

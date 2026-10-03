@@ -42,7 +42,7 @@ relative `assets/*.jpg` paths and commit the JPEGs alongside.
   toggle; all 76 strings in both languages; choice persists in localStorage.
 - **Brand bar** — hot link `www.embodier.ai`.
 - **Contact strip** — hot links only: `https://www.embodier.ai`,
-  `sms:+12397775813`, `mailto:espen@embodier.ai`. **Never WhatsApp** (capital-lane rule).
+  `sms:+18287312919`, `mailto:espen@embodier.ai`. **Never WhatsApp** (capital-lane rule).
 - **Endline** — "Stay. Own. Return."
 - **Compliance block** — whitelist/soft commitments only; no live token sale;
   no investment contract; no promised returns; DASP gates public sale; KYC/AML

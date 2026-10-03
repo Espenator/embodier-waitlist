@@ -2,6 +2,23 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.q=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1066458365911228');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1066458365911228&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lista de espera — Acceso privado | Embodier</title>
 <meta name="description" content="Lista de espera de Embodier: únete por WhatsApp o SMS. Sé dueño de un pedazo del paraíso. Solo lista de espera — sin venta en vivo.">
@@ -607,6 +624,8 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
 
 function pageUrl(){ return location.href.split('?')[0].split('#')[0]; }
 function showSuccess(refCode, tier, name){
+  /* Meta Pixel Lead event — conversions-only optimization for the paid test */
+  if (typeof fbq !== 'undefined') { fbq('track', 'Lead', {content_name: 'waitlist_signup', content_category: tier}); }
   document.getElementById('form-card').style.display = 'none';
   document.getElementById('success-card').classList.add('show');
   LAST_LANE = (tier === 'tier-50k') ? 'capital' : 'token';

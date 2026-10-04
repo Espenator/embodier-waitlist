@@ -55,8 +55,20 @@ src="https://www.facebook.com/tr?id=1066458365911228&ev=PageView&noscript=1"
   .host img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--gold)}
   .host-txt strong{display:block;color:#fff;font-size:16px}
   .host-txt span{font-size:13px;color:var(--mut)}
-  /* sections */
-  section{padding:56px 0;border-top:1px solid var(--line)}
+  /* application gate + verification */
+  .gate{background:#111318;border:1px solid var(--line);border-radius:14px;padding:22px;margin:18px 0}
+  .gate h3{margin:0 0 8px;color:#fff;font-size:19px}
+  .gate.verified{border-color:var(--gold)}
+  .qblock{margin:16px 0}
+  .qq{font-weight:bold;color:#fff;margin:0 0 10px;font-size:15px}
+  .taps{display:flex;flex-wrap:wrap;gap:10px}
+  .tap{border:1px solid var(--line);border-radius:10px;padding:12px 16px;cursor:pointer;font-size:14px;color:var(--ink);background:#0c0e12;transition:border-color .15s}
+  .tap:hover{border-color:var(--gold)}
+  .tap.on{border-color:var(--gold);background:rgba(201,162,75,.12);color:#fff;font-weight:bold}
+  .vrow{display:flex;gap:10px;margin-top:12px}
+  .vrow input{flex:1;background:#0c0e12;border:1px solid var(--line);border-radius:10px;color:#fff;font-size:22px;letter-spacing:6px;text-align:center;padding:12px}
+  .fine{font-size:12px;color:var(--mut);margin:10px 0 0}
+  .fine.ok{color:#7fc97f}
   h2{font-size:clamp(24px,3.4vw,34px);color:#fff;margin:0 0 10px}
   .sub{color:var(--mut);max-width:720px;margin:0 0 28px}
   .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
@@ -266,6 +278,27 @@ src="https://www.facebook.com/tr?id=1066458365911228&ev=PageView&noscript=1"
       <p id="boost-p"></p>
       <p class="q" data-i18n="boost_q">Solo cuentan los invitados que confirman su lugar en la lista.</p>
       <p class="q" data-i18n="boost_reward">Las introducciones calificadas también suman créditos de beneficios.</p>
+      <p class="q" data-i18n="boost_first">Quienes más refieren acceden primero a cada asignación.</p>
+    </div>
+    <div class="gate" id="apply-card" style="display:none">
+      <h3 data-i18n="app_h">Completa tu aplicación</h3>
+      <p class="sub" data-i18n="app_p">Tres toques. Sin preguntas de dinero — solo queremos saber qué te mueve.</p>
+      <div class="qblock"><p class="qq" data-i18n="app_q1">¿Qué región te llama?</p><div class="taps" id="taps-q1"></div></div>
+      <div class="qblock"><p class="qq" data-i18n="app_q2">¿Qué te atrae más?</p><div class="taps" id="taps-q2"></div></div>
+      <div class="qblock"><p class="qq" data-i18n="app_q3">¿Cómo viajas?</p><div class="taps" id="taps-q3"></div></div>
+      <button class="cta" id="app-send" data-i18n="app_send" style="margin-top:6px">Enviar aplicación</button>
+      <p class="fine" id="app-note" style="display:none"></p>
+    </div>
+    <div class="gate" id="verify-card" style="display:none">
+      <h3 data-i18n="ver_h">Verifica tu correo</h3>
+      <p class="sub" data-i18n="ver_p">Te enviamos un código de 6 dígitos a tu correo. Ingrésalo para completar tu aplicación.</p>
+      <div class="vrow"><input id="v-code" inputmode="numeric" maxlength="6" placeholder="••••••" aria-label="code"><button class="cta" id="v-send" data-i18n="ver_send" style="margin:0">Verificar</button></div>
+      <p class="fine" id="v-note" style="display:none"></p>
+      <p class="fine" data-i18n="ver_soon">La verificación por SMS/WhatsApp se activa pronto.</p>
+    </div>
+    <div class="gate verified" id="verified-card" style="display:none">
+      <h3 data-i18n="ok_verified">✓ Aplicación completa — miembro verificado</h3>
+      <p class="sub" data-i18n="ok_verified_p">Tu lugar está verificado. Te avisaremos primero cuando se abra el acceso.</p>
     </div>
   </div>
   <div class="fallback" id="fallback-card">
@@ -319,8 +352,8 @@ es:{
   host_role:"Tu anfitriona en Embodier",
   how_h2:"Cómo funciona", how_sub:"Cuatro pasos. La lista de espera no es una compra.",
   s1t:"Únete", s1p:"Entra a la lista con tu teléfono, por WhatsApp o SMS.",
-  s2t:"Confirma en tu teléfono", s2p:"Te escribimos para confirmar tu lugar.",
-  s3t:"Preferencia y región", s3p:"Opcional: cuéntanos qué acceso y qué región te interesan.",
+  s2t:"Verifica tu correo", s2p:"Te enviamos un código de 6 dígitos para verificar tu lugar.",
+  s3t:"Completa tu aplicación", s3p:"Tres toques: cuéntanos qué región y qué experiencia te mueven.",
   s4t:"Invitación", s4p:"Te invitamos cuando haya disponibilidad. DASP en proceso; el exchange no está activo.",
   tiers_h2:"Acceso privado", tiers_sub:"Tres rutas. Tu preferencia es solo indicativa.",
   t1t:"Capital Partner — desde $50K", t2t:"Equity Plus — desde $5K", t3t:"Owner's Circle — desde $500",
@@ -351,6 +384,21 @@ es:{
   boost_p_gen:"Cada amigo que se una con tu enlace te sube en la prioridad.",
   boost_q:"Solo cuentan los invitados que confirman su lugar en la lista.",
   boost_reward:"Las introducciones calificadas también suman créditos de beneficios.",
+  boost_first:"Quienes más refieren acceden primero a cada asignación.",
+  app_h:"Completa tu aplicación",
+  app_p:"Tres toques. Sin preguntas de dinero — solo queremos saber qué te mueve.",
+  app_q1:"¿Qué región te llama?", app_q2:"¿Qué te atrae más?", app_q3:"¿Cómo viajas?",
+  app_send:"Enviar aplicación", app_sending:"Enviando…",
+  app_done:"Aplicación guardada. Ahora verifica tu correo.",
+  app_need:"Elige una opción en las tres preguntas.",
+  ver_h:"Verifica tu correo",
+  ver_p:"Te enviamos un código de 6 dígitos a tu correo. Ingrésalo para completar tu aplicación.",
+  ver_send:"Verificar", ver_sending:"Verificando…",
+  ver_ok:"Código correcto — tu lugar está verificado.",
+  ver_bad:"Ese código no coincide. Revisa tu correo e inténtalo de nuevo.",
+  ver_soon:"La verificación por SMS/WhatsApp se activa pronto.",
+  ok_verified:"✓ Aplicación completa — miembro verificado",
+  ok_verified_p:"Tu lugar está verificado. Te avisaremos primero cuando se abra el acceso.",
   lb_h2:"Los que más comparten",
   lb_sub:"Cada referido calificado sube a quien lo invitó. Así se ve la fila moviéndose.",
   lb_empty:"Aún no hay referidos calificados — comparte tu enlace y sé el primero en aparecer aquí.",
@@ -374,8 +422,8 @@ en:{
   host_role:"Your host at Embodier",
   how_h2:"How it works", how_sub:"Four steps. The waitlist is not a purchase.",
   s1t:"Join", s1p:"Get on the list with your phone, via WhatsApp or SMS.",
-  s2t:"Confirm on your phone", s2p:"We message you to confirm your spot.",
-  s3t:"Preference and region", s3p:"Optional: tell us which access and which region interest you.",
+  s2t:"Verify your email", s2p:"We send a 6-digit code to verify your spot.",
+  s3t:"Complete your application", s3p:"Three taps: tell us which region and experience move you.",
   s4t:"Invitation", s4p:"We invite you when availability opens. DASP in process; the exchange is not active.",
   tiers_h2:"Private access", tiers_sub:"Three paths. Your preference is indicative only.",
   t1t:"Capital Partner — from $50K", t2t:"Equity Plus — from $5K", t3t:"Owner's Circle — from $500",
@@ -406,6 +454,21 @@ en:{
   boost_p_gen:"Every friend who joins with your link moves you up in priority.",
   boost_q:"Only guests who confirm their spot on the list count.",
   boost_reward:"Qualified introductions also earn benefit credits.",
+  boost_first:"Top referrers get first access to every allocation.",
+  app_h:"Complete your application",
+  app_p:"Three taps. No money questions — we just want to know what moves you.",
+  app_q1:"Which region calls to you?", app_q2:"What draws you most?", app_q3:"How do you travel?",
+  app_send:"Send application", app_sending:"Sending…",
+  app_done:"Application saved. Now verify your email.",
+  app_need:"Pick one option in all three questions.",
+  ver_h:"Verify your email",
+  ver_p:"We sent a 6-digit code to your email. Enter it to complete your application.",
+  ver_send:"Verify", ver_sending:"Verifying…",
+  ver_ok:"Code accepted — your spot is verified.",
+  ver_bad:"That code doesn't match. Check your email and try again.",
+  ver_soon:"SMS/WhatsApp verification is coming online soon.",
+  ok_verified:"✓ Application complete — verified member",
+  ok_verified_p:"Your spot is verified. You'll hear first when access opens.",
   lb_h2:"Top sharers",
   lb_sub:"Every qualified referral moves the inviter up. This is the line moving.",
   lb_empty:"No qualified referrals yet — share your link and be the first to appear here.",
@@ -428,6 +491,7 @@ function setLang(l){
     var k = el.getAttribute('data-i18n');
     if (STR[LANG][k] !== undefined) el.textContent = STR[LANG][k];
   });
+  if (document.getElementById('apply-card').style.display === 'block') renderAppTaps();
   document.getElementById('f-lang').value = LANG;
   try { localStorage.setItem('wl-lang', LANG); } catch(e){}
   wireFallbackMail();
@@ -595,6 +659,7 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
   var tierVal = document.getElementById('f-tier').value;
   var btn = document.getElementById('submit-btn');
   if (!name || email.indexOf('@') < 0 || !phone) { alert(t('f_need')); return; }
+  LAST_EMAIL = email;
   if (!INTAKE_WEBHOOK_URL) {
     document.getElementById('form-card').style.display = 'none';
     document.getElementById('fallback-card').classList.add('show');
@@ -673,6 +738,13 @@ function showSuccess(refCode, tier, name){
     box.appendChild(a);
   });
   document.getElementById('success-card').scrollIntoView({behavior:'smooth'});
+  var alreadyV = false;
+  try { alreadyV = localStorage.getItem("emb_verified") === "1"; } catch (e) {}
+  if (alreadyV) {
+    document.getElementById("verified-card").style.display = "block";
+  } else {
+    showApply();
+  }
 }
 function copyRef(){
   var i = document.getElementById('ref-link');
@@ -682,13 +754,115 @@ function copyRef(){
   alert(t('ok_copied'));
 }
 
+/* ---- application gate (2026-10-03): 3 tap-first qualification questions + email verification.
+   Complements the existing referral layer — same visual language, same feeds. ---- */
+var APP_OPTS = {
+  es: { q1: ["Perú", "México", "Costa Rica", "Argentina", "Sorpréndeme"],
+        q2: ["Quedarme en lugares extraordinarios", "Ser dueño de un pedazo del paraíso", "Las dos cosas"],
+        q3: ["Escapadas románticas", "Amigos y familia", "Aventuras en solitario"] },
+  en: { q1: ["Peru", "Mexico", "Costa Rica", "Argentina", "Surprise me"],
+        q2: ["Staying in extraordinary places", "Owning a piece of paradise", "Both"],
+        q3: ["Romantic getaways", "Friends & family", "Solo adventures"] }
+};
+var LAST_EMAIL = "";
+var APP_ANS = { q1: "", q2: "", q3: "" };
+
+function renderAppTaps() {
+  ["q1", "q2", "q3"].forEach(function(q) {
+    var box = document.getElementById("taps-" + q);
+    box.innerHTML = "";
+    APP_OPTS[LANG][q].forEach(function(opt) {
+      var d = document.createElement("div");
+      d.className = "tap" + (APP_ANS[q] === opt ? " on" : "");
+      d.textContent = opt;
+      d.onclick = function() {
+        APP_ANS[q] = opt;
+        box.querySelectorAll(".tap").forEach(function(x) { x.classList.remove("on"); });
+        d.classList.add("on");
+      };
+      box.appendChild(d);
+    });
+  });
+}
+
+function showApply() {
+  renderAppTaps();
+  document.getElementById("apply-card").style.display = "block";
+  document.getElementById("apply-card").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function gatePost(body) {
+  return fetch(INTAKE_WEBHOOK_URL, {
+    method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(body)
+  }).then(function(r) { return r.json(); });
+}
+
+function sendApp() {
+  var note = document.getElementById("app-note");
+  if (!APP_ANS.q1 || !APP_ANS.q2 || !APP_ANS.q3) {
+    note.textContent = t("app_need"); note.className = "fine"; note.style.display = "block"; return;
+  }
+  var btn = document.getElementById("app-send");
+  btn.disabled = true; btn.textContent = t("app_sending");
+  gatePost({ action: "save_application", email: LAST_EMAIL, q1: APP_ANS.q1, q2: APP_ANS.q2, q3: APP_ANS.q3 })
+    .then(function(d) {
+      if (d && d.ok) {
+        note.textContent = t("app_done"); note.className = "fine ok"; note.style.display = "block";
+        document.getElementById("apply-card").style.display = "none";
+        document.getElementById("verify-card").style.display = "block";
+        document.getElementById("verify-card").scrollIntoView({ behavior: "smooth", block: "nearest" });
+      } else { throw 0; }
+    })
+    .catch(function() { note.textContent = t("app_need"); note.className = "fine"; note.style.display = "block"; })
+    .finally(function() { btn.disabled = false; btn.textContent = t("app_send"); });
+}
+
+function sendVerify(email, code, silent) {
+  var note = document.getElementById("v-note");
+  var btn = document.getElementById("v-send");
+  if (!silent) { btn.disabled = true; btn.textContent = t("ver_sending"); }
+  gatePost({ action: "verify", email: email, code: code })
+    .then(function(d) {
+      if (d && d.verified) {
+        document.getElementById("verify-card").style.display = "none";
+        document.getElementById("apply-card").style.display = "none";
+        document.getElementById("verified-card").style.display = "block";
+        try { localStorage.setItem("emb_verified", "1"); } catch (e) {}
+        if (typeof fbq !== "undefined") { fbq("track", "CompleteRegistration", { content_name: "verified_member" }); }
+      } else {
+        note.textContent = t("ver_bad"); note.className = "fine"; note.style.display = "block";
+      }
+    })
+    .catch(function() { note.textContent = t("ver_bad"); note.className = "fine"; note.style.display = "block"; })
+    .finally(function() { if (!silent) { btn.disabled = false; btn.textContent = t("ver_send"); } });
+}
+
+function checkVerifyLink() {
+  var q = new URLSearchParams(location.search);
+  var em = q.get("verify"), cd = q.get("code");
+  if (em && cd && /^\d{6}$/.test(cd)) {
+    LAST_EMAIL = em;
+    document.getElementById("form-card").style.display = "none";
+    document.getElementById("success-card").classList.add("show");
+    document.getElementById("verify-card").style.display = "block";
+    document.getElementById("v-code").value = cd;
+    sendVerify(em, cd, true);
+  }
+}
+
 /* ---- init ---- */
 setLang(LANG);
 loadCount();
 loadReferralRules();
 loadLeaderboard();
+checkVerifyLink();
 setInterval(loadCount, 5 * 60 * 1000); // refresh the live count every 5 min
 setInterval(loadLeaderboard, 5 * 60 * 1000); // refresh the leaderboard alongside
+document.getElementById("app-send").addEventListener("click", sendApp);
+document.getElementById("v-send").addEventListener("click", function() {
+  sendVerify(LAST_EMAIL, document.getElementById("v-code").value.replace(/\D/g, ""), false);
+});
 </script>
 </body>
 </html>

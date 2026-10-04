@@ -299,6 +299,7 @@ src="https://www.facebook.com/tr?id=1066458365911228&ev=PageView&noscript=1"
     <div class="gate verified" id="verified-card" style="display:none">
       <h3 data-i18n="ok_verified">✓ Aplicación completa — miembro verificado</h3>
       <p class="sub" data-i18n="ok_verified_p">Tu lugar está verificado. Te avisaremos primero cuando se abra el acceso.</p>
+      <p class="sub" data-i18n="ok_verified_ref">Tu enlace de referido está arriba — quienes más refieren acceden primero a cada asignación.</p>
     </div>
   </div>
   <div class="fallback" id="fallback-card">
@@ -399,6 +400,7 @@ es:{
   ver_soon:"La verificación por SMS/WhatsApp se activa pronto.",
   ok_verified:"✓ Aplicación completa — miembro verificado",
   ok_verified_p:"Tu lugar está verificado. Te avisaremos primero cuando se abra el acceso.",
+  ok_verified_ref:"Tu enlace de referido está arriba — quienes más refieren acceden primero a cada asignación.",
   lb_h2:"Los que más comparten",
   lb_sub:"Cada referido calificado sube a quien lo invitó. Así se ve la fila moviéndose.",
   lb_empty:"Aún no hay referidos calificados — comparte tu enlace y sé el primero en aparecer aquí.",
@@ -469,6 +471,7 @@ en:{
   ver_soon:"SMS/WhatsApp verification is coming online soon.",
   ok_verified:"✓ Application complete — verified member",
   ok_verified_p:"Your spot is verified. You'll hear first when access opens.",
+  ok_verified_ref:"Your referral link is above — top referrers get first access to every allocation.",
   lb_h2:"Top sharers",
   lb_sub:"Every qualified referral moves the inviter up. This is the line moving.",
   lb_empty:"No qualified referrals yet — share your link and be the first to appear here.",
@@ -829,6 +832,7 @@ function sendVerify(email, code, silent) {
         document.getElementById("apply-card").style.display = "none";
         document.getElementById("verified-card").style.display = "block";
         try { localStorage.setItem("emb_verified", "1"); } catch (e) {}
+        fillReferralAfterVerify(d.ref_code, d.tier);
         if (typeof fbq !== "undefined") { fbq("track", "CompleteRegistration", { content_name: "verified_member" }); }
       } else {
         note.textContent = t("ver_bad"); note.className = "fine"; note.style.display = "block";
@@ -836,6 +840,29 @@ function sendVerify(email, code, silent) {
     })
     .catch(function() { note.textContent = t("ver_bad"); note.className = "fine"; note.style.display = "block"; })
     .finally(function() { if (!silent) { btn.disabled = false; btn.textContent = t("ver_send"); } });
+}
+
+/* After verification (esp. one-click from the welcome email), make sure the
+   share-to-boost block is populated — the email flow never ran showSuccess. */
+function fillReferralAfterVerify(refCode, tier){
+  if (!refCode) return;
+  var link = pageUrl() + '?ref=' + encodeURIComponent(refCode);
+  var input = document.getElementById('ref-link');
+  if (input && !input.value) input.value = link;
+  renderBoost();
+  var box = document.getElementById('share-btns');
+  if (box && !box.children.length) {
+    var txt = encodeURIComponent(t('share_text') + ' ' + link);
+    var items = [
+      [t('share_mail'), 'mailto:?subject=' + encodeURIComponent('Embodier') + '&body=' + txt],
+      [t('share_sms'), 'sms:?&body=' + txt]
+    ];
+    if (tier !== 'tier-50k') items.push([t('share_wa'), 'https://wa.me/?text=' + txt]); // token lane only — never WhatsApp for capital
+    items.forEach(function(it){
+      var a = document.createElement('a'); a.href = it[1]; a.textContent = it[0];
+      box.appendChild(a);
+    });
+  }
 }
 
 function checkVerifyLink() {

@@ -1,0 +1,27 @@
+name: apply-phone-otp-patch
+on:
+  workflow_dispatch:
+  push:
+    paths: ['phone-otp.patch']
+    branches: ['phone-otp-confirmed-flow', 'phone-otp-flow-v2']
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply patch and commit
+        run: |
+          set -euo pipefail
+          if ! grep -q "Alice intake" index.html; then
+            git apply phone-otp.patch
+          else
+            echo "already applied"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Phone→OTP→confirmed flow: verify before apply; Alice intake webhook"
+          git push

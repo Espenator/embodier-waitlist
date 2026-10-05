@@ -1,9 +1,6 @@
 name: apply-phone-otp-patch
 on:
   workflow_dispatch:
-  push:
-    paths: ['phone-otp.patch']
-    branches: ['phone-otp-confirmed-flow', 'phone-otp-flow-v2']
 permissions:
   contents: write
 jobs:
@@ -11,15 +8,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply patch and commit
+      - name: Concat patch chunks, apply, commit
         run: |
           set -euo pipefail
-          if ! grep -q "Alice intake" index.html; then
-            git apply phone-otp.patch
-          else
+          if grep -q "Alice intake" index.html && grep -q "showVerify(); /\* phone" index.html; then
             echo "already applied"
             exit 0
           fi
+          : > /tmp/p.b64
+          cat tools/pc0.b64 >> /tmp/p.b64
+          cat tools/seg/s1_0.txt >> /tmp/p.b64
+          cat tools/seg/s1_1.txt >> /tmp/p.b64
+          cat tools/seg/s1_2.txt >> /tmp/p.b64
+          cat tools/seg/s1_3.txt >> /tmp/p.b64
+          cat tools/seg/s2_0.txt >> /tmp/p.b64
+          cat tools/seg/s2_1.txt >> /tmp/p.b64
+          cat tools/seg/s2_2.txt >> /tmp/p.b64
+          cat tools/seg/s2_3.txt >> /tmp/p.b64
+          cat tools/seg/s3_0.txt >> /tmp/p.b64
+          cat tools/seg/s3_1.txt >> /tmp/p.b64
+          cat tools/seg/s3_2.txt >> /tmp/p.b64
+          cat tools/seg/s3_3.txt >> /tmp/p.b64
+          cat tools/seg/s4_0.txt >> /tmp/p.b64
+          base64 -d /tmp/p.b64 > phone-otp.patch
+          git apply --check phone-otp.patch
+          git apply phone-otp.patch
+          rm -f phone-otp.patch
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html

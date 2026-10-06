@@ -5,109 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Embodier.ai — Términos / Terms</title>
 <style>
-  :root{ --bg:#0a0a0a; --panel:#111318; --gold:#c9a24b; --ink:#e8e8e8; --mut:#9aa0ae; --line:#2a3350; }
+  /* Light, high-contrast theme for the legal/compliance pages (readability first) */
+  :root{ --bg:#ffffff; --panel:#f6f6f4; --gold:#8a6d1f; --goldbg:#c9a24b; --ink:#1a1a1a; --mut:#4b5563; --line:#d9d9d9; }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.6}
   a{color:var(--gold)}
   .wrap{max-width:1060px;margin:0 auto;padding:0 20px}
   /* brand bar */
-  .brandbar{position:sticky;top:0;z-index:50;background:rgba(10,10,10,.94);border-bottom:1px solid var(--line)}
+  .brandbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line)}
   .brandbar .wrap{display:flex;align-items:center;justify-content:space-between;padding:12px 20px}
-  .brand{font-weight:bold;letter-spacing:3px;font-size:18px;color:#fff;text-decoration:none}
+  .brand{font-weight:bold;letter-spacing:3px;font-size:18px;color:#111;text-decoration:none}
   .brand small{display:block;letter-spacing:1px;font-size:10px;color:var(--mut);font-weight:normal}
   .langtoggle{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
   .langtoggle button{background:transparent;border:0;color:var(--mut);font-weight:bold;padding:8px 14px;cursor:pointer;font-size:13px}
-  .langtoggle button.active{background:var(--gold);color:#0a0a0a}
-  /* hero */
-  .hero{position:relative;min-height:78vh;display:flex;align-items:flex-end;background:#000}
-  .hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.62}
-  .hero .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.25) 0%,rgba(10,10,10,.88) 78%,#0a0a0a 100%)}
-  .hero .wrap{position:relative;padding:70px 20px 46px}
-  .eyebrow{color:var(--gold);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin:0 0 12px}
-  h1{font-size:clamp(30px,5vw,52px);line-height:1.15;margin:0 0 14px;color:#fff;max-width:760px}
-  .lede{font-size:17px;color:#d6d6d6;max-width:680px;margin:0 0 26px}
-  .counter{background:rgba(17,19,24,.82);border:1px solid var(--line);border-radius:14px;padding:18px 22px;display:inline-block;backdrop-filter:blur(4px)}
-  .counter .num{font-size:46px;font-weight:bold;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums}
-  .counter .lbl{font-size:13px;color:var(--mut);margin-top:6px}
-  .counter .upd{font-size:11px;color:#6b7280;margin-top:4px}
-  .cta{display:inline-block;background:var(--gold);color:#0a0a0a;font-weight:bold;text-decoration:none;padding:15px 34px;border-radius:10px;font-size:16px;margin-top:22px}
-  .cta.ghost{background:transparent;color:var(--gold);border:1px solid var(--gold);margin-left:10px}
-  /* sections */
-  section{padding:56px 0;border-top:1px solid var(--line)}
-  h2{font-size:clamp(24px,3.4vw,34px);color:#fff;margin:0 0 10px}
-  .sub{color:var(--mut);max-width:720px;margin:0 0 28px}
-  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
-  .step{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
-  .step .n{color:var(--gold);font-weight:bold;font-size:13px;letter-spacing:1px}
-  .step h3{margin:8px 0 6px;font-size:15px;color:#fff}
-  .step p{margin:0;font-size:13px;color:var(--mut)}
-  .tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-  .tier{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px;position:relative}
-  .tier.hot{border-color:var(--gold)}
-  .tier .tag{position:absolute;top:-11px;left:20px;background:var(--gold);color:#0a0a0a;font-size:11px;font-weight:bold;padding:3px 10px;border-radius:20px;letter-spacing:1px}
-  .tier h3{margin:0 0 4px;color:#fff;font-size:19px}
-  .tier .amt{color:var(--gold);font-weight:bold;font-size:15px;margin:0 0 12px}
-  .tier p{font-size:14px;color:#d0d0d0;margin:0 0 10px}
-  .tier ul{margin:0;padding-left:18px;font-size:13px;color:var(--mut)}
-  .note{font-size:12.5px;color:var(--mut);margin-top:18px;max-width:760px}
-  /* deposit band */
-  .deposit{background:linear-gradient(135deg,#141821,#0d0f14);border:1px solid var(--gold);border-radius:16px;padding:30px;display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:center}
-  .deposit h2{margin-top:0}
-  .deposit .price{font-size:40px;color:var(--gold);font-weight:bold;line-height:1}
-  .deposit .per{font-size:13px;color:var(--mut)}
-  @media(max-width:760px){.deposit{grid-template-columns:1fr}}
-  /* gallery */
-  .gal{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .gal figure{margin:0;position:relative;border-radius:12px;overflow:hidden}
-  .gal img{width:100%;height:260px;object-fit:cover;display:block}
-  .gal figcaption{position:absolute;bottom:0;left:0;right:0;padding:26px 16px 12px;font-size:13px;color:#fff;background:linear-gradient(180deg,transparent,rgba(0,0,0,.78))}
-  @media(max-width:640px){.gal{grid-template-columns:1fr}}
-  /* form */
-  .formcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:30px;max-width:640px}
-  .field{margin-bottom:14px}
-  .field label{display:block;font-size:13px;color:var(--mut);margin-bottom:6px}
-  .field input,.field select{width:100%;padding:13px 14px;border-radius:9px;border:1px solid var(--line);background:#0c0e12;color:#fff;font-size:15px}
-  .field input:focus,.field select:focus{outline:2px solid var(--gold);border-color:var(--gold)}
-  .fine{font-size:12px;color:#6b7280;margin-top:12px}
-  /* deposit payment fallbacks: Apple Pay first; card only when no wallet; wire on request */
-  .payfallback{display:none;text-align:left;margin-top:6px}
-  .payfallback.show{display:block}
-  .payfallback .cardbox{background:#0c0e12;border:1px solid var(--line);border-radius:10px;padding:14px;margin:10px 0}
-  .payfallback input[type=email]{width:100%;padding:12px 14px;border-radius:9px;border:1px solid var(--line);background:#0c0e12;color:#fff;font-size:15px;margin-bottom:10px;box-sizing:border-box}
-  .paybtn{width:100%;padding:14px;border-radius:10px;border:0;background:var(--gold);color:#141414;font-weight:bold;font-size:16px;cursor:pointer}
-  .paybtn:disabled{opacity:.55;cursor:default}
-  .wiretoggle{font-size:13px;color:var(--mut);margin-top:12px;text-align:center}
-  .wiretoggle a{color:var(--gold);cursor:pointer;text-decoration:underline}
-  .wirepanel{display:none;font-size:13px;color:var(--mut);margin-top:10px;background:#0c0e12;border:1px dashed var(--line);border-radius:10px;padding:12px 14px;text-align:left}
-  .wirepanel.show{display:block}
-  .wirepanel a{color:#fff}
-  .success{display:none;background:#0e1a12;border:1px solid #2f7a4d;border-radius:16px;padding:28px;max-width:640px}
-  .success.show{display:block}
-  .reflink{display:flex;gap:8px;margin:14px 0}
-  .reflink input{flex:1;padding:12px;border-radius:8px;border:1px solid var(--line);background:#0c0e12;color:var(--gold);font-size:14px}
-  .sharebtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-  .sharebtns a,.sharebtns button{border:1px solid var(--line);background:#0c0e12;color:#fff;text-decoration:none;font-size:13px;padding:10px 16px;border-radius:8px;cursor:pointer}
-  .fallback{display:none;background:#1a1409;border:1px solid var(--gold);border-radius:16px;padding:28px;max-width:640px}
-  .fallback.show{display:block}
-  /* disclaimer */
-  .disclaimer{background:#101114;border:1px solid var(--line);border-radius:12px;padding:22px;font-size:13px;color:var(--mut)}
-  .disclaimer strong{color:#d8d8d8}
-  /* contact + footer */
-  .contact{background:var(--panel);border-top:1px solid var(--line);padding:34px 0;text-align:center}
-  .contact .row{display:flex;flex-wrap:wrap;gap:10px 26px;justify-content:center;margin-top:12px}
-  .contact a{color:#fff;text-decoration:none;font-size:15px}
-  .contact a:hover{color:var(--gold)}
-  footer{padding:26px 0 40px;text-align:center;color:#6b7280;font-size:12px}
-  footer .end{color:var(--gold);letter-spacing:2px;margin-top:8px;font-size:13px}
-
+  .langtoggle button.active{background:var(--goldbg);color:#111}
   /* doc pages */
-  .doc{max-width:760px;margin:0 auto;padding:36px 20px 60px;color:#e5e7eb}
-  .doc h1{font-size:32px;margin:8px 0 4px;color:#fff}
+  .doc{max-width:760px;margin:0 auto;padding:36px 20px 60px;color:var(--ink)}
+  .doc h1{font-size:32px;margin:8px 0 4px;color:#111}
   .doc h2{font-size:20px;color:var(--gold);margin:30px 0 8px}
-  .doc p,.doc li{font-size:15px;line-height:1.7;color:#d1d5db}
+  .doc p,.doc li{font-size:15px;line-height:1.7;color:#2b2b2b}
   .doc ul{padding-left:20px}
   .doc .updated{color:#6b7280;font-size:13px}
   .doc a{color:var(--gold)}
+  /* contact + footer */
+  .contact{background:var(--panel);border-top:1px solid var(--line);padding:34px 0;text-align:center}
+  .contact .row{display:flex;flex-wrap:wrap;gap:10px 26px;justify-content:center;margin-top:12px}
+  .contact a{color:#111;text-decoration:none;font-size:15px}
+  .contact a:hover{color:var(--gold)}
+  footer{padding:26px 0 40px;text-align:center;color:#6b7280;font-size:12px}
+  footer .end{color:var(--gold);letter-spacing:2px;margin-top:8px;font-size:13px}
 </style>
 </head>
 <body>
@@ -142,7 +68,7 @@
 </div>
 <div class="contact">
   <div class="wrap">
-    <div style="font-weight:bold;letter-spacing:3px;color:#fff">EMBODIER</div>
+    <div style="font-weight:bold;letter-spacing:3px;color:#111">EMBODIER</div>
     <div class="row">
       <a href="https://www.embodier.ai">🌐 www.embodier.ai</a>
       <a href="sms:+18287312919">📱 <span data-i18n="c_sms">SMS</span> +1 828-731-2919</a>
@@ -158,7 +84,7 @@
   </div>
 </footer>
 <script>
-var STR = {"es": {"brand_sub": "Propiedad tokenizada en resorts", "c_sms": "SMS", "f_rights": "Todos los derechos reservados.", "f_privacy": "Política de Privacidad", "f_terms": "Términos", "h1": "Términos del Servicio y de Mensajería", "updated": "Última actualización: 30 de septiembre de 2026.", "msg_h": "Programa de mensajes", "msg_p": "Al unirte a la lista de espera de Embodier.ai y darnos tu número de teléfono, aceptas recibir mensajes SMS, mensajes de WhatsApp y llamadas de voz — incluyendo llamadas automatizadas, pregrabadas o con voz de IA — sobre la lista de espera, el estado de tu solicitud y novedades del lanzamiento. Los mensajes son ocasionales: como máximo ~3 por semana. Pueden aplicar tarifas de mensajes y datos según tu operador.", "optout_h": "Cómo salirte", "optout_p": "Responde STOP para cancelar los mensajes en cualquier momento. Responde HELP para ayuda. También puedes escribir a espen@embodier.ai.", "consent_h": "Consentimiento", "consent_p": "Al enviar tu número en el formulario, das tu consentimiento expreso para recibir estos mensajes. El consentimiento no es condición de compra.", "age_h": "Edad mínima", "age_p": "Debes tener 18 años o más para unirte a la lista de espera y al programa.", "deposit_h": "Reserva de $100", "deposit_p": "La reserva es siempre de $100 USD. Es una reserva de buena fe, no una compra de tokens. Es totalmente reembolsable en cualquier momento y por cualquier motivo, y se acredita hacia el mínimo de $500 del token en la oferta (o hacia la suscripción al cierre). La única excepción: si te comprometes expresamente a fondear y no cumples, Embodier retiene exactamente $100 como daños liquidados — nada más.", "risk_h": "Sin promesas de rendimiento", "risk_p": "Nada en este sitio es asesoría de inversión. No prometemos rendimientos, APY ni pronósticos. Los detalles de cada oferta se revelan en los documentos oficiales de la oferta.", "license_h": "Licencia regulatoria", "license_p": "Se desbloquea con la aprobación pendiente de nuestra licencia de El Salvador. El exchange, el crédito con garantía de tokens y el trading público están sujetos a aprobación regulatoria y no están disponibles al público hoy.", "contact_h": "Contacto", "contact_p": "Embodier.ai (DBA de Espen P Schiefloe, Buncombe County, NC) · espen@embodier.ai · SMS +1 828-731-2919 · WhatsApp +1 828-731-2919."}, "en": {"brand_sub": "Tokenized resort ownership", "c_sms": "SMS", "f_rights": "All rights reserved.", "f_privacy": "Privacy Policy", "f_terms": "Terms", "h1": "Terms of Service & Messaging Terms", "updated": "Last updated: September 30, 2026.", "msg_h": "Messaging program", "msg_p": "By joining the Embodier.ai waitlist and giving us your phone number, you agree to receive SMS, WhatsApp messages, and voice calls — including automated, prerecorded, or AI-voiced calls — about the waitlist, your application status, and launch updates. Messages are occasional: at most ~3 per week. Msg & data rates may apply per your carrier.", "optout_h": "How to opt out", "optout_p": "Reply STOP to cancel messages at any time. Reply HELP for help. You can also write to espen@embodier.ai.", "consent_h": "Consent", "consent_p": "By submitting your number in the form, you give express consent to receive these messages. Consent is not a condition of purchase.", "age_h": "Minimum age", "age_p": "You must be 18 or older to join the waitlist and the program.", "deposit_h": "$100 reservation", "deposit_p": "The reservation is always $100 USD. It is a good-faith reservation, not a token purchase. It is fully refundable at any time for any reason, and is credited toward the $500 token minimum at the offering (or toward the subscription at closing). The sole exception: if you expressly commit to fund and fail to do so, Embodier retains exactly $100 as liquidated damages — nothing more.", "risk_h": "No yield promises", "risk_p": "Nothing on this site is investment advice. We do not promise returns, APY, or forecasts. Each offering's details are disclosed in the official offering documents.", "license_h": "Regulatory license", "license_p": "Unlocks with our pending El Salvador license approval. The exchange, token-collateralized credit, and public trading are subject to regulatory approval and are not available to the public today.", "contact_h": "Contact", "contact_p": "Embodier.ai (DBA of Espen P Schiefloe, Buncombe County, NC) · espen@embodier.ai · SMS +1 828-731-2919 · WhatsApp +1 828-731-2919."}};
+var STR = {"es": {"brand_sub": "Propiedad tokenizada en resorts", "c_sms": "SMS", "f_rights": "Todos los derechos reservados.", "f_privacy": "Política de Privacidad", "f_terms": "Términos", "h1": "Términos del Servicio y de Mensajería", "updated": "Última actualización: 6 de octubre de 2026.", "msg_h": "Programa de mensajes", "msg_p": "El formulario de la lista de espera de Embodier.ai ofrece dos tipos opcionales de mensajes, cada uno con su propia casilla: (1) mensajes informativos — estado de tu lista de espera, códigos de verificación y avisos de cuenta por SMS o WhatsApp, normalmente 2–4 al mes; (2) mensajes promocionales — invitaciones, novedades de lanzamientos y ofertas por SMS o WhatsApp, hasta ~3 por semana. Pueden aplicar tarifas de mensajes y datos según tu operador y país.", "optout_h": "Cómo salirte", "optout_p": "Responde STOP para cancelar los mensajes en cualquier momento. Responde HELP para ayuda. También puedes escribir a espen@embodier.ai.", "consent_h": "Consentimiento", "consent_p": "Das tu consentimiento marcando la casilla correspondiente en el formulario. Cada tipo de mensaje es opcional y por separado; puedes unirte a la lista de espera sin marcar ninguna casilla. El consentimiento no es condición de compra.", "age_h": "Edad mínima", "age_p": "Debes tener 18 años o más para unirte a la lista de espera y al programa.", "deposit_h": "Reserva de $100", "deposit_p": "La reserva es siempre de $100 USD. Es una reserva de buena fe, no una compra de tokens. Es totalmente reembolsable en cualquier momento y por cualquier motivo, y se acredita hacia el mínimo de $500 del token en la oferta (o hacia la suscripción al cierre). La única excepción: si te comprometes expresamente a fondear y no cumples, Embodier retiene exactamente $100 como daños liquidados — nada más.", "risk_h": "Sin promesas de rendimiento", "risk_p": "Nada en este sitio es asesoría de inversión. No prometemos rendimientos, APY ni pronósticos. Los detalles de cada oferta se revelan en los documentos oficiales de la oferta.", "license_h": "Licencia regulatoria", "license_p": "La cotización en el exchange llega cuando las propiedades estén desarrolladas, la estructura de tokens sea final, los contratos inteligentes estén reforzados y se otorgue la aprobación del exchange.", "contact_h": "Contacto", "contact_p": "Embodier.ai (DBA de Espen P Schiefloe, Buncombe County, NC) · espen@embodier.ai · SMS +1 828-731-2919 · WhatsApp +1 828-731-2919."}, "en": {"brand_sub": "Tokenized resort ownership", "c_sms": "SMS", "f_rights": "All rights reserved.", "f_privacy": "Privacy Policy", "f_terms": "Terms", "h1": "Terms of Service & Messaging Terms", "updated": "Last updated: October 6, 2026.", "msg_h": "Messaging program", "msg_p": "The Embodier.ai waitlist form offers two optional message types, each with its own checkbox: (1) informational messages — waitlist status, verification codes, and account notices via SMS or WhatsApp, typically 2–4 per month; (2) marketing messages — invitations, launch news, and offers via SMS or WhatsApp, up to ~3 per week. Message and data rates may apply depending on your carrier and country.", "optout_h": "How to opt out", "optout_p": "Reply STOP to cancel messages at any time. Reply HELP for help. You can also write to espen@embodier.ai.", "consent_h": "Consent", "consent_p": "You give consent by checking the corresponding box on the form. Each message type is optional and separate; you can join the waitlist without checking either box. Consent is not a condition of purchase.", "age_h": "Minimum age", "age_p": "You must be 18 or older to join the waitlist and the program.", "deposit_h": "$100 reservation", "deposit_p": "The reservation is always $100 USD. It is a good-faith reservation, not a token purchase. It is fully refundable at any time for any reason, and is credited toward the $500 token minimum at the offering (or toward the subscription at closing). The sole exception: if you expressly commit to fund and fail to do so, Embodier retains exactly $100 as liquidated damages — nothing more.", "risk_h": "No yield promises", "risk_p": "Nothing on this site is investment advice. We do not promise returns, APY, or forecasts. Each offering's details are disclosed in the official offering documents.", "license_h": "Regulatory license", "license_p": "Exchange listing follows once the properties are developed, the token stack is final, smart contracts are hardened, and exchange approval is granted.", "contact_h": "Contact", "contact_p": "Embodier.ai (DBA of Espen P Schiefloe, Buncombe County, NC) · espen@embodier.ai · SMS +1 828-731-2919 · WhatsApp +1 828-731-2919."}};
 var LANG = 'es';
 function setLang(l){
   LANG = (l === 'en') ? 'en' : 'es';

@@ -77,6 +77,9 @@ src="https://www.facebook.com/tr?id=1066458365911228&ev=PageView&noscript=1"
   .vrow{display:flex;gap:10px;margin-top:12px}
   .vrow input{flex:1;background:#0c0e12;border:1px solid var(--line);border-radius:10px;color:#fff;font-size:22px;letter-spacing:6px;text-align:center;padding:12px}
   .fine{font-size:12px;color:var(--mut);margin:10px 0 0}
+  .consentbox{margin-top:10px;display:grid;gap:10px}
+  .consentline{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#d0d0d0;cursor:pointer;line-height:1.5}
+  .consentline input{margin-top:3px;accent-color:#c9a24b;width:16px;height:16px;flex:none;cursor:pointer}
   .fine.ok{color:#7fc97f}
   h2{font-size:clamp(24px,3.4vw,34px);color:#fff;margin:0 0 10px}
   .sub{color:var(--mut);max-width:720px;margin:0 0 28px}
@@ -246,6 +249,10 @@ src="https://www.facebook.com/tr?id=1066458365911228&ev=PageView&noscript=1"
         <label for="f-phone" data-i18n="f_phone">Teléfono (WhatsApp o SMS)</label>
         <input id="f-phone" name="phone" type="tel" autocomplete="tel" required>
         <p class="fine" data-i18n="f_consent" style="margin-top:6px"></p>
+        <div class="consentbox">
+          <label class="consentline"><input type="checkbox" id="f-consent-info" name="consent_info"><span data-i18n="f_consent_info"></span></label>
+          <label class="consentline"><input type="checkbox" id="f-consent-mkt" name="consent_mkt"><span data-i18n="f_consent_mkt"></span></label>
+        </div>
       </div>
       <div class="field">
         <label data-i18n="f_channel">Canal preferido</label>
@@ -377,7 +384,7 @@ es:{
   f_channel:"Canal preferido", ch_wa:"WhatsApp", ch_sms:"SMS",
   opt500:"Owner's Circle — desde $500", opt5k:"Equity Plus — desde $5K", opt50k:"Capital Partner — desde $50K",
   f_submit:"Quiero entrar", f_fine:"Solo usaremos tus datos para la lista de espera. Responde «stop» cuando quieras salirte.",
-  f_consent:"Al ingresar tu número de teléfono y tocar Quiero entrar, aceptas recibir mensajes de WhatsApp, SMS y llamadas de voz de Embodier.ai — incluyendo llamadas automatizadas, pregrabadas o con voz de IA — sobre tu estado en la lista de espera, novedades e invitaciones. La frecuencia varía (normalmente 2–4 al mes). Pueden aplicar tarifas de mensajes y datos según tu operador y país. Responde STOP para salirte en cualquier momento; responde HELP para ayuda, o escribe a espen@embodier.ai. El consentimiento no es condición de compra. Ver Privacidad y Términos.",
+  f_consent:"Al ingresar tu número de teléfono y tocar Quiero entrar, aceptas recibir mensajes de WhatsApp, SMS y llamadas de voz de Embodier.ai — incluyendo llamadas automatizadas, pregrabadas o con voz de IA — sobre tu estado en la lista de espera, novedades e invitaciones. La frecuencia varía (normalmente 2–4 al mes). Pueden aplicar tarifas de mensajes y datos según tu operador y país. Responde STOP para salirte en cualquier momento; responde HELP para ayuda, o escribe a espen@embodier.ai. El consentimiento no es condición de compra. Ver Privacidad y Términos.", f_consent_info:"Mensajes informativos (opcional): estado de tu lista de espera, códigos de verificación y avisos de cuenta de Embodier.ai por SMS o WhatsApp. Frecuencia variable (normalmente 2–4 al mes). Pueden aplicar tarifas de mensajes y datos. Responde STOP para salirte en cualquier momento; HELP para ayuda. El consentimiento no es condición de compra.", f_consent_mkt:"Mensajes promocionales (opcional): invitaciones, novedades de lanzamientos y ofertas de Embodier.ai por SMS o WhatsApp. Frecuencia variable (hasta ~3 por semana). Pueden aplicar tarifas de mensajes y datos. Responde STOP para salirte en cualquier momento; HELP para ayuda. El consentimiento no es condición de compra.",
   f_privacy:"Política de Privacidad",
   f_terms:"Términos",
   f_sending:"Enviando…", f_need:"Completa tu nombre, un correo de respaldo válido y tu teléfono.",
@@ -447,7 +454,7 @@ en:{
   f_channel:"Preferred channel", ch_wa:"WhatsApp", ch_sms:"SMS",
   opt500:"Owner's Circle — from $500", opt5k:"Equity Plus — from $5K", opt50k:"Capital Partner — from $50K",
   f_submit:"I want in", f_fine:"We'll only use your data for the waitlist. Reply “stop” anytime to leave.",
-  f_consent:"By entering your phone number and tapping I want in, you agree to receive WhatsApp messages, SMS, and voice calls from Embodier.ai — including automated, prerecorded, or AI-voiced calls — about your waitlist status, updates, and invitations. Message frequency varies (typically 2–4 per month). Message and data rates may apply depending on your carrier and country. Reply STOP to opt out at any time; reply HELP for help, or email espen@embodier.ai. Consent is not a condition of purchase. See Privacy and Terms.",
+  f_consent:"By entering your phone number and tapping I want in, you agree to receive WhatsApp messages, SMS, and voice calls from Embodier.ai — including automated, prerecorded, or AI-voiced calls — about your waitlist status, updates, and invitations. Message frequency varies (typically 2–4 per month). Message and data rates may apply depending on your carrier and country. Reply STOP to opt out at any time; reply HELP for help, or email espen@embodier.ai. Consent is not a condition of purchase. See Privacy and Terms.", f_consent_info:"Informational messages (optional): waitlist status, verification codes, and account notices from Embodier.ai via SMS or WhatsApp. Frequency varies (typically 2–4 per month). Message and data rates may apply. Reply STOP to opt out at any time; HELP for help. Consent is not a condition of purchase.", f_consent_mkt:"Marketing messages (optional): invitations, launch news, and offers from Embodier.ai via SMS or WhatsApp. Frequency varies (up to ~3 per week). Message and data rates may apply. Reply STOP to opt out at any time; HELP for help. Consent is not a condition of purchase.",
   f_privacy:"Privacy Policy",
   f_terms:"Terms",
   f_sending:"Sending…", f_need:"Please enter your name, a valid backup email, and your phone.",
@@ -666,6 +673,8 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
   var email = document.getElementById('f-email').value.trim();
   var phone = document.getElementById('f-phone').value.trim();
   var tierVal = document.getElementById('f-tier').value;
+  var consentInfo = document.getElementById('f-consent-info').checked;
+  var consentMkt = document.getElementById('f-consent-mkt').checked;
   var btn = document.getElementById('submit-btn');
   if (!name || email.indexOf('@') < 0 || !phone) { alert(t('f_need')); return; }
   LAST_EMAIL = email;
@@ -683,6 +692,7 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
       name:name, email:email,
       phone:phone,
       tier:tierVal, channel_pref:CHAN,
+      consent_info:consentInfo, consent_mkt:consentMkt,
       lane: tierVal === 'tier-50k' ? 'capital' : 'token',
       ref:INCOMING_REF, lang:LANG, source:'waitlist-page',
       utm_source:INCOMING_ATTRIB.utm_source||'',

@@ -826,6 +826,7 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
       tier:tierVal, channel_pref:CHAN,
       consent_info:consentInfo, consent_mkt:consentMkt,
       lane: tierVal === 'tier-50k' ? 'capital' : 'token',
+      lane_param: INCOMING_ATTRIB.lane||'',
       ref:INCOMING_REF, lang:LANG, source:'waitlist-page',
       utm_source:INCOMING_ATTRIB.utm_source||'',
       utm_medium:INCOMING_ATTRIB.utm_medium||'',

@@ -671,6 +671,9 @@ EMB.trackVideo = function(el, vid){
   }
 })();
 
+/* _fbp browser ID for server-side CAPI match quality */
+try { var _fbpM = document.cookie.match(/_fbp=([^;]+)/); if (_fbpM) INCOMING_ATTRIB.fbp = _fbpM[1]; } catch (eFbp) {}
+
 /* ---- live counter (no hardcoded numbers — reads waitlist-count.json) ---- */
 function loadCount(){
   fetch('waitlist-count.json', {cache:'no-store'})
@@ -832,7 +835,8 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
       gclid:INCOMING_ATTRIB.gclid||'',
       fbclid:INCOMING_ATTRIB.fbclid||'',
       ttclid:INCOMING_ATTRIB.ttclid||'',
-      li_fat_id:INCOMING_ATTRIB.li_fat_id||''
+      li_fat_id:INCOMING_ATTRIB.li_fat_id||'',
+      fbp:INCOMING_ATTRIB.fbp||''
     })
   }).then(function(r){ return r.json(); })
     .then(function(d){

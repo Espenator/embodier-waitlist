@@ -19,6 +19,69 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1066458365911228&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+<!-- EMB Unified Tracking — Inner Circle Marketing measurement layer (2026-10-08)
+     One CONFIG block gates every platform: fill an ID to activate it, empty = inert, never errors.
+     Espen taps needed (one line each, see attribution report): GA4 measurement ID, Google Ads AW ID,
+     LinkedIn Insight Tag partner ID, TikTok pixel ID, X pixel ID. Meta Pixel already live above. -->
+<script>
+var EMB_TRACK = {
+  GA4_MEASUREMENT_ID: '',   /* analytics.google.com → Admin → Create property → paste G-XXXXXXXXXX */
+  GOOGLE_ADS_ID: '',        /* Google Ads → Tools → Conversions → paste AW-XXXXXXXXX */
+  GOOGLE_ADS_SIGNUP_LABEL: '', /* conversion label for the waitlist signup action (optional) */
+  LINKEDIN_PARTNER_ID: '',  /* Campaign Manager → Insight Tag → paste numeric partner ID */
+  LINKEDIN_CONVERSION_ID: '',/* Insight Tag → Conversions → paste conversion ID (optional) */
+  TIKTOK_PIXEL_ID: '',      /* TikTok Ads Manager → Events → paste pixel ID */
+  X_PIXEL_ID: ''            /* X Ads → Events Manager → paste pixel ID */
+};
+</script>
+<script>
+(function(){
+  if(!EMB_TRACK.LINKEDIN_PARTNER_ID) return;
+  window._linkedin_partner_id = EMB_TRACK.LINKEDIN_PARTNER_ID;
+  window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+  window._linkedin_data_partner_ids.push(EMB_TRACK.LINKEDIN_PARTNER_ID);
+  var s=document.createElement('script');s.async=true;
+  s.src='https://snap.licdn.com/li.lms-analytics/insight.min.js';
+  document.head.appendChild(s);
+})();
+</script>
+<script>
+(function(){
+  if(!EMB_TRACK.GA4_MEASUREMENT_ID) return;
+  var s=document.createElement('script');s.async=true;
+  s.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(EMB_TRACK.GA4_MEASUREMENT_ID);
+  document.head.appendChild(s);
+  window.dataLayer=window.dataLayer||[];
+  window.gtag=function(){window.dataLayer.push(arguments);};
+  window.gtag('js',new Date());
+  window.gtag('config',EMB_TRACK.GA4_MEASUREMENT_ID,{send_page_view:true});
+  if(EMB_TRACK.GOOGLE_ADS_ID){window.gtag('config',EMB_TRACK.GOOGLE_ADS_ID);}
+})();
+</script>
+<script>
+(function(){
+  if(!EMB_TRACK.TIKTOK_PIXEL_ID) return;
+  !function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];
+  ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"];
+  ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)));}};
+  for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);
+  ttq.load=function(e){var n="https://analytics.tiktok.com/i18n/pixel/events.js";
+  ttq._i=ttq._i||{};ttq._i[e]=[];ttq._i[e]._u=n;
+  var o=d.createElement("script");o.type="text/javascript";o.async=!0;o.src=n+"?sdkid="+e+"&lib="+t;
+  var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a);};
+  ttq.load(EMB_TRACK.TIKTOK_PIXEL_ID);ttq.page();}(window,document,'ttq');
+})();
+</script>
+<script>
+(function(){
+  if(!EMB_TRACK.X_PIXEL_ID) return;
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);},
+  s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='https://static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  twq('config',EMB_TRACK.X_PIXEL_ID);
+})();
+</script>
+<!-- End EMB Unified Tracking -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lista de espera — Acceso privado con Valentina | Embodier</title>
 <meta name="description" content="Lista de espera de Embodier: únete por WhatsApp o SMS. Sé dueño de un pedazo del paraíso. Solo lista de espera — sin venta en vivo.">
@@ -535,12 +598,78 @@ document.getElementById('f-ref').value = INCOMING_REF;
    so delivery optimizes toward converters, not clickers. */
 var INCOMING_ATTRIB = {};
 try {
-  ['utm_source','utm_medium','utm_campaign','utm_content','emb_id',
+  ['utm_source','utm_medium','utm_campaign','utm_content','emb_id','lane',
    'gclid','fbclid','ttclid','li_fat_id'].forEach(function(k){
     var mm = location.search.match(new RegExp('[?&]' + k + '=([^&#]{1,120})'));
     if (mm) INCOMING_ATTRIB[k] = decodeURIComponent(mm[1].replace(/\+/g, ' '));
   });
 } catch(e){}
+
+/* ---- EMB.track: one canonical event → every loaded platform (2026-10-08) ----
+   Canonical events: page_view(auto), form_start, i_want_in_tap, whatsapp_tap,
+   video_play{percent}, waitlist_signup, audit_request. Each platform call is
+   individually guarded: missing ID or blocked script = silent no-op, never an error. */
+var EMB = EMB || {};
+EMB.track = function(name, params){
+  params = params || {};
+  var base = {
+    lane: (params.lane || INCOMING_ATTRIB.lane || '').toString(),
+    utm_campaign: INCOMING_ATTRIB.utm_campaign || '',
+    utm_content: INCOMING_ATTRIB.utm_content || '',
+    emb_id: INCOMING_ATTRIB.emb_id || ''
+  };
+  function merge(p){ var o = {}; for (var k in base) o[k] = base[k]; for (var k2 in p) o[k2] = p[k2]; return o; }
+  try {
+    if (typeof fbq !== 'undefined') {
+      if (name === 'waitlist_signup') fbq('track', 'Lead', {content_name: 'waitlist_signup', content_category: params.tier || ''});
+      else fbq('trackCustom', name, merge(params));
+    }
+  } catch (e) {}
+  try {
+    if (typeof gtag !== 'undefined' && EMB_TRACK.GA4_MEASUREMENT_ID) {
+      var gmap = {waitlist_signup: 'generate_lead', form_start: 'form_start', whatsapp_tap: 'whatsapp_tap',
+                  i_want_in_tap: 'i_want_in_tap', video_play: 'video_play', audit_request: 'audit_request'};
+      gtag('event', gmap[name] || name, merge(params));
+      if (name === 'waitlist_signup' && EMB_TRACK.GOOGLE_ADS_ID) {
+        var sendTo = EMB_TRACK.GOOGLE_ADS_ID + (EMB_TRACK.GOOGLE_ADS_SIGNUP_LABEL ? '/' + EMB_TRACK.GOOGLE_ADS_SIGNUP_LABEL : '');
+        gtag('event', 'conversion', {send_to: sendTo});
+      }
+    }
+  } catch (e2) {}
+  try { if (typeof ttq !== 'undefined') ttq.track(name === 'waitlist_signup' ? 'CompleteRegistration' : 'ClickButton', merge(params)); } catch (e3) {}
+  try { if (typeof twq !== 'undefined') twq('track', 'PageView'); } catch (e4) {}
+  try {
+    if (typeof lintrk !== 'undefined' && name === 'waitlist_signup' && EMB_TRACK.LINKEDIN_CONVERSION_ID) {
+      lintrk('track', {conversion_id: EMB_TRACK.LINKEDIN_CONVERSION_ID});
+    }
+  } catch (e5) {}
+};
+/* Video milestone helper: call EMB.trackVideo(el, id) on any <video> to fire video_play at 25/50/75/100 */
+EMB.trackVideo = function(el, vid){
+  if (!el || el._embWired) return; el._embWired = true;
+  var marks = {25: 0, 50: 0, 75: 0, 100: 0};
+  el.addEventListener('timeupdate', function(){
+    if (!el.duration) return;
+    var p = Math.round(el.currentTime / el.duration * 100);
+    [25, 50, 75, 100].forEach(function(m){ if (p >= m && !marks[m]) { marks[m] = 1; EMB.track('video_play', {video_id: vid || '', percent: m}); } });
+  });
+};
+/* form_start — first interaction with any form field */
+(function(){
+  var started = false;
+  var f = document.getElementById('wl-form');
+  if (f) f.addEventListener('focusin', function(){ if (!started) { started = true; EMB.track('form_start', {}); } });
+  /* i_want_in_tap — hero CTA taps */
+  var ctas = document.querySelectorAll('a.cta[href="#unete"]');
+  for (var i = 0; i < ctas.length; i++) {
+    (function(a){ a.addEventListener('click', function(){ EMB.track('i_want_in_tap', {cta: 'hero'}); }); })(ctas[i]);
+  }
+  /* whatsapp_tap — outbound wa.me taps */
+  var was = document.querySelectorAll('a[href*="wa.me"]');
+  for (var j = 0; j < was.length; j++) {
+    (function(a){ a.addEventListener('click', function(){ EMB.track('whatsapp_tap', {dest: a.getAttribute('href') || ''}); }); })(was[j]);
+  }
+})();
 
 /* ---- live counter (no hardcoded numbers — reads waitlist-count.json) ---- */
 function loadCount(){
@@ -721,7 +850,7 @@ document.getElementById('wl-form').addEventListener('submit', function(ev){
 function pageUrl(){ return location.href.split('?')[0].split('#')[0]; }
 function showSuccess(refCode, tier, name){
   /* Meta Pixel Lead event — conversions-only optimization for the paid test */
-  if (typeof fbq !== 'undefined') { fbq('track', 'Lead', {content_name: 'waitlist_signup', content_category: tier}); }
+  EMB.track('waitlist_signup', {tier: tier});
   document.getElementById('form-card').style.display = 'none';
   document.getElementById('success-card').classList.add('show');
   LAST_LANE = (tier === 'tier-50k') ? 'capital' : 'token';

@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
 <title>Free 48-hour demand audit — Inner Circle Marketing</title>
 <meta name="description" content="We look at your property, your market, and your marketing — and tell you straight whether we can fill your rooms. If we can't, we say so.">
 <meta property="og:title" content="Free 48-hour demand audit — Inner Circle Marketing">
@@ -10,7 +12,11 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://espenator.github.io/embodier-waitlist/audit.html">
 <meta property="og:image" content="https://espenator.github.io/embodier-waitlist/assets/og-pool-ocean-branded.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free 48-hour demand audit — Inner Circle Marketing">
+<meta name="twitter:description" content="We look at your property, your market, and your marketing — and tell you straight whether we can fill your rooms.">
 <meta name="twitter:image" content="https://espenator.github.io/embodier-waitlist/assets/og-pool-ocean-branded.jpg">
 <style>
   :root{ --bg:#0a0a0a; --panel:#111318; --gold:#c9a24b; --ink:#e8e8e8; --mut:#9aa0ae; --line:#2a3350; }
@@ -34,6 +40,7 @@
   .film{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);margin:0 auto 8px;max-width:760px;background:#000}
   .film video,.film img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover}
   .filmcaption{font-size:12px;color:var(--mut);margin:8px 0 26px;text-align:center}
+  .soundpill{position:absolute;bottom:14px;right:14px;z-index:5;background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:9px 16px;font-size:14px;cursor:pointer;-webkit-tap-highlight-color:transparent}
   .formcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px 22px;max-width:620px;margin:0 auto 30px}
   .formcard h2{margin:0 0 6px;color:#fff;font-size:22px}
   .formcard .why{font-size:14px;color:var(--mut);margin:0 0 20px}
@@ -96,9 +103,10 @@ s.parentNode.insertBefore(b, s);})(window.lintrk);
   </div>
 
   <div class="film" id="filmwrap">
-    <video id="sizzle" controls playsinline preload="metadata" poster="assets/og-pool-ocean-branded.jpg" style="display:none">
+    <video id="sizzle" autoplay muted loop playsinline preload="metadata" poster="assets/og-pool-ocean-branded.jpg" style="display:none">
       <source id="sizzlesrc" src="assets/ic-sizzle-reel.mp4" type="video/mp4">
     </video>
+    <button id="sizzlesound" class="soundpill" style="display:none" data-i18n="soundpill">🔊 Tap for sound</button>
     <img id="sizzlefallback" src="assets/og-pool-ocean-branded.jpg" alt="Inner Circle Marketing — the work">
   </div>
   <p class="filmcaption" data-i18n="filmcaption">No tokens. 100% movies.</p>
@@ -170,6 +178,7 @@ en:{
   eyebrow:"Inner Circle Marketing", h1:"Free 48-hour demand audit.",
   lede:"We look at your property, your market, and your marketing — and tell you straight whether we can fill your rooms. If we can't, we say so.",
   filmcaption:"No tokens. 100% movies.",
+  soundpill:"🔊 Tap for sound",
   f_title:"The audit takes 48 hours.", f_why:"Each one gets two full days of our eyes — the property, the market, the marketing. Then you hear it straight.",
   f_name_l:"Your name", f_name_ph:"Who are you",
   f_prop_l:"The property", f_prop_ph:"The resort's name",
@@ -188,6 +197,7 @@ es:{
   eyebrow:"Inner Circle Marketing", h1:"Auditoría de demanda gratuita en 48 horas.",
   lede:"Miramos tu propiedad, tu mercado y tu marketing — y te decimos sin rodeos si podemos llenar tus habitaciones. Si no podemos, lo decimos.",
   filmcaption:"Sin tokens. 100% cine.",
+  soundpill:"🔊 Toca para el sonido",
   f_title:"La auditoría toma 48 horas.", f_why:"Cada una recibe dos días completos de nuestra mirada — la propiedad, el mercado, el marketing. Después lo escuchas sin rodeos.",
   f_name_l:"Tu nombre", f_name_ph:"Quién eres",
   f_prop_l:"La propiedad", f_prop_ph:"El nombre del resort",
@@ -214,16 +224,22 @@ function setLang(l){
   document.getElementById('btn-en').classList.toggle('active', l==='en');
   document.getElementById('btn-es').classList.toggle('active', l==='es');
   document.documentElement.lang = l;
+  try{ if(window.VWRefresh) VWRefresh(); }catch(e){}
 }
 document.getElementById('btn-en').onclick = function(){setLang('en')};
 document.getElementById('btn-es').onclick = function(){setLang('es')};
 setLang(lang);
 
-/* sizzle: show the video only if the file is really there */
+/* sizzle: show the video only if the file is really there — autoplay muted, tap for sound */
 (function(){
-  var v = document.getElementById('sizzle'), img = document.getElementById('sizzlefallback');
+  var v = document.getElementById('sizzle'), img = document.getElementById('sizzlefallback'),
+      pill = document.getElementById('sizzlesound');
+  function play(){ var p = v.play(); if(p && p.catch){ p.catch(function(){}); } }
+  function unmute(){ v.muted = false; v.volume = 1; play(); pill.style.display = 'none'; }
+  pill.addEventListener('click', function(ev){ ev.stopPropagation(); unmute(); });
+  v.addEventListener('click', function(){ if(v.muted) unmute(); });
   fetch('assets/ic-sizzle-reel.mp4', {method:'HEAD'}).then(function(r){
-    if(r.ok){ v.style.display='block'; img.style.display='none'; }
+    if(r.ok){ v.style.display='block'; img.style.display='none'; pill.style.display='block'; play(); }
   }).catch(function(){});
 })();
 
@@ -271,6 +287,121 @@ document.getElementById('audit-form').addEventListener('submit', function(ev){
       : 'Something hiccuped — WhatsApp +1 828-731-2919 and we sort it out.');
   });
 });
+</script>
+<!-- Valentina teaser widget — lightweight on-page AI touch (2026-10-08). Tap-first FAQ + keyword answers in Inner Circle voice; every road leads to "I want in". -->
+<style>
+.vw-fab{position:fixed;bottom:22px;right:22px;z-index:200;width:60px;height:60px;border-radius:50%;border:2px solid #c9a24b;background:#0a0a0a url('assets/valentina.png') center/cover;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.5);padding:0}
+.vw-panel{position:fixed;bottom:94px;right:22px;z-index:200;width:min(340px,calc(100vw - 44px));display:none;flex-direction:column;background:#111318;border:1px solid #2a3350;border-radius:16px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.6);font-family:Arial,Helvetica,sans-serif}
+.vw-panel.open{display:flex}
+.vw-head{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#0c0e12;border-bottom:1px solid #2a3350}
+.vw-head img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:1px solid #c9a24b}
+.vw-head b{color:#fff;font-size:14px;display:block}
+.vw-head span{font-size:11px;color:#9aa0ae}
+.vw-head button{margin-left:auto;background:none;border:0;color:#9aa0ae;font-size:20px;cursor:pointer;line-height:1}
+.vw-msgs{padding:14px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;max-height:280px}
+.vw-msg{background:#0c0e12;border:1px solid #2a3350;border-radius:12px;padding:10px 12px;font-size:14px;color:#e8e8e8;line-height:1.5}
+.vw-msg.me{align-self:flex-end;background:rgba(201,162,75,.14);border-color:#c9a24b}
+.vw-chips{display:flex;flex-wrap:wrap;gap:8px;padding:2px 14px 8px}
+.vw-chip{border:1px solid #c9a24b;background:transparent;color:#c9a24b;border-radius:999px;padding:8px 14px;font-size:13px;cursor:pointer}
+.vw-chip:hover{background:rgba(201,162,75,.12)}
+.vw-chip.cta-chip{background:#c9a24b;color:#0a0a0a;font-weight:bold}
+.vw-input{display:flex;gap:8px;padding:12px 14px;border-top:1px solid #2a3350}
+.vw-input input{flex:1;background:#0c0e12;border:1px solid #2a3350;border-radius:10px;color:#fff;padding:10px 12px;font-size:14px;min-width:0}
+.vw-input button{background:#c9a24b;border:0;border-radius:10px;color:#0a0a0a;font-weight:bold;padding:10px 16px;cursor:pointer;font-size:16px}
+</style>
+<button class="vw-fab" id="vw-fab" aria-label="Ask Valentina"></button>
+<div class="vw-panel" id="vw-panel" role="dialog" aria-label="Ask Valentina">
+  <div class="vw-head">
+    <img src="assets/valentina.png" alt="Valentina">
+    <div><b>Valentina</b><span id="vw-role">Inner Circle</span></div>
+    <button id="vw-close" aria-label="Close">×</button>
+  </div>
+  <div class="vw-msgs" id="vw-msgs"></div>
+  <div class="vw-chips" id="vw-chips"></div>
+  <div class="vw-input">
+    <input id="vw-text" placeholder="Ask anything…" maxlength="200">
+    <button id="vw-send" aria-label="Send">→</button>
+  </div>
+</div>
+<script>
+(function(){
+  var S = {
+    en:{role:"Inner Circle",ph:"Ask anything…",
+      hi:"I'm Valentina. You bring the resort — I bring the eyes. Ask me anything, or tap below.",
+      chips:[["audit","What does the audit cover?"],["speed","How fast is it?"],["human","Talk to a human"]],
+      price:"The audit is free. The verdict is honest — that's the whole deal.",
+      movie:"We make 60–90 second films where your resort is the star and the stage. Drama in the first three seconds — viewers don't watch an ad, they fall in love with a place.",
+      tokens:"No tokens here — 100% movies. The audit is about demand: your property, your market, your marketing.",
+      audit:"48 hours. We look at your bookings, your reviews, your comp set, your story online — then tell you straight whether we can fill your rooms. If we can't, we say so.",
+      speed:"Your 48 hours start the moment you tap below. The audit lands in your inbox — straight, no fluff.",
+      human:"A real human is one tap away — WhatsApp +1 828-731-2919.",
+      where:"First wave: Peru, Mexico, Costa Rica, Argentina. But a resort with empty rooms anywhere is our customer.",
+      fallback:"Good question — that's exactly what the audit answers. Tap below and let's look at your property, straight, no fluff.",
+      cta:"I want in →"},
+    es:{role:"Inner Circle",ph:"Pregunta lo que sea…",
+      hi:"Soy Valentina. Tú traes el resort — yo traigo la mirada. Pregúntame lo que sea, o toca abajo.",
+      chips:[["audit","¿Qué cubre la auditoría?"],["speed","¿Qué tan rápido?"],["human","Hablar con un humano"]],
+      price:"La auditoría es gratis. El veredicto es honesto — ese es todo el trato.",
+      movie:"Hacemos películas de 60–90 segundos donde tu resort es la estrella y el escenario. Drama en los primeros tres segundos — el espectador no ve un anuncio, se enamora de un lugar.",
+      tokens:"Aquí no hay tokens — 100% cine. La auditoría es demanda: tu propiedad, tu mercado, tu marketing.",
+      audit:"48 horas. Miramos tus reservas, tus reseñas, tu competencia, tu historia en línea — y te decimos sin rodeos si podemos llenar tus habitaciones. Si no, lo decimos.",
+      speed:"Tus 48 horas empiezan en cuanto tocas abajo. La auditoría llega a tu correo — directa, sin relleno.",
+      human:"Un humano de verdad está a un toque — WhatsApp +1 828-731-2919.",
+      where:"Primera ola: Perú, México, Costa Rica, Argentina. Pero un resort con habitaciones vacías en cualquier lugar es nuestro cliente.",
+      fallback:"Buena pregunta — eso es exactamente lo que responde la auditoría. Toca abajo y miremos tu propiedad, sin rodeos.",
+      cta:"Quiero entrar →"}
+  };
+  function lang(){ return (document.documentElement.lang||'en').toLowerCase().indexOf('es')===0 ? 'es' : 'en'; }
+  var fab=document.getElementById('vw-fab'), panel=document.getElementById('vw-panel'),
+      msgs=document.getElementById('vw-msgs'), chipsBox=document.getElementById('vw-chips'),
+      input=document.getElementById('vw-text');
+  function T(){ return S[lang()]; }
+  function scroll(){ msgs.scrollTop = msgs.scrollHeight; }
+  function bot(html){
+    var d=document.createElement('div'); d.className='vw-msg'; d.textContent=html;
+    msgs.appendChild(d);
+    var c=document.createElement('button'); c.className='vw-chip cta-chip'; c.textContent=T().cta;
+    c.onclick=function(){ document.getElementById('formcard').scrollIntoView({behavior:'smooth'}); toggle(false); };
+    var w=document.createElement('div'); w.appendChild(c); msgs.appendChild(w); scroll();
+  }
+  function me(text){ var d=document.createElement('div'); d.className='vw-msg me'; d.textContent=text; msgs.appendChild(d); scroll(); }
+  function answer(q){
+    q=(q||'').toLowerCase(); var t=T();
+    if(/price|cost|cuánto|cuanto|precio|costo|vale|gratis|free/.test(q)) return t.price;
+    if(/movie|film|película|pelicula|cine|video/.test(q)) return t.movie;
+    if(/token|coin|crypto|cripto/.test(q)) return t.tokens;
+    if(/audit|auditor/.test(q)) return t.audit;
+    if(/fast|speed|rápido|rapido|cuánto tarda|cuanto tarda/.test(q)) return t.speed;
+    if(/human|person|people|humano|hablar|someone|alguien|llamar/.test(q)) return t.human;
+    if(/where|dónde|donde|ubicaci|location|region|país|pais/.test(q)) return t.where;
+    if(/^(hi|hola|hello|hey|buenas)\b/.test(q)) return t.hi;
+    return t.fallback;
+  }
+  function renderChips(){
+    chipsBox.innerHTML='';
+    T().chips.forEach(function(ch){
+      var b=document.createElement('button'); b.className='vw-chip'; b.textContent=ch[1];
+      b.onclick=function(){ me(ch[1]); setTimeout(function(){ bot(answer(ch[0])); },350); };
+      chipsBox.appendChild(b);
+    });
+  }
+  function greet(){ msgs.innerHTML=''; renderChips(); input.placeholder=T().ph; document.getElementById('vw-role').textContent=T().role; bot(T().hi); }
+  function toggle(force){
+    var open = (typeof force==='boolean') ? force : !panel.classList.contains('open');
+    panel.classList.toggle('open', open);
+    if(open && !msgs.children.length) greet();
+  }
+  fab.onclick=function(){ toggle(); };
+  document.getElementById('vw-close').onclick=function(){ toggle(false); };
+  function send(){
+    var v=input.value.trim(); if(!v) return;
+    me(v); input.value='';
+    setTimeout(function(){ bot(answer(v)); },450);
+  }
+  document.getElementById('vw-send').onclick=send;
+  input.addEventListener('keydown',function(e){ if(e.key==='Enter') send(); });
+  window.VWRefresh=function(){ if(panel.classList.contains('open')) greet(); else { input.placeholder=T().ph; document.getElementById('vw-role').textContent=T().role; } };
+})();
 </script>
 </body>
 </html>

@@ -83,6 +83,8 @@ var EMB_TRACK = {
 </script>
 <!-- End EMB Unified Tracking -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
 <title>Lista de espera — Acceso privado con Valentina | Embodier</title>
 <meta name="description" content="Lista de espera de Embodier: únete por WhatsApp o SMS. Sé dueño de un pedazo del paraíso. Solo lista de espera — sin venta en vivo.">
 <meta property="og:title" content="Embodier — Own a piece of paradise">
@@ -410,6 +412,7 @@ var EMB_TRACK = {
 <footer>
   <div class="wrap">
     <div>© 2026 Embodier.ai — <span data-i18n="f_rights">Todos los derechos reservados.</span> &nbsp;·&nbsp; <a href="privacy.html" data-i18n="f_privacy" style="color:#9ca3af">Política de Privacidad</a> &nbsp;·&nbsp; <a href="terms.html" data-i18n="f_terms" style="color:#9ca3af">Términos</a></div>
+    <div class="end">Stay. Own. Return.</div>
   </div>
 </footer>
 
@@ -486,7 +489,7 @@ es:{
   fb_h2:"Casi listo — un paso manual", fb_p:"El registro en línea se está conectando. Escríbenos con tu nombre y preferencia y te anotamos manualmente en la lista hoy mismo.",
   fb_btn:"Anotarme por correo",
   disc_t:"Aviso importante.",
-  disc_p:"Esto es solo una lista de espera — no hay venta en vivo ni contrato de inversión. No prometemos rendimientos. La licencia DASP está en proceso; el exchange no está activo.",
+  disc_p:"Esto es solo una lista de espera — no hay venta en vivo ni contrato de inversión. No prometemos rendimientos. La cotización en el exchange llega cuando las propiedades estén desarrolladas, la estructura de tokens sea final, los contratos inteligentes estén reforzados y se otorgue la aprobación del exchange.",
   c_sms:"SMS", c_wa:"WhatsApp", f_rights:"Todos los derechos reservados."
 },
 en:{
@@ -556,7 +559,7 @@ en:{
   fb_h2:"Almost — one manual step", fb_p:"Online registration is being connected. Email us your name and preference and we'll add you to the list manually today.",
   fb_btn:"Add me by email",
   disc_t:"Important notice.",
-  disc_p:"This is a waitlist only — no live sale and no investment contract. We promise no returns. The DASP license is in process; the exchange is not active.",
+  disc_p:"This is a waitlist only — no live sale and no investment contract. We promise no returns. Exchange listing follows once the properties are developed, the token stack is final, smart contracts are hardened, and exchange approval is granted.",
   c_sms:"SMS", c_wa:"WhatsApp", f_rights:"All rights reserved."
 }};
 
@@ -760,7 +763,7 @@ function renderLeaderboard(){
 }
 
 /* ---- form ---- */
-/* preferred channel pills (WhatsApp default — SMS rail pending Twilio A2P) */
+/* preferred channel pills (WhatsApp default; SMS rail live via Twilio A2P since 2026-10-08) */
 var CHAN = 'whatsapp';
 document.getElementById('chan-pills').addEventListener('click', function(ev){
   var b = ev.target.closest ? ev.target.closest('.chanpill') : null;

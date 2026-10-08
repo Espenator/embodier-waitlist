@@ -239,12 +239,17 @@ document.getElementById('audit-form').addEventListener('submit', function(ev){
   fetch('https://formsubmit.co/ajax/espen@embodier.ai', {
     method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
     body: JSON.stringify(payload)
-  }).then(function(r){ return r.json(); }).then(function(){
+  }).then(function(r){ return r.json(); }).then(function(data){
+    if(data && data.success === 'false'){ throw new Error(data.message || 'send failed'); }
     document.getElementById('formview').style.display='none';
     document.getElementById('doneview').style.display='block';
     window.scrollTo({top:0, behavior:'smooth'});
   }).catch(function(){
-    btn.disabled = false; setLang(lang);
+    btn.disabled = false; btn.textContent = (lang==='es' ? 'Inténtalo de nuevo' : 'Try again');
+    var fine = document.querySelector('#audit-form .fine');
+    if(fine) fine.textContent = (lang==='es'
+      ? 'Algo falló — WhatsApp +1 828-731-2919 y lo resolvemos.'
+      : 'Something hiccuped — WhatsApp +1 828-731-2919 and we sort it out.');
   });
 });
 </script>

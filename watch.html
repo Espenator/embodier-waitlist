@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Embodier — I want in</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; background:#000; font-family:-apple-system, "Helvetica Neue", Arial, sans-serif; }
+  .wrap { position:fixed; inset:0; display:flex; flex-direction:column; background:#000; }
+  .video-shell { position:relative; flex:1; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  video { width:100%; height:100%; object-fit:contain; background:#000; }
+  .unmute { position:absolute; bottom:18px; right:18px; z-index:5; background:rgba(0,0,0,.55);
+    color:#fff; border:1px solid rgba(255,255,255,.35); border-radius:999px;
+    padding:10px 18px; font-size:15px; letter-spacing:.04em; cursor:pointer;
+    -webkit-tap-highlight-color: transparent; }
+  .unmute.hidden { display:none; }
+  .cta { padding:20px 20px calc(20px + env(safe-area-inset-bottom)); text-align:center; background:#000; }
+  .cta a { display:inline-block; background:#c9a227; color:#000; text-decoration:none;
+    font-size:18px; font-weight:700; letter-spacing:.06em; padding:15px 44px; border-radius:999px; }
+  .cta p { color:rgba(255,255,255,.55); font-size:13px; margin-top:12px; letter-spacing:.03em; }
+  .brand { position:absolute; top:14px; left:18px; z-index:5; color:#fff; font-size:15px;
+    letter-spacing:.42em; font-weight:300; opacity:.9; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="video-shell">
+    <div class="brand">EMBODIER</div>
+    <video id="v" autoplay muted playsinline loop preload="auto" poster="">
+      <source src="sizzle-v4.mp4" type="video/mp4">
+    </video>
+    <button class="unmute" id="unmuteBtn">🔊 Tap for sound</button>
+  </div>
+  <div class="cta">
+    <a href="https://espenator.github.io/embodier-waitlist/audit.html">I want in</a>
+    <p>Free 48-hour demand audit &nbsp;·&nbsp; +1 828-731-2919</p>
+  </div>
+</div>
+<script>
+  var v = document.getElementById('v');
+  var btn = document.getElementById('unmuteBtn');
+  // Autoplay muted on load — no play button, no download, it just plays.
+  function tryPlay(){ var p = v.play(); if(p && p.catch){ p.catch(function(){}); } }
+  document.addEventListener('DOMContentLoaded', tryPlay);
+  window.addEventListener('load', tryPlay);
+  // One tap: unmute + keep playing with sound.
+  btn.addEventListener('click', function(){
+    v.muted = false; v.volume = 1.0; tryPlay(); btn.classList.add('hidden');
+  });
+  // If user taps the video itself, toggle sound too.
+  v.addEventListener('click', function(){
+    if(v.muted){ v.muted = false; btn.classList.add('hidden'); } tryPlay();
+  });
+</script>
+</body>
+</html>

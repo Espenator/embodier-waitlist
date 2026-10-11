@@ -88,7 +88,7 @@ var EMB_TRACK = {
 <title>Lista de espera — Acceso privado con Valentina | Embodier</title>
 <meta name="description" content="Lista de espera de Embodier: únete por WhatsApp o SMS. Sé dueño de un pedazo del paraíso. Solo lista de espera — sin venta en vivo.">
 <meta property="og:title" content="Embodier — Own a piece of paradise">
-<meta property="og:description" content="Join the waitlist. Tokenized ownership in luxury boutique resorts.">
+<meta property="og:description" content="Join the waitlist. Embodiment ownership in luxury boutique resorts. Ownership, embodied.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://espenator.github.io/embodier-waitlist/">
 <meta property="og:image" content="https://espenator.github.io/embodier-waitlist/assets/og-pool-ocean-branded.jpg">
@@ -614,14 +614,20 @@ try {
    individually guarded: missing ID or blocked script = silent no-op, never an error. */
 var EMB = EMB || {};
 EMB.track = function(name, params){
-  params = params || {};
-  var base = {
-    lane: (params.lane || INCOMING_ATTRIB.lane || '').toString(),
-    utm_campaign: INCOMING_ATTRIB.utm_campaign || '',
-    utm_content: INCOMING_ATTRIB.utm_content || '',
-    emb_id: INCOMING_ATTRIB.emb_id || ''
-  };
-  function merge(p){ var o = {}; for (var k in base) o[k] = base[k]; for (var k2 in p) o[k2] = p[k2]; return o; }
+  /* Hardened 2026-10-10: the attribution preamble can never throw out of
+     EMB.track. If base construction ever fails, platforms still fire with
+     raw params and the signup success UI is never broken by analytics. */
+  var base, merge;
+  try {
+    params = params || {};
+    base = {
+      lane: (params.lane || INCOMING_ATTRIB.lane || '').toString(),
+      utm_campaign: INCOMING_ATTRIB.utm_campaign || '',
+      utm_content: INCOMING_ATTRIB.utm_content || '',
+      emb_id: INCOMING_ATTRIB.emb_id || ''
+    };
+    merge = function(p){ var o = {}; for (var k in base) o[k] = base[k]; for (var k2 in p) o[k2] = p[k2]; return o; };
+  } catch (pre) { base = {}; merge = function(p){ return p || {}; }; }
   try {
     if (typeof fbq !== 'undefined') {
       if (name === 'waitlist_signup') fbq('track', 'Lead', {content_name: 'waitlist_signup', content_category: params.tier || ''});

@@ -31,7 +31,8 @@ var EMB_TRACK = {
   LINKEDIN_PARTNER_ID: '7609674',  /* Campaign Manager → Insight Tag → paste numeric partner ID */
   LINKEDIN_CONVERSION_ID: '',/* Insight Tag → Conversions → paste conversion ID (optional) */
   TIKTOK_PIXEL_ID: '',      /* TikTok Ads Manager → Events → paste pixel ID */
-  X_PIXEL_ID: ''            /* X Ads → Events Manager → paste pixel ID */
+  X_PIXEL_ID: '',           /* X Ads → Events Manager → paste pixel ID */
+  X_SIGNUP_EVENT_ID: ''     /* X Ads → Events Manager → "Verified Signup" conversion event ID (tw-…) */
 };
 </script>
 <script>
@@ -655,7 +656,14 @@ EMB.track = function(name, params){
     }
   } catch (e2) {}
   try { if (typeof ttq !== 'undefined') ttq.track(name === 'waitlist_signup' ? 'CompleteRegistration' : 'ClickButton', merge(params)); } catch (e3) {}
-  try { if (typeof twq !== 'undefined') twq('track', 'PageView'); } catch (e4) {}
+  try {
+    if (typeof twq !== 'undefined') {
+      twq('track', 'PageView');
+      if (name === 'waitlist_signup' && EMB_TRACK.X_SIGNUP_EVENT_ID) {
+        twq('event', EMB_TRACK.X_SIGNUP_EVENT_ID, merge(params));
+      }
+    }
+  } catch (e4) {}
   try {
     if (typeof lintrk !== 'undefined' && name === 'waitlist_signup' && EMB_TRACK.LINKEDIN_CONVERSION_ID) {
       lintrk('track', {conversion_id: EMB_TRACK.LINKEDIN_CONVERSION_ID});

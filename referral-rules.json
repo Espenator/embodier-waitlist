@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-03T00:08:44+00:00",
+  "updated_at": "2026-10-16T06:07:08+00:00",
   "source": "Capital Partners sheet 'Referral Rules' tab (live)",
   "lanes": {
     "capital": {
@@ -12,7 +12,7 @@
       "tier": "Token Waitlist",
       "bump": 5,
       "max_bump": 25,
-      "qualification": "Referred joins the whitelist and places the refundable $100 reservation deposit"
+      "qualification": "Referred joins the whitelist and completes qualification"
     }
   }
 }

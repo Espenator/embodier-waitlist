@@ -124,6 +124,9 @@ var EMB_TRACK = {
   .counter .upd{font-size:11px;color:#6b7280;margin-top:4px}
   .cta{display:inline-block;background:var(--gold);color:#0a0a0a;font-weight:bold;text-decoration:none;padding:15px 34px;border-radius:10px;font-size:16px;margin-top:22px}
   .cta.ghost{background:transparent;color:var(--gold);border:1px solid var(--gold);margin-left:10px}
+  .google-block{margin-bottom:20px}
+  .cta.google-cta{display:block;text-align:center;background:#fff;color:#1f1f1f;margin-top:0;border:1px solid #dadce0}
+  .google-or{text-align:center;color:var(--mut);font-size:13px;margin:12px 0 0}
   /* host — Valentina, Embodier spokesperson */
   .host{display:flex;align-items:center;gap:14px;margin-top:28px}
   .host img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--gold)}
@@ -302,6 +305,10 @@ var EMB_TRACK = {
   <h2 data-i18n="form_h2">Quiero entrar</h2>
   <p class="sub" data-i18n="form_sub">Sin pago. Sin compromiso. Solo tu lugar en la fila.</p>
   <div class="formcard" id="form-card">
+    <div class="google-block">
+      <a class="cta google-cta" id="google-cta" href="https://brain.embodier.ai/go?d=DK-TGL26S" data-i18n="g_cta">Continuar con Google</a>
+      <p class="google-or" data-i18n="g_or">o entra con tu teléfono (WhatsApp o SMS):</p>
+    </div>
     <form id="wl-form" novalidate>
       <div class="field">
         <label for="f-name" data-i18n="f_name">Nombre</label>
@@ -461,7 +468,7 @@ es:{
   f_name:"Nombre", f_email:"Correo electrónico (respaldo)", f_phone:"Teléfono (WhatsApp o SMS)", f_tier:"Preferencia indicativa",
   f_channel:"Canal preferido", ch_wa:"WhatsApp", ch_sms:"SMS",
   opt500:"Owner's Circle — desde $500", opt5k:"Equity Plus — desde $5K", opt50k:"Capital Partner — desde $50K",
-  f_submit:"Quiero entrar", f_fine:"Solo usaremos tus datos para la lista de espera. Responde «stop» cuando quieras salirte.",
+  f_submit:"Quiero entrar", g_cta:"Continuar con Google", g_or:"o entra con tu teléfono (WhatsApp o SMS):", f_fine:"Solo usaremos tus datos para la lista de espera. Responde «stop» cuando quieras salirte.",
   f_consent:"Al ingresar tu número de teléfono y tocar Quiero entrar, aceptas recibir mensajes de WhatsApp, SMS y llamadas de voz de Embodier.ai — incluyendo llamadas automatizadas, pregrabadas o con voz de IA — sobre tu estado en la lista de espera, novedades e invitaciones. La frecuencia varía (normalmente 2–4 al mes). Pueden aplicar tarifas de mensajes y datos según tu operador y país. Responde STOP para salirte en cualquier momento; responde HELP para ayuda, o escribe a espen@embodier.ai. El consentimiento no es condición de compra. Ver Privacidad y Términos.", f_consent_info:"Mensajes informativos (opcional): estado de tu lista de espera, códigos de verificación y avisos de cuenta de Embodier.ai por SMS o WhatsApp. Frecuencia variable (normalmente 2–4 al mes). Pueden aplicar tarifas de mensajes y datos. Responde STOP para salirte en cualquier momento; HELP para ayuda. El consentimiento no es condición de compra.", f_consent_mkt:"Mensajes promocionales (opcional): invitaciones, novedades de lanzamientos y ofertas de Embodier.ai por SMS o WhatsApp. Frecuencia variable (hasta ~3 por semana). Pueden aplicar tarifas de mensajes y datos. Responde STOP para salirte en cualquier momento; HELP para ayuda. El consentimiento no es condición de compra.",
   f_privacy:"Política de Privacidad",
   f_terms:"Términos",
@@ -531,7 +538,7 @@ en:{
   f_name:"Name", f_email:"Email (backup)", f_phone:"Phone (WhatsApp or SMS)", f_tier:"Indicative preference",
   f_channel:"Preferred channel", ch_wa:"WhatsApp", ch_sms:"SMS",
   opt500:"Owner's Circle — from $500", opt5k:"Equity Plus — from $5K", opt50k:"Capital Partner — from $50K",
-  f_submit:"I want in", f_fine:"We'll only use your data for the waitlist. Reply “stop” anytime to leave.",
+  f_submit:"I want in", g_cta:"Continue with Google", g_or:"or join with your phone (WhatsApp or SMS):", f_fine:"We'll only use your data for the waitlist. Reply “stop” anytime to leave.",
   f_consent:"By entering your phone number and tapping I want in, you agree to receive WhatsApp messages, SMS, and voice calls from Embodier.ai — including automated, prerecorded, or AI-voiced calls — about your waitlist status, updates, and invitations. Message frequency varies (typically 2–4 per month). Message and data rates may apply depending on your carrier and country. Reply STOP to opt out at any time; reply HELP for help, or email espen@embodier.ai. Consent is not a condition of purchase. See Privacy and Terms.", f_consent_info:"Informational messages (optional): waitlist status, verification codes, and account notices from Embodier.ai via SMS or WhatsApp. Frequency varies (typically 2–4 per month). Message and data rates may apply. Reply STOP to opt out at any time; HELP for help. Consent is not a condition of purchase.", f_consent_mkt:"Marketing messages (optional): invitations, launch news, and offers from Embodier.ai via SMS or WhatsApp. Frequency varies (up to ~3 per week). Message and data rates may apply. Reply STOP to opt out at any time; HELP for help. Consent is not a condition of purchase.",
   f_privacy:"Privacy Policy",
   f_terms:"Terms",
@@ -587,6 +594,8 @@ function setLang(l){
   });
   if (document.getElementById('apply-card').style.display === 'block') renderAppTaps();
   document.getElementById('f-lang').value = LANG;
+  var gb = document.getElementById('google-cta');
+  if (gb) gb.href = (LANG === 'en') ? 'https://brain.embodier.ai/go?d=DK-TGL26E' : 'https://brain.embodier.ai/go?d=DK-TGL26S';
   try { localStorage.setItem('wl-lang', LANG); } catch(e){}
   wireFallbackMail();
   /* re-render dynamic referral copy on language change */
